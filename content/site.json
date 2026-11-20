@@ -535,7 +535,8 @@
       "title": "The Hangover Part II",
       "year": 2011,
       "by": "Todd Phillips",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/the-hangover-part-ii-maeh0qobtd.jpg"
     },
     {
       "title": "The Social Network",
@@ -704,7 +705,8 @@
     {
       "title": "Le Cochon Danseur",
       "year": 1907,
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/le-cochon-danseur-kv7kocn92m.jpg"
     }
   ],
   "games": [

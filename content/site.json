@@ -66,38 +66,7 @@
         "a": "Maybe! Send me an email or dm me and tell me what you have in mind."
       }
     ],
-    "experience": [
-      {
-        "org": "Studio Name",
-        "url": "https://example.com",
-        "roles": [
-          {
-            "title": "Developer",
-            "dates": "2025 → Present"
-          }
-        ]
-      },
-      {
-        "org": "Freelance",
-        "url": "",
-        "roles": [
-          {
-            "title": "Web & Graphic Design",
-            "dates": "2023 → 2025"
-          }
-        ]
-      },
-      {
-        "org": "University",
-        "url": "",
-        "roles": [
-          {
-            "title": "Computer Science",
-            "dates": "2021 → 2025"
-          }
-        ]
-      }
-    ]
+    "experience": []
   },
   "movies": [
     {

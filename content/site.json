@@ -47,26 +47,23 @@
     "qa": [
       {
         "q": "What do you mostly do?",
-        "a": "I build things for the web and make digital art in Photoshop. Lately I'm trying to bring the two closer together."
+        "a": "Just tinkering around following whatever catches my interest whether it's coding or designing"
       },
       {
         "q": "How did you get into coding?",
-        "a": "Modding games as a kid, then breaking (and fixing) my own websites."
+        "a": "Modding games as a kid, then breaking (and fixing) my projects."
       },
       {
         "q": "What tools do you use?",
-        "a": [
-          "VS Code, Node, Git for code.",
-          "Photoshop and a drawing tablet for art. Blender when I'm feeling brave."
-        ]
+        "a": "vs code\nPS\nand the goat claude"
       },
       {
         "q": "What are you into right now?",
-        "a": "Check the **Shelf** tab: anything marked *now* is what I'm watching, playing or reading."
+        "a": "Code optimization"
       },
       {
         "q": "Can we work together?",
-        "a": "Maybe! Send me an email and tell me what you have in mind."
+        "a": "Maybe! Send me an email or dm me and tell me what you have in mind."
       }
     ],
     "experience": [

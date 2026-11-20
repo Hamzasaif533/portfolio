@@ -329,13 +329,15 @@
       "title": "Avengers: Infinity War",
       "year": 2018,
       "by": "Anthony & Joe Russo",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/avengers-infinity-war-k3xgg77cai.jpg"
     },
     {
       "title": "Black Panther",
       "year": 2018,
       "by": "Ryan Coogler",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/black-panther-mjvilewpml.jpg"
     },
     {
       "title": "Blade Runner 2049",
@@ -505,25 +507,29 @@
       "title": "21 Jump Street",
       "year": 2012,
       "by": "Phil Lord & Christopher Miller",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/21-jump-street-ligjpndlds.jpg"
     },
     {
       "title": "Hugo",
       "year": 2011,
       "by": "Martin Scorsese",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/hugo-uctkjhzfg2.jpg"
     },
     {
       "title": "Rise of the Planet of the Apes",
       "year": 2011,
       "by": "Rupert Wyatt",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/rise-of-the-planet-of-the-apes-fsx71msfkt.jpg"
     },
     {
       "title": "Drive",
       "year": 2011,
       "by": "Nicolas Winding Refn",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/drive-dxbs2akbch.jpg"
     },
     {
       "title": "The Hangover Part II",
@@ -535,142 +541,165 @@
       "title": "The Social Network",
       "year": 2010,
       "by": "David Fincher",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-social-network-trefxfsolk.jpg"
     },
     {
       "title": "127 Hours",
       "year": 2010,
       "by": "Danny Boyle",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/127-hours-3fhui9guuu.jpg"
     },
     {
       "title": "Inception",
       "year": 2010,
       "by": "Christopher Nolan",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/inception-2hmlvovu1r.jpg"
     },
     {
       "title": "Zombieland",
       "year": 2009,
       "by": "Ruben Fleischer",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/zombieland-2izdwa5sx9.jpg"
     },
     {
       "title": "The Hangover",
       "year": 2009,
       "by": "Todd Phillips",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/the-hangover-sv49holuky.jpg"
     },
     {
       "title": "Coraline",
       "year": 2009,
       "by": "Henry Selick",
       "rating": 4.5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/coraline-hofnliyf6b.jpg"
     },
     {
       "title": "(500) Days of Summer",
       "year": 2009,
       "by": "Marc Webb",
       "rating": 4.5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/500-days-of-summer-at5sik2toy.jpg"
     },
     {
       "title": "The Dark Knight",
       "year": 2008,
       "by": "Christopher Nolan",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-dark-knight-pldp52mirf.jpg"
     },
     {
       "title": "The Incredible Hulk",
       "year": 2008,
       "by": "Louis Leterrier",
-      "rating": 2
+      "rating": 2,
+      "frame": "assets/frames/the-incredible-hulk-oklxjbzjby.jpg"
     },
     {
       "title": "I Am Legend",
       "year": 2007,
       "by": "Francis Lawrence",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/i-am-legend-abnlakfwat.jpg"
     },
     {
       "title": "Zodiac",
       "year": 2007,
       "by": "David Fincher",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/zodiac-9kdtjruoxn.jpg"
     },
     {
       "title": "Casino Royale",
       "year": 2006,
       "by": "Martin Campbell",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/casino-royale-6h0o2qucv8.jpg"
     },
     {
       "title": "Charlie and the Chocolate Factory",
       "year": 2005,
       "by": "Tim Burton",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/charlie-and-the-chocolate-factory-cz4vl9t06b.jpg"
     },
     {
       "title": "Memories of Murder",
       "year": 2003,
       "by": "Bong Joon Ho",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/memories-of-murder-1iw1zv35kh.jpg"
     },
     {
       "title": "Fight Club",
       "year": 1999,
       "by": "David Fincher",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/fight-club-hzkgoqyus5.jpg"
     },
     {
       "title": "Rush Hour 2",
       "year": 2001,
       "by": "Brett Ratner",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/rush-hour-2-1ly6qbbmrd.jpg"
     },
     {
       "title": "Titanic",
       "year": 1997,
       "by": "James Cameron",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/titanic-ajoabmname.jpg"
     },
     {
       "title": "Se7en",
       "year": 1995,
       "by": "David Fincher",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/se7en-iwgl8zlrrf.jpg"
     },
     {
       "title": "A Bronx Tale",
       "year": 1993,
       "by": "Robert De Niro",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/a-bronx-tale-ggzzn1hf4z.jpg"
     },
     {
       "title": "Home Alone",
       "year": 1990,
       "by": "Chris Columbus",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/home-alone-vmz7olsscl.jpg"
     },
     {
       "title": "Blue Velvet",
       "year": 1986,
       "by": "David Lynch",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/blue-velvet-8pvlgt1iuq.jpg"
     },
     {
       "title": "Jaws",
       "year": 1975,
       "by": "Steven Spielberg",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/jaws-kjmlpj5enr.jpg"
     },
     {
       "title": "12 Angry Men",
       "year": 1957,
       "by": "Sidney Lumet",
-      "rating": 5
+      "rating": 5,
+      "frame": "assets/frames/12-angry-men-trmcu0uiwt.jpg"
     },
     {
       "title": "Le Cochon Danseur",

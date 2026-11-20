@@ -195,7 +195,8 @@
       "year": 2024,
       "by": "Denis Villeneuve",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/dune-part-two.svg"
     },
     {
       "title": "Oppenheimer",
@@ -251,67 +252,78 @@
       "title": "The Batman",
       "year": 2022,
       "by": "Matt Reeves",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/the-batman-iyud7raixz.jpg"
     },
     {
       "title": "Uncharted",
       "year": 2022,
       "by": "Ruben Fleischer",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/uncharted-ozaejrxaus.jpg"
     },
     {
       "title": "Dune",
       "year": 2021,
       "by": "Denis Villeneuve",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/dune-zrkqw58mbe.jpg"
     },
     {
       "title": "The Conjuring: Last Rites",
       "year": 2025,
       "by": "Michael Chaves",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/the-conjuring-last-rites-6yj51c0lbo.jpg"
     },
     {
       "title": "The Queen's Gambit",
       "year": 2020,
       "by": "Scott Frank",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-queens-gambit-4atonmqcse.jpg"
     },
     {
       "title": "The Platform",
       "year": 2019,
       "by": "Galder Gaztelu-Urrutia",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/the-platform-tksnu2qdmg.jpg"
     },
     {
       "title": "Joker",
       "year": 2019,
       "by": "Todd Phillips",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/joker-j03ciuq845.jpg"
     },
     {
       "title": "Ready or Not",
       "year": 2019,
       "by": "Matt Bettinelli-Olpin & Tyler Gillett",
-      "rating": 0.5
+      "rating": 0.5,
+      "frame": "assets/frames/ready-or-not-ya4hxbxkux.jpg"
     },
     {
       "title": "Midsommar",
       "year": 2019,
       "by": "Ari Aster",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/midsommar-eruspt9lno.jpg"
     },
     {
       "title": "Parasite",
       "year": 2019,
       "by": "Bong Joon Ho",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/parasite-p0gix7ig8h.jpg"
     },
     {
       "title": "The Nun",
       "year": 2018,
       "by": "Corin Hardy",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-nun-cmnvmutb5m.jpg"
     },
     {
       "title": "Avengers: Infinity War",
@@ -330,141 +342,164 @@
       "year": 2017,
       "by": "Denis Villeneuve",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/blade-runner-2049.svg"
     },
     {
       "title": "Get Out",
       "year": 2017,
       "by": "Jordan Peele",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/get-out-bbqhalhraa.jpg"
     },
     {
       "title": "Split",
       "year": 2016,
       "by": "M. Night Shyamalan",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/split-ghzjfec1bq.jpg"
     },
     {
       "title": "Arrival",
       "year": 2016,
       "by": "Denis Villeneuve",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/arrival.svg"
     },
     {
       "title": "La La Land",
       "year": 2016,
       "by": "Damien Chazelle",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/la-la-land-ik2d3kqxfd.jpg"
     },
     {
       "title": "War Dogs",
       "year": 2016,
       "by": "Todd Phillips",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/war-dogs-asuocllkn4.jpg"
     },
     {
       "title": "Me Before You",
       "year": 2016,
       "by": "Thea Sharrock",
       "rating": 2.5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/me-before-you-cqeakxhr6c.jpg"
     },
     {
       "title": "The Conjuring 2",
       "year": 2016,
       "by": "James Wan",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/the-conjuring-2-ev5ti7q0re.jpg"
     },
     {
       "title": "The Martian",
       "year": 2015,
       "by": "Ridley Scott",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-martian-lzms0ci3fl.jpg"
     },
     {
       "title": "The Lobster",
       "year": 2015,
       "by": "Yorgos Lanthimos",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-lobster-s48cvfbwow.jpg"
     },
     {
       "title": "Kingsman: The Secret Service",
       "year": 2014,
       "by": "Matthew Vaughn",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/kingsman-the-secret-service-cqki4ktwwc.jpg"
     },
     {
       "title": "Interstellar",
       "year": 2014,
       "by": "Christopher Nolan",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/interstellar.svg"
     },
     {
       "title": "Gone Girl",
       "year": 2014,
       "by": "David Fincher",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/gone-girl-h2jaqwlkha.jpg"
     },
     {
       "title": "The Imitation Game",
       "year": 2014,
       "by": "Morten Tyldum",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/the-imitation-game-c7qt8yo8xs.jpg"
     },
     {
       "title": "Edge of Tomorrow",
       "year": 2014,
       "by": "Doug Liman",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/edge-of-tomorrow-fi5zzifxj2.jpg"
     },
     {
       "title": "Her",
       "year": 2013,
       "by": "Spike Jonze",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/her-zxttikp0sn.jpg"
     },
     {
       "title": "Prisoners",
       "year": 2013,
       "by": "Denis Villeneuve",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/prisoners-ijgjxqq6xd.jpg"
     },
     {
       "title": "Gravity",
       "year": 2013,
       "by": "Alfonso Cuarón",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/gravity-xtjxzasfl0.jpg"
     },
     {
       "title": "The Conjuring",
       "year": 2013,
       "by": "James Wan",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-conjuring-fmlag1cyht.jpg"
     },
     {
       "title": "Now You See Me",
       "year": 2013,
       "by": "Louis Leterrier",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/now-you-see-me-e6lc9vnkdv.jpg"
     },
     {
       "title": "The Hangover Part III",
       "year": 2013,
       "by": "Todd Phillips",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/the-hangover-part-iii-41ugz6luwo.jpg"
     },
     {
       "title": "Life of Pi",
       "year": 2012,
       "by": "Ang Lee",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/life-of-pi-fozqfyampj.jpg"
     },
     {
       "title": "The Hunt",
       "year": 2012,
       "by": "Thomas Vinterberg",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/the-hunt-1mwjlmnixr.jpg"
     },
     {
       "title": "21 Jump Street",

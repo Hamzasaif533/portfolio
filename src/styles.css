@@ -83,8 +83,13 @@ button { font: inherit; color: inherit; }
 .cursor::before { left: 7px; top: 0; width: 1px; height: 15px; }
 .cursor::after { top: 7px; left: 0; height: 1px; width: 15px; }
 @media (hover: hover) and (pointer: fine) {
-  .is-home, .is-home a { cursor: none; }
-  .is-home .cursor.on { opacity: 1; }
+  /* the "+" cursor on every page (mouse/trackpad only) */
+  html, body, body * { cursor: none !important; }
+  .cursor.on { opacity: 1; }
+  /* full-screen viewer, search and shortcut list sit above everything: use the normal pointer there */
+  dialog[open], dialog[open] * { cursor: auto !important; }
+  dialog[open] button, dialog[open] li[role=option] { cursor: pointer !important; }
+  body:has(dialog[open]) .cursor { opacity: 0; }
 }
 
 /* ---------- page header (code / design / shelf) ---------- */

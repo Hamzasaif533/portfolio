@@ -301,6 +301,7 @@ ${body}
   <span></span>
 </footer>
 ${DIALOGS}${viewer ? VIEWER : ""}
+<div class="cursor" aria-hidden="true"></div>
 <script src="${root}app.js" defer></script>
 </body>
 </html>`;
@@ -340,8 +341,7 @@ function homePage(site, posts) {
     ${note ? `<a class="s-note" href="${esc(noteHref)}"${linkAttrs(noteHref)} data-item><bdi>${esc(note)}</bdi></a>` : ""}
   </section>
   ${rows ? `<ul class="today" aria-label="Right now">${rows}</ul>` : ""}
-</main>
-<div class="cursor" aria-hidden="true"></div>`;
+</main>`;
 }
 
 /* image or looping video; class "ld" is set on the tile once the media has loaded */
@@ -575,7 +575,7 @@ function build() {
 
   page("404.html", {
     title: `Lost — ${site.name}`, description: desc, root: "/", active: "hey", bodyClass: "is-home",
-    body: `<main class="home" id="main"><section class="status"><h1 class="sr-only">Page not found</h1><p class="s-lead">${words("This page is:")}</p><p class="s-big">${words("NOT HERE")}</p><p class="s-tail">${words("or anywhere, really")}</p><a class="s-note" href="/index.html">Go back home →</a></section></main><div class="cursor" aria-hidden="true"></div>`,
+    body: `<main class="home" id="main"><section class="status"><h1 class="sr-only">Page not found</h1><p class="s-lead">${words("This page is:")}</p><p class="s-big">${words("NOT HERE")}</p><p class="s-tail">${words("or anywhere, really")}</p><a class="s-note" href="/index.html">Go back home →</a></section></main>`,
   });
 
   write("search.json", JSON.stringify(searchIndex(site, posts).map(it => ({ ...it, u: cleanUrl(it.u) }))));

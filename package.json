@@ -1,0 +1,12 @@
+{
+  "name": "pixel-site",
+  "private": true,
+  "description": "Personal site: interests, blog, code and design. Zero dependencies.",
+  "scripts": {
+    "dev": "node build.js --dev",
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

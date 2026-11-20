@@ -1,0 +1,793 @@
+{
+  "name": "Ham7a",
+  "initial": "H",
+  "description": "Movies, games and books I love, plus my writing, code and Photoshop work.",
+  "status": {
+    "lead": "Today I'm mostly:",
+    "big": "MAKING THINGS",
+    "tail": "with code and pixels",
+    "note": "",
+    "noteUrl": ""
+  },
+  "socials": [
+    {
+      "label": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/"
+    },
+    {
+      "label": "Letterboxd",
+      "icon": "film",
+      "url": "https://letterboxd.com/"
+    },
+    {
+      "label": "Goodreads",
+      "icon": "book",
+      "url": "https://www.goodreads.com/"
+    },
+    {
+      "label": "Behance",
+      "icon": "palette",
+      "url": "https://www.behance.net/"
+    },
+    {
+      "label": "Email",
+      "icon": "mail",
+      "url": "mailto:hello@example.com"
+    }
+  ],
+  "about": {
+    "avatar": "",
+    "bio": [
+      "Developer by day, Photoshop tinkerer by night, and a lifelong collector of **stories**: the films that stay with me, the games that eat my weekends, the books that rearrange my head.",
+      "I make things to understand them. Code, pixels and words are just different ways of asking *what if?*",
+      "This site is my shelf, my sketchbook and my notebook, all in one place."
+    ],
+    "signoff": "— Ham7a",
+    "qa": [
+      {
+        "q": "What do you mostly do?",
+        "a": "I build things for the web and make digital art in Photoshop. Lately I'm trying to bring the two closer together."
+      },
+      {
+        "q": "How did you get into coding?",
+        "a": "Modding games as a kid, then breaking (and fixing) my own websites."
+      },
+      {
+        "q": "What tools do you use?",
+        "a": [
+          "VS Code, Node, Git for code.",
+          "Photoshop and a drawing tablet for art. Blender when I'm feeling brave."
+        ]
+      },
+      {
+        "q": "What are you into right now?",
+        "a": "Check the **Shelf** tab: anything marked *now* is what I'm watching, playing or reading."
+      },
+      {
+        "q": "Can we work together?",
+        "a": "Maybe! Send me an email and tell me what you have in mind."
+      }
+    ],
+    "experience": [
+      {
+        "org": "Studio Name",
+        "url": "https://example.com",
+        "roles": [
+          {
+            "title": "Developer",
+            "dates": "2025 → Present"
+          }
+        ]
+      },
+      {
+        "org": "Freelance",
+        "url": "",
+        "roles": [
+          {
+            "title": "Web & Graphic Design",
+            "dates": "2023 → 2025"
+          }
+        ]
+      },
+      {
+        "org": "University",
+        "url": "",
+        "roles": [
+          {
+            "title": "Computer Science",
+            "dates": "2021 → 2025"
+          }
+        ]
+      }
+    ]
+  },
+  "movies": [
+    {
+      "title": "Clayface",
+      "year": 2026,
+      "by": "James Watkins",
+      "rating": 3.5,
+      "now": true
+    },
+    {
+      "title": "The Sheep Detectives",
+      "year": 2026,
+      "by": "Kyle Balda",
+      "rating": 3.5
+    },
+    {
+      "title": "Marty Supreme",
+      "year": 2025,
+      "by": "Josh Safdie",
+      "rating": 5,
+      "liked": true
+    },
+    {
+      "title": "I Swear",
+      "year": 2025,
+      "by": "Kirk Jones",
+      "rating": 3.5
+    },
+    {
+      "title": "Obsession",
+      "year": 2025,
+      "by": "Curry Barker",
+      "rating": 3.5
+    },
+    {
+      "title": "Hamnet",
+      "year": 2025,
+      "by": "Chloé Zhao",
+      "rating": 4.5,
+      "liked": true
+    },
+    {
+      "title": "No Other Choice",
+      "year": 2025,
+      "by": "Park Chan-wook",
+      "rating": 3.5
+    },
+    {
+      "title": "Bugonia",
+      "year": 2025,
+      "by": "Yorgos Lanthimos",
+      "rating": 3
+    },
+    {
+      "title": "Weapons",
+      "year": 2025,
+      "by": "Zach Cregger",
+      "rating": 2.5
+    },
+    {
+      "title": "Mission: Impossible – The Final Reckoning",
+      "year": 2025,
+      "by": "Christopher McQuarrie",
+      "rating": 4
+    },
+    {
+      "title": "Sinners",
+      "year": 2025,
+      "by": "Ryan Coogler",
+      "rating": 3
+    },
+    {
+      "title": "We Live in Time",
+      "year": 2024,
+      "by": "John Crowley",
+      "rating": 3
+    },
+    {
+      "title": "Dune: Part Two",
+      "year": 2024,
+      "by": "Denis Villeneuve",
+      "rating": 5,
+      "liked": true,
+      "frame": "assets/frames/dune-part-two.svg"
+    },
+    {
+      "title": "Oppenheimer",
+      "year": 2023,
+      "by": "Christopher Nolan",
+      "rating": 4.5
+    },
+    {
+      "title": "Mission: Impossible – Dead Reckoning Part One",
+      "year": 2023,
+      "by": "Christopher McQuarrie",
+      "rating": 4.5
+    },
+    {
+      "title": "Smile",
+      "year": 2022,
+      "by": "Parker Finn",
+      "rating": 4
+    },
+    {
+      "title": "The Menu",
+      "year": 2022,
+      "by": "Mark Mylod",
+      "rating": 4
+    },
+    {
+      "title": "Barbarian",
+      "year": 2022,
+      "by": "Zach Cregger",
+      "rating": 3
+    },
+    {
+      "title": "Fall",
+      "year": 2022,
+      "by": "Scott Mann",
+      "rating": 3
+    },
+    {
+      "title": "Everything Everywhere All at Once",
+      "year": 2022,
+      "by": "Daniel Kwan & Daniel Scheinert",
+      "rating": 5,
+      "liked": true
+    },
+    {
+      "title": "The Batman",
+      "year": 2022,
+      "by": "Matt Reeves",
+      "rating": 4.5
+    },
+    {
+      "title": "Uncharted",
+      "year": 2022,
+      "by": "Ruben Fleischer",
+      "rating": 2.5
+    },
+    {
+      "title": "Dune",
+      "year": 2021,
+      "by": "Denis Villeneuve",
+      "rating": 4
+    },
+    {
+      "title": "The Conjuring: Last Rites",
+      "year": 2025,
+      "by": "Michael Chaves",
+      "rating": 3
+    },
+    {
+      "title": "The Queen's Gambit",
+      "year": 2020,
+      "by": "Scott Frank",
+      "rating": 3.5
+    },
+    {
+      "title": "The Platform",
+      "year": 2019,
+      "by": "Galder Gaztelu-Urrutia",
+      "rating": 3
+    },
+    {
+      "title": "Joker",
+      "year": 2019,
+      "by": "Todd Phillips",
+      "rating": 4
+    },
+    {
+      "title": "Ready or Not",
+      "year": 2019,
+      "by": "Matt Bettinelli-Olpin & Tyler Gillett",
+      "rating": 0.5
+    },
+    {
+      "title": "Midsommar",
+      "year": 2019,
+      "by": "Ari Aster",
+      "rating": 4
+    },
+    {
+      "title": "Parasite",
+      "year": 2019,
+      "by": "Bong Joon Ho",
+      "rating": 4
+    },
+    {
+      "title": "The Nun",
+      "year": 2018,
+      "by": "Corin Hardy",
+      "rating": 3.5
+    },
+    {
+      "title": "Avengers: Infinity War",
+      "year": 2018,
+      "by": "Anthony & Joe Russo",
+      "rating": 3.5
+    },
+    {
+      "title": "Black Panther",
+      "year": 2018,
+      "by": "Ryan Coogler",
+      "rating": 3
+    },
+    {
+      "title": "Blade Runner 2049",
+      "year": 2017,
+      "by": "Denis Villeneuve",
+      "rating": 5,
+      "liked": true,
+      "frame": "assets/frames/blade-runner-2049.svg"
+    },
+    {
+      "title": "Get Out",
+      "year": 2017,
+      "by": "Jordan Peele",
+      "rating": 4.5
+    },
+    {
+      "title": "Split",
+      "year": 2016,
+      "by": "M. Night Shyamalan",
+      "rating": 3.5
+    },
+    {
+      "title": "Arrival",
+      "year": 2016,
+      "by": "Denis Villeneuve",
+      "rating": 4,
+      "frame": "assets/frames/arrival.svg"
+    },
+    {
+      "title": "La La Land",
+      "year": 2016,
+      "by": "Damien Chazelle",
+      "rating": 4
+    },
+    {
+      "title": "War Dogs",
+      "year": 2016,
+      "by": "Todd Phillips",
+      "rating": 3
+    },
+    {
+      "title": "Me Before You",
+      "year": 2016,
+      "by": "Thea Sharrock",
+      "rating": 2.5,
+      "liked": true
+    },
+    {
+      "title": "The Conjuring 2",
+      "year": 2016,
+      "by": "James Wan",
+      "rating": 3
+    },
+    {
+      "title": "The Martian",
+      "year": 2015,
+      "by": "Ridley Scott",
+      "rating": 3.5
+    },
+    {
+      "title": "The Lobster",
+      "year": 2015,
+      "by": "Yorgos Lanthimos",
+      "rating": 3.5
+    },
+    {
+      "title": "Kingsman: The Secret Service",
+      "year": 2014,
+      "by": "Matthew Vaughn",
+      "rating": 3.5
+    },
+    {
+      "title": "Interstellar",
+      "year": 2014,
+      "by": "Christopher Nolan",
+      "rating": 5,
+      "liked": true,
+      "frame": "assets/frames/interstellar.svg"
+    },
+    {
+      "title": "Gone Girl",
+      "year": 2014,
+      "by": "David Fincher",
+      "rating": 2.5
+    },
+    {
+      "title": "The Imitation Game",
+      "year": 2014,
+      "by": "Morten Tyldum",
+      "rating": 4.5
+    },
+    {
+      "title": "Edge of Tomorrow",
+      "year": 2014,
+      "by": "Doug Liman",
+      "rating": 3.5
+    },
+    {
+      "title": "Her",
+      "year": 2013,
+      "by": "Spike Jonze",
+      "rating": 3.5
+    },
+    {
+      "title": "Prisoners",
+      "year": 2013,
+      "by": "Denis Villeneuve",
+      "rating": 4.5
+    },
+    {
+      "title": "Gravity",
+      "year": 2013,
+      "by": "Alfonso Cuarón",
+      "rating": 4
+    },
+    {
+      "title": "The Conjuring",
+      "year": 2013,
+      "by": "James Wan",
+      "rating": 3.5
+    },
+    {
+      "title": "Now You See Me",
+      "year": 2013,
+      "by": "Louis Leterrier",
+      "rating": 4
+    },
+    {
+      "title": "The Hangover Part III",
+      "year": 2013,
+      "by": "Todd Phillips",
+      "rating": 2.5
+    },
+    {
+      "title": "Life of Pi",
+      "year": 2012,
+      "by": "Ang Lee",
+      "rating": 4
+    },
+    {
+      "title": "The Hunt",
+      "year": 2012,
+      "by": "Thomas Vinterberg",
+      "rating": 4
+    },
+    {
+      "title": "21 Jump Street",
+      "year": 2012,
+      "by": "Phil Lord & Christopher Miller",
+      "rating": 3.5
+    },
+    {
+      "title": "Hugo",
+      "year": 2011,
+      "by": "Martin Scorsese",
+      "rating": 3.5
+    },
+    {
+      "title": "Rise of the Planet of the Apes",
+      "year": 2011,
+      "by": "Rupert Wyatt",
+      "rating": 3.5
+    },
+    {
+      "title": "Drive",
+      "year": 2011,
+      "by": "Nicolas Winding Refn",
+      "rating": 3.5
+    },
+    {
+      "title": "The Hangover Part II",
+      "year": 2011,
+      "by": "Todd Phillips",
+      "rating": 3
+    },
+    {
+      "title": "The Social Network",
+      "year": 2010,
+      "by": "David Fincher",
+      "rating": 3.5
+    },
+    {
+      "title": "127 Hours",
+      "year": 2010,
+      "by": "Danny Boyle",
+      "rating": 2.5
+    },
+    {
+      "title": "Inception",
+      "year": 2010,
+      "by": "Christopher Nolan",
+      "rating": 5,
+      "liked": true
+    },
+    {
+      "title": "Zombieland",
+      "year": 2009,
+      "by": "Ruben Fleischer",
+      "rating": 2.5
+    },
+    {
+      "title": "The Hangover",
+      "year": 2009,
+      "by": "Todd Phillips",
+      "rating": 4
+    },
+    {
+      "title": "Coraline",
+      "year": 2009,
+      "by": "Henry Selick",
+      "rating": 4.5,
+      "liked": true
+    },
+    {
+      "title": "(500) Days of Summer",
+      "year": 2009,
+      "by": "Marc Webb",
+      "rating": 4.5,
+      "liked": true
+    },
+    {
+      "title": "The Dark Knight",
+      "year": 2008,
+      "by": "Christopher Nolan",
+      "rating": 3.5
+    },
+    {
+      "title": "The Incredible Hulk",
+      "year": 2008,
+      "by": "Louis Leterrier",
+      "rating": 2
+    },
+    {
+      "title": "I Am Legend",
+      "year": 2007,
+      "by": "Francis Lawrence",
+      "rating": 3.5
+    },
+    {
+      "title": "Zodiac",
+      "year": 2007,
+      "by": "David Fincher",
+      "rating": 3
+    },
+    {
+      "title": "Casino Royale",
+      "year": 2006,
+      "by": "Martin Campbell",
+      "rating": 2.5
+    },
+    {
+      "title": "Charlie and the Chocolate Factory",
+      "year": 2005,
+      "by": "Tim Burton",
+      "rating": 3
+    },
+    {
+      "title": "Memories of Murder",
+      "year": 2003,
+      "by": "Bong Joon Ho",
+      "rating": 4.5
+    },
+    {
+      "title": "Fight Club",
+      "year": 1999,
+      "by": "David Fincher",
+      "rating": 4.5
+    },
+    {
+      "title": "Rush Hour 2",
+      "year": 2001,
+      "by": "Brett Ratner",
+      "rating": 3
+    },
+    {
+      "title": "Titanic",
+      "year": 1997,
+      "by": "James Cameron",
+      "rating": 3
+    },
+    {
+      "title": "Se7en",
+      "year": 1995,
+      "by": "David Fincher",
+      "rating": 3.5
+    },
+    {
+      "title": "A Bronx Tale",
+      "year": 1993,
+      "by": "Robert De Niro",
+      "rating": 3.5
+    },
+    {
+      "title": "Home Alone",
+      "year": 1990,
+      "by": "Chris Columbus",
+      "rating": 3.5
+    },
+    {
+      "title": "Blue Velvet",
+      "year": 1986,
+      "by": "David Lynch",
+      "rating": 2.5
+    },
+    {
+      "title": "Jaws",
+      "year": 1975,
+      "by": "Steven Spielberg",
+      "rating": 2.5
+    },
+    {
+      "title": "12 Angry Men",
+      "year": 1957,
+      "by": "Sidney Lumet",
+      "rating": 5
+    },
+    {
+      "title": "Le Cochon Danseur",
+      "year": 1907,
+      "rating": 3
+    }
+  ],
+  "games": [
+    {
+      "title": "Hollow Knight",
+      "year": 2017,
+      "by": "Team Cherry",
+      "rating": 5,
+      "note": "Atmosphere masterclass.",
+      "now": true
+    },
+    {
+      "title": "Outer Wilds",
+      "year": 2019,
+      "by": "Mobius Digital",
+      "rating": 5
+    },
+    {
+      "title": "Hades",
+      "year": 2020,
+      "by": "Supergiant Games",
+      "rating": 4
+    },
+    {
+      "title": "Celeste",
+      "year": 2018,
+      "by": "Maddy Makes Games",
+      "rating": 4
+    }
+  ],
+  "books": [
+    {
+      "title": "Dune",
+      "year": 1965,
+      "by": "Frank Herbert",
+      "rating": 5,
+      "now": true
+    },
+    {
+      "title": "Project Hail Mary",
+      "year": 2021,
+      "by": "Andy Weir",
+      "rating": 4,
+      "note": "Pure fun, nerdy science."
+    },
+    {
+      "title": "The Pragmatic Programmer",
+      "year": 1999,
+      "by": "Hunt & Thomas",
+      "rating": 4
+    }
+  ],
+  "projects": [
+    {
+      "name": "This Website",
+      "description": "Zero-dependency static site builder with scrambling type and keyboard navigation.",
+      "tags": [
+        "Node",
+        "CSS"
+      ],
+      "status": "2026",
+      "now": true,
+      "repo": "https://github.com/",
+      "image": "assets/code/code-1.svg",
+      "width": 1200,
+      "height": 800
+    },
+    {
+      "name": "Dither Lab",
+      "description": "Turn any image into ordered-dither pixel art in the browser.",
+      "tags": [
+        "JavaScript",
+        "Canvas"
+      ],
+      "status": "concept 2026",
+      "live": "https://example.com/",
+      "image": "assets/code/code-2.svg",
+      "width": 900,
+      "height": 1200
+    },
+    {
+      "name": "Watchlist CLI",
+      "description": "Log movies, games and books with ratings from the terminal.",
+      "tags": [
+        "Python",
+        "SQLite"
+      ],
+      "status": "shipped 2025",
+      "repo": "https://github.com/",
+      "image": "assets/code/code-3.svg",
+      "width": 1200,
+      "height": 900
+    },
+    {
+      "name": "Mood Player",
+      "description": "A music player that picks a playlist from the weather.",
+      "tags": [
+        "React",
+        "API"
+      ],
+      "status": "concept 2025",
+      "image": "assets/code/code-4.svg",
+      "width": 900,
+      "height": 1100
+    },
+    {
+      "name": "Pixel Chat",
+      "description": "Tiny realtime chat room with a retro skin.",
+      "tags": [
+        "WebSocket"
+      ],
+      "status": "archived 2024",
+      "image": "assets/code/code-5.svg",
+      "width": 1200,
+      "height": 760
+    },
+    {
+      "name": "Habit Garden",
+      "description": "Habit tracker where every streak grows a plant.",
+      "tags": [
+        "Flutter"
+      ],
+      "status": "concept 2026",
+      "image": "assets/code/code-6.svg",
+      "width": 900,
+      "height": 1300
+    }
+  ],
+  "designs": [
+    {
+      "title": "Blue Hour",
+      "image": "assets/designs/art-1.svg",
+      "width": 1200,
+      "height": 1500,
+      "tools": "Photoshop",
+      "year": 2026,
+      "note": "Poster study in cold light."
+    },
+    {
+      "title": "Soft Machine",
+      "image": "assets/designs/art-2.svg",
+      "width": 1200,
+      "height": 1500,
+      "tools": "Photoshop",
+      "year": 2026,
+      "note": "Photo manipulation, 40+ layers."
+    },
+    {
+      "title": "Signal",
+      "image": "assets/designs/art-3.svg",
+      "width": 1200,
+      "height": 900,
+      "tools": "Photoshop · Blender",
+      "year": 2025
+    },
+    {
+      "title": "Pastel Static",
+      "image": "assets/designs/art-4.svg",
+      "width": 1200,
+      "height": 900,
+      "tools": "Photoshop",
+      "year": 2025
+    }
+  ]
+}

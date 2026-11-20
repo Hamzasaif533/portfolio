@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.github.com; base-uri 'none'; form-action 'none'">
+<title>Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Firjar:wght@400;600&display=swap">
+<style>
+:root { --bg: #000; --fg: #f2f2f2; --mute: #8b8b8b; --dim: #555; --line: #1f1f1f; --chip: #141414; --chip-line: rgba(255,255,255,.08); --mono: "Geist Mono", Firjar, ui-monospace, Consolas, monospace; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--bg); }
+body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono); min-height: 100vh; display: grid; grid-template-columns: 210px 1fr; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
+
+nav { position: sticky; top: 0; height: 100vh; padding: 22px 16px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.brand { padding: 0 10px 18px; color: var(--mute); }
+.brand b { color: var(--fg); font-weight: 500; }
+nav button { text-align: left; padding: 7px 10px; border: 0; border-radius: 8px; background: none; color: var(--mute); cursor: pointer; display: flex; justify-content: space-between; gap: 10px; white-space: nowrap; }
+nav button span { color: var(--dim); font-size: 12px; }
+nav button[aria-current] { background: var(--chip); color: var(--fg); }
+nav .sep { height: 1px; background: var(--line); margin: 10px 4px; flex: none; }
+nav .foot { margin-top: auto; padding: 0 10px; font-size: 12px; color: var(--dim); display: grid; gap: 8px; }
+nav .foot a, nav .foot button { color: var(--mute); padding: 0; }
+
+main { padding: 22px 32px 120px; max-width: 1000px; width: 100%; min-width: 0; }
+.bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 0 14px; margin-bottom: 8px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.bar h1 { font-size: 16px; font-weight: 500; flex: 1; min-width: 8em; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--chip-line); background: var(--chip); cursor: pointer; white-space: nowrap; text-decoration: none; }
+.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn.primary:disabled { background: var(--chip); color: var(--dim); border-color: var(--chip-line); cursor: default; }
+.btn.danger { color: #ff8a8a; }
+.btn.small { min-height: 30px; padding: 3px 12px; font-size: 12px; }
+.status { font-size: 12px; color: var(--mute); }
+
+.tools { display: flex; gap: 10px; align-items: center; margin: 14px 0 10px; }
+.tools input[type=search] { flex: 1; }
+input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea {
+  width: 100%; padding: 8px 10px; background: #0b0b0b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: #444; }
+textarea { min-height: 90px; resize: vertical; line-height: 1.7; }
+textarea.body { min-height: 60vh; font-size: 15px; }
+
+.items { display: grid; gap: 6px; }
+.item { border: 1px solid var(--line); border-radius: 10px; background: #050505; }
+.item > header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 10px 8px 14px; cursor: pointer; }
+.item > header .sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item > header .sum small { color: var(--mute); margin-left: 10px; }
+.item > header .acts { display: flex; gap: 2px; }
+.icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); cursor: pointer; }
+.icon:focus-visible { border-color: var(--fg); }
+.icon.del { color: #ff8a8a; }
+.item .form { display: none; padding: 4px 14px 14px; }
+.item.open .form { display: grid; }
+.item.open > header { border-bottom: 1px solid var(--line); }
+.form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; padding-top: 12px !important; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field > span { font-size: 12px; color: var(--mute); }
+.check { display: flex; gap: 8px; align-items: center; padding-top: 22px; }
+.check input { width: 18px; height: 18px; accent-color: #fff; }
+.media { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
+.thumb { width: 96px; height: 60px; border-radius: 6px; background: #0b0b0b center / cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--dim); }
+.media .row { display: flex; flex-wrap: wrap; gap: 6px; }
+.media .row input { flex: 1 1 160px; }
+.panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.empty { color: var(--dim); padding: 20px 0; }
+.toast { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); max-width: calc(100% - 36px); padding: 10px 16px; border-radius: 10px; background: var(--chip); border: 1px solid var(--chip-line); opacity: 0; transform: translateY(8px); transition: .2s; pointer-events: none; z-index: 20; }
+.toast.on { opacity: 1; transform: none; }
+.toast.err { color: #ff8a8a; }
+
+.login { grid-column: 1 / -1; width: min(460px, 100% - 32px); margin: 12vh auto; display: grid; gap: 14px; }
+.login h1 { font-size: 18px; font-weight: 500; }
+.login p { color: var(--mute); font-size: 13px; }
+.login .note { color: var(--dim); font-size: 12px; }
+
+/* phones */
+@media (max-width: 760px) {
+  body { display: block; }
+  nav { position: static; height: auto; flex-direction: row; overflow-x: auto; scrollbar-width: none; padding: calc(10px + env(safe-area-inset-top)) 12px 10px; border-right: 0; border-bottom: 1px solid var(--line); gap: 4px; }
+  nav .brand, nav .foot { display: none; }
+  nav .sep { width: 1px; height: auto; margin: 4px 2px; }
+  nav button { padding: 9px 12px; }
+  main { padding: 6px 14px calc(90px + env(safe-area-inset-bottom)); }
+  .form, .panel { grid-template-columns: 1fr; }
+  .check { padding-top: 4px; }
+  /* 16px stops iPhone from zooming into fields */
+  input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea { font-size: 16px; padding: 10px 12px; }
+  .item > header { padding: 6px 6px 6px 12px; }
+  .item > header .sum small { display: block; margin: 0; }
+  .icon { width: 38px; height: 38px; }
+  .mobile-foot { display: grid !important; }
+}
+.mobile-foot { display: none; gap: 8px; margin-top: 40px; font-size: 12px; color: var(--dim); }
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="Sections"></nav>
+<main id="main"></main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* The local dev server replaces this with a secret key. On the live site it stays
+   as-is, which switches the editor to GitHub mode (needs your personal access token). */
+const TOKEN = "__ADMIN_TOKEN__";
+const LOCAL = !TOKEN.startsWith("__");
+
+const $ = (s, el = document) => el.querySelector(s);
+const h = (tag, attrs = {}, ...kids) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, "");
+    else if (v !== false && v != null) el.setAttribute(k, v);
+  }
+  kids.flat().forEach(c => c != null && el.append(c.nodeType ? c : document.createTextNode(c)));
+  return el;
+};
+function toast(msg, err) {
+  const t = $("#toast");
+  t.textContent = msg; t.className = "toast on" + (err ? " err" : "");
+  clearTimeout(t._t); t._t = setTimeout(() => (t.className = "toast"), err ? 5000 : 2600);
+}
+const stars = r => r ? "★".repeat(Math.floor(r)) + (r % 1 ? "½" : "") : "";
+const SLUG = /^[a-z0-9][a-z0-9-]{0,80}$/;
+const slugify = s => String(s).toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/[\s_]+/g, "-").replace(/-+/g, "-");
+
+/* ---------- posts: front matter <-> fields (same rules as build.js) ---------- */
+function parsePost(slug, raw) {
+  raw = raw.replace(/^﻿/, "").replace(/\r\n/g, "\n");
+  const m = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+  const meta = {};
+  if (m) m[1].split("\n").forEach(l => { const kv = l.match(/^(\w+)\s*:\s*(.*)$/); if (kv) meta[kv[1]] = kv[2].trim().replace(/^["']|["']$/g, ""); });
+  return { slug, meta, body: (m ? m[2] : raw).replace(/^\n+/, "") };
+}
+function serializePost(meta, body) {
+  const fm = ["title", "date", "summary", "lang", "draft"].filter(k => meta[k] && meta[k] !== "false").map(k => `${k}: ${String(meta[k]).replace(/\n/g, " ")}`).join("\n");
+  return `---\n${fm}\n---\n\n${String(body || "").replace(/\r\n/g, "\n").trim()}\n`;
+}
+
+/* ---------- storage: local dev server, or GitHub ---------- */
+const objectUrls = {}; // previews for files uploaded this session (before the site rebuilds)
+const thumbUrl = p => objectUrls[p] || "/" + p;
+
+async function localApi(path, opts = {}) {
+  const res = await fetch(path, { ...opts, headers: { "X-Admin-Token": TOKEN, ...(opts.body && !(opts.body instanceof Blob) ? { "Content-Type": "application/json" } : {}) } });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+const LocalStore = {
+  savedMsg: "Saved · site rebuilt",
+  getSite: () => localApi("/api/site"),
+  putSite: data => localApi("/api/site", { method: "PUT", body: JSON.stringify(data) }),
+  listPosts: () => localApi("/api/posts"),
+  getPost: slug => localApi(`/api/post?slug=${slug}`),
+  putPost: (old, newSlug, meta, body) => localApi(`/api/post?slug=${old || newSlug}`, { method: "PUT", body: JSON.stringify({ meta, body, newSlug, isNew: !old }) }).then(r => r.slug),
+  deletePost: slug => localApi(`/api/post?slug=${slug}`, { method: "DELETE" }),
+  upload: async (file, folder) => {
+    const r = await localApi(`/api/upload?folder=${folder}&name=${encodeURIComponent(file.name)}`, { method: "POST", body: file });
+    objectUrls[r.path] = URL.createObjectURL(file);
+    return r.path;
+  },
+};
+
+/* GitHub: every save is a commit, so git history is your backup. */
+const CFG_KEY = "editor-github";
+let gh = null; // { repo, branch, token }
+const shas = {}; // file path -> current sha (needed to update/delete)
+const textToB64 = text => { const bytes = new TextEncoder().encode(text); let bin = ""; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000)); return btoa(bin); };
+const b64ToText = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, "")), c => c.charCodeAt(0)));
+const fileToB64 = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(file); });
+const encPath = p => p.split("/").map(encodeURIComponent).join("/");
+
+async function ghReq(path, opts = {}, allow404) {
+  const res = await fetch(`https://api.github.com/repos/${gh.repo}${path}`, {
+    ...opts,
+    cache: "no-store",
+    headers: { Authorization: `Bearer ${gh.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", ...(opts.body ? { "Content-Type": "application/json" } : {}) },
+  });
+  if (res.status === 404 && allow404) return null;
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    if (res.status === 401) throw new Error("GitHub didn't accept this token. Check it hasn't expired, then sign in again.");
+    if (res.status === 404 && !path) throw new Error("Repository not found, or the token can't see it. Check the name and the token's repository access.");
+    if (res.status === 409 || (res.status === 422 && /sha/i.test(data.message || ""))) throw new Error("This was changed somewhere else. Reload the editor and try again.");
+    throw new Error(data.message || `GitHub error ${res.status}`);
+  }
+  return data;
+}
+const ghGet = async (p, allow404) => { const r = await ghReq(`/contents/${encPath(p)}?ref=${encodeURIComponent(gh.branch)}`, {}, allow404); if (!r) return null; shas[p] = r.sha; return { sha: r.sha, text: r.content ? b64ToText(r.content) : "" }; };
+const ghPut = async (p, b64, message) => { const r = await ghReq(`/contents/${encPath(p)}`, { method: "PUT", body: JSON.stringify({ message, content: b64, branch: gh.branch, ...(shas[p] ? { sha: shas[p] } : {}) }) }); shas[p] = r.content.sha; return r; };
+const ghDel = async (p, message) => { if (!shas[p]) await ghGet(p); await ghReq(`/contents/${encPath(p)}`, { method: "DELETE", body: JSON.stringify({ message, sha: shas[p], branch: gh.branch }) }); delete shas[p]; };
+
+const GitHubStore = {
+  savedMsg: "Saved · the site updates in about a minute",
+  getSite: async () => JSON.parse((await ghGet("content/site.json")).text),
+  putSite: data => ghPut("content/site.json", textToB64(JSON.stringify(data, null, 2) + "\n"), "Update content"),
+  listPosts: async () => {
+    const files = ((await ghReq(`/contents/content/posts?ref=${encodeURIComponent(gh.branch)}`, {}, true)) || []).filter(f => f.name.endsWith(".md"));
+    const posts = await Promise.all(files.map(async f => {
+      const { meta } = parsePost(f.name.slice(0, -3), (await ghGet(f.path)).text);
+      return { slug: f.name.slice(0, -3), title: meta.title || f.name, date: meta.date || "", lang: meta.lang || "", draft: meta.draft === "true" };
+    }));
+    return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  },
+  getPost: async slug => parsePost(slug, (await ghGet(`content/posts/${slug}.md`)).text),
+  putPost: async (old, newSlug, meta, body) => {
+    const target = newSlug || old;
+    if (!SLUG.test(target)) throw new Error("Slug can only use a-z, 0-9 and -");
+    const path = `content/posts/${target}.md`;
+    if (!old || target !== old) { // new post or renamed: never overwrite another post
+      if (await ghGet(path, true)) throw new Error("A post with that slug already exists");
+      delete shas[path];
+    }
+    await ghPut(path, textToB64(serializePost(meta, body)), `${old && target === old ? "Update" : "Add"} post: ${meta.title}`);
+    if (old && target !== old) await ghDel(`content/posts/${old}.md`, `Rename post ${old} -> ${target}`);
+    return target;
+  },
+  deletePost: slug => ghDel(`content/posts/${slug}.md`, `Delete post: ${slug}`),
+  upload: async (file, folder) => {
+    if (file.size > 50 * 1024 * 1024) throw new Error("That file is over 50 MB. Please compress it first.");
+    const dot = file.name.lastIndexOf("."), ext = dot > 0 ? file.name.slice(dot).toLowerCase() : "";
+    if (!/^\.(jpe?g|png|webp|avif|gif|svg|mp4|webm|mov)$/.test(ext)) throw new Error("Unsupported file type");
+    const base = slugify(file.name.slice(0, dot)) || "file";
+    let name = base + ext, n = 2;
+    while (await ghReq(`/contents/${encPath(`assets/${folder}/${name}`)}?ref=${encodeURIComponent(gh.branch)}`, {}, true)) name = `${base}-${n++}${ext}`;
+    const path = `assets/${folder}/${name}`;
+    await ghPut(path, await fileToB64(file), `Upload ${name}`);
+    objectUrls[path] = URL.createObjectURL(file);
+    return path;
+  },
+};
+const store = LOCAL ? LocalStore : GitHubStore;
+
+async function upload(file, folder) {
+  toast(`Uploading ${file.name}…`);
+  const p = await store.upload(file, folder);
+  toast("Uploaded");
+  return p;
+}
+
+/* ---------- what each list looks like ---------- */
+const RATING = { key: "rating", type: "rating", label: "Rating" };
+const SHELF = [
+  { key: "title", label: "Title", wide: true }, { key: "year", type: "number", label: "Year" }, { key: "by", label: "By (director / author / studio)" },
+  RATING, { key: "liked", type: "check", label: "♥ Liked" }, { key: "now", type: "check", label: "Now (show on home)" },
+  { key: "note", label: "Note", wide: true },
+];
+const LISTS = {
+  movies: { label: "Movies", path: ["movies"], sum: it => [it.title, `${it.year || ""} ${stars(it.rating)}${it.liked ? " ♥" : ""}${it.frame ? " · frame" : ""}`],
+    fields: [...SHELF, { key: "watched", type: "date", label: "Watched on (groups the film diary by year)" }, { key: "frame", type: "media", folder: "frames", label: "Frame (film diary)", wide: true }] },
+  books: { label: "Books", path: ["books"], sum: it => [it.title, `${it.year || ""} ${stars(it.rating)}${it.liked ? " ♥" : ""}`], fields: SHELF },
+  games: { label: "Games", path: ["games"], sum: it => [it.title, `${it.year || ""} ${stars(it.rating)}${it.liked ? " ♥" : ""}`], fields: SHELF },
+  projects: { label: "Code", path: ["projects"], sum: it => [it.name, (it.tags || []).join(" · ")],
+    fields: [{ key: "name", label: "Name" }, { key: "status", label: "Status (e.g. shipped 2026)" }, { key: "description", type: "textarea", label: "Description", wide: true },
+      { key: "tags", type: "tags", label: "Tags (comma separated)", wide: true }, { key: "repo", type: "url", label: "Code link" }, { key: "live", type: "url", label: "Live link" },
+      { key: "now", type: "check", label: "Now (show on home)" }, { key: "image", type: "media", folder: "code", label: "Screenshot or video", wide: true }] },
+  designs: { label: "Design", path: ["designs"], sum: it => [it.title, [it.tools, it.year].filter(Boolean).join(" · ")],
+    fields: [{ key: "title", label: "Title" }, { key: "tools", label: "Tools" }, { key: "year", type: "number", label: "Year" }, { key: "note", label: "Note" },
+      { key: "image", type: "media", folder: "designs", label: "Image", wide: true }] },
+  qa: { label: "Q&A", path: ["about", "qa"], sum: it => [it.q, ""], fields: [{ key: "q", label: "Question", wide: true }, { key: "a", type: "paras", label: "Answer (blank line = new paragraph)", wide: true }] },
+  experience: { label: "Work", path: ["about", "experience"], sum: it => [it.org, (it.roles || []).map(r => r.title).join(", ")],
+    fields: [{ key: "org", label: "Company / place" }, { key: "url", type: "url", label: "Link" }, { key: "roles", type: "roles", label: "Roles: one per line as  Title | dates", wide: true }] },
+  socials: { label: "Links", path: ["socials"], sum: it => [it.label, it.url],
+    fields: [{ key: "label", label: "Label" }, { key: "icon", type: "select", options: ["github", "code", "film", "game", "book", "palette", "instagram", "x", "linkedin", "mail", "link"], label: "Icon" }, { key: "url", type: "url", label: "URL (mailto: for email)", wide: true }] },
+};
+const PROFILE = [
+  { path: ["name"], label: "Name" }, { path: ["initial"], label: "Initial (favicon)" },
+  { path: ["description"], label: "Site description (search engines)", wide: true },
+  { path: ["status", "lead"], label: "Home · first line" }, { path: ["status", "big"], label: "Home · grey capitals" },
+  { path: ["status", "tail"], label: "Home · last line" }, { path: ["status", "note"], label: "Home · small note (empty = latest post)" },
+  { path: ["about", "bio"], type: "paras", label: "About · bio (blank line = new paragraph)", wide: true },
+  { path: ["about", "signoff"], label: "About · sign-off" }, { path: ["about", "avatar"], type: "media", folder: "me", label: "About · photo" },
+];
+
+/* ---------- state ---------- */
+let site = null, dirty = false, section = "profile";
+const getPath = (obj, p) => p.reduce((o, k) => (o == null ? o : o[k]), obj);
+const setPath = (obj, p, v) => { let o = obj; p.slice(0, -1).forEach(k => (o = o[k] ??= {})); if (v === undefined || v === "" || v === false) delete o[p.at(-1)]; else o[p.at(-1)] = v; };
+const listOf = def => { let arr = getPath(site, def.path); if (!Array.isArray(arr)) { arr = []; setPath(site, def.path, arr); } return arr; };
+function markDirty() { dirty = true; $("#save") && ($("#save").disabled = false); $("#saveState") && ($("#saveState").textContent = "unsaved"); }
+addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- one input, any type ---------- */
+function input(def, value, onChange) {
+  const wrap = h("label", { class: "field" + (def.wide ? " wide" : "") }, h("span", {}, def.label));
+  const set = v => { onChange(v); markDirty(); };
+  if (def.type === "check") {
+    return h("label", { class: "check" }, h("input", { type: "checkbox", checked: !!value, onchange: e => set(e.target.checked || undefined) }), def.label);
+  }
+  if (def.type === "rating") {
+    wrap.append(h("select", { onchange: e => set(e.target.value ? Number(e.target.value) : undefined) }, h("option", { value: "" }, "—"),
+      [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map(r => h("option", { value: r, selected: Number(value) === r }, `${stars(r)}  ${r}`))));
+    return wrap;
+  }
+  if (def.type === "select") {
+    wrap.append(h("select", { onchange: e => set(e.target.value || undefined) }, def.options.map(o => h("option", { value: o, selected: value === o }, o)))); return wrap;
+  }
+  if (def.type === "media") {
+    const isVid = v => /\.(mp4|webm|mov)$/i.test(v || "");
+    const thumb = h("div", { class: "thumb" });
+    const path = h("input", { type: "text", value: value || "", placeholder: "assets/…", dir: "ltr" });
+    const show = v => { thumb.style.backgroundImage = v && !isVid(v) ? `url("${thumbUrl(v)}")` : ""; thumb.textContent = isVid(v) ? "video" : ""; };
+    path.addEventListener("input", () => { set(path.value.trim() || undefined); show(path.value.trim()); });
+    const file = h("input", { type: "file", accept: "image/*,video/*", hidden: true, onchange: async e => {
+      const f = e.target.files[0]; if (!f) return;
+      try { const p = await upload(f, def.folder); path.value = p; set(p); show(p); } catch (err) { toast(err.message, true); }
+      e.target.value = "";
+    } });
+    show(value);
+    wrap.append(h("div", { class: "media" }, thumb, h("div", {}, h("div", { class: "row" }, path,
+      h("button", { type: "button", class: "btn small", onclick: () => file.click() }, "Upload"),
+      h("button", { type: "button", class: "btn small", onclick: () => { path.value = ""; set(undefined); show(""); } }, "Remove")), file)));
+    return wrap;
+  }
+  if (def.type === "textarea" || def.type === "paras" || def.type === "roles") {
+    const txt = def.type === "paras" ? (Array.isArray(value) ? value.join("\n\n") : value || "")
+      : def.type === "roles" ? (value || []).map(r => `${r.title || ""} | ${r.dates || ""}`).join("\n") : value || "";
+    wrap.append(h("textarea", { dir: "auto", oninput: e => {
+      const v = e.target.value;
+      if (def.type === "paras") { const parts = v.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); set(parts.length > 1 ? parts : parts[0]); }
+      else if (def.type === "roles") set(v.split("\n").map(l => l.trim()).filter(Boolean).map(l => { const [title, dates = ""] = l.split("|").map(s => s.trim()); return { title, dates }; }));
+      else set(v || undefined);
+    } }, txt));
+    return wrap;
+  }
+  wrap.append(h("input", { type: def.type === "number" ? "number" : def.type === "url" ? "url" : def.type === "date" ? "date" : "text", dir: "auto",
+    inputmode: def.type === "number" ? "numeric" : null,
+    value: def.type === "tags" ? (value || []).join(", ") : value ?? "",
+    oninput: e => {
+      const v = e.target.value;
+      if (def.type === "number") set(v === "" ? undefined : Number(v));
+      else if (def.type === "tags") set(v.split(",").map(s => s.trim()).filter(Boolean));
+      else set(v || undefined);
+    } }));
+  return wrap;
+}
+
+/* ---------- views ---------- */
+const viewSite = () => h("a", { class: "btn", href: "/", target: "_blank", rel: "noopener" }, "Site ↗");
+function header(title) {
+  return h("div", { class: "bar" }, h("h1", {}, title), h("span", { class: "status", id: "saveState" }, dirty ? "unsaved" : ""), viewSite(),
+    h("button", { class: "btn primary", id: "save", disabled: !dirty, onclick: saveSite }, "Save"));
+}
+const mobileFoot = () => h("div", { class: "mobile-foot" }, footText());
+
+function viewProfile() {
+  const main = $("#main"); main.textContent = "";
+  main.append(header("Profile & home"), h("div", { class: "panel" }, PROFILE.map(f => input(f, getPath(site, f.path), v => setPath(site, f.path, v)))), mobileFoot());
+}
+
+function viewList(id) {
+  const def = LISTS[id], items = listOf(def), main = $("#main");
+  main.textContent = "";
+  const search = h("input", { type: "search", placeholder: `Search ${def.label.toLowerCase()}…`, oninput: () => draw() });
+  const box = h("div", { class: "items" });
+  main.append(header(`${def.label} (${items.length})`), h("div", { class: "tools" }, search,
+    h("button", { class: "btn", onclick: () => { items.unshift({}); markDirty(); draw(0); } }, "+ Add")), box, mobileFoot());
+
+  function draw(openIndex) {
+    const q = search.value.trim().toLowerCase();
+    box.textContent = "";
+    items.forEach((it, i) => {
+      const [title, sub] = def.sum(it);
+      if (q && !JSON.stringify(it).toLowerCase().includes(q)) return;
+      const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; })));
+      const card = h("article", { class: "item" + (i === openIndex ? " open" : "") },
+        h("header", { onclick: e => { if (!e.target.closest("button")) { card.classList.toggle("open"); if (!card.classList.contains("open")) draw(); } } },
+          h("div", { class: "sum", dir: "auto" }, title || h("i", {}, "untitled"), h("small", {}, sub || "")),
+          h("div", { class: "acts" },
+            h("button", { class: "icon", title: "Move up", "aria-label": "Move up", onclick: () => { if (i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; markDirty(); draw(i - 1); } } }, "↑"),
+            h("button", { class: "icon", title: "Move down", "aria-label": "Move down", onclick: () => { if (i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; markDirty(); draw(i + 1); } } }, "↓"),
+            h("button", { class: "icon del", title: "Delete", "aria-label": "Delete", onclick: () => { if (confirm(`Delete "${title || "this item"}"?`)) { items.splice(i, 1); markDirty(); draw(); } } }, "✕"))),
+        form);
+      box.append(card);
+    });
+    if (!box.children.length) box.append(h("p", { class: "empty" }, q ? "No matches." : "Nothing here yet. Press + Add."));
+  }
+  draw();
+}
+
+async function viewPosts() {
+  const main = $("#main"); main.textContent = "";
+  main.append(h("div", { class: "bar" }, h("h1", {}, "Writing"), h("span", { class: "status" }, "loading…")));
+  let posts;
+  try { posts = await store.listPosts(); } catch (err) { toast(err.message, true); posts = []; }
+  main.textContent = "";
+  main.append(h("div", { class: "bar" }, h("h1", {}, `Writing (${posts.length})`), viewSite(),
+    h("button", { class: "btn primary", onclick: () => editPost(null) }, "+ New post")));
+  const box = h("div", { class: "items" });
+  posts.forEach(p => box.append(h("article", { class: "item" }, h("header", { onclick: () => editPost(p.slug) },
+    h("div", { class: "sum", dir: "auto" }, p.title, h("small", {}, `${p.date} ${p.lang === "ar" ? "· عربي" : ""}${p.draft ? " · draft" : ""}`)), h("span", { class: "status" }, "edit →")))));
+  if (!posts.length) box.append(h("p", { class: "empty" }, "No posts yet."));
+  main.append(box, mobileFoot());
+}
+
+async function editPost(slug) {
+  const main = $("#main"); main.textContent = "";
+  const today = new Date().toISOString().slice(0, 10);
+  let post;
+  try { post = slug ? await store.getPost(slug) : { slug: "", meta: { date: today }, body: "" }; } catch (err) { toast(err.message, true); return viewPosts(); }
+  const m = post.meta;
+  const f = {
+    title: h("input", { type: "text", value: m.title || "", dir: "auto" }),
+    slug: h("input", { type: "text", value: post.slug, placeholder: "my-post-url", dir: "ltr", autocapitalize: "off", autocorrect: "off" }),
+    date: h("input", { type: "date", value: m.date || today }),
+    summary: h("input", { type: "text", value: m.summary || "", dir: "auto" }),
+    lang: h("select", {}, [["", "auto-detect"], ["en", "English"], ["ar", "عربي"]].map(([v, t]) => h("option", { value: v, selected: (m.lang || "") === v }, t))),
+    draft: h("input", { type: "checkbox", checked: m.draft === "true" }),
+    body: h("textarea", { class: "body", dir: "auto", spellcheck: "true" }, post.body),
+  };
+  let changed = false;
+  Object.values(f).forEach(el => el.addEventListener("input", () => (changed = true)));
+  f.title.addEventListener("input", () => { if (!slug && !f.slug.dataset.touched) f.slug.value = slugify(f.title.value).slice(0, 60) || `post-${f.date.value}`; });
+  f.slug.addEventListener("input", () => (f.slug.dataset.touched = 1));
+  const fileIn = h("input", { type: "file", accept: "image/*,video/*", multiple: true, hidden: true, onchange: async e => {
+    for (const file of e.target.files) {
+      try {
+        const p = await upload(file, "posts");
+        const at = f.body.selectionStart, txt = f.body.value;
+        const ins = `${at && txt[at - 1] !== "\n" ? "\n" : ""}![](${p})\n`;
+        f.body.value = txt.slice(0, at) + ins + txt.slice(at);
+        f.body.selectionStart = f.body.selectionEnd = at + ins.length;
+        changed = true;
+      } catch (err) { toast(err.message, true); }
+    }
+    e.target.value = "";
+  } });
+
+  let saving = false;
+  async function save() {
+    if (saving) return;
+    const newSlug = f.slug.value.trim() || `post-${f.date.value}`;
+    const meta = { title: f.title.value.trim(), date: f.date.value, summary: f.summary.value.trim(), lang: f.lang.value, draft: f.draft.checked ? "true" : "" };
+    if (!meta.title) return toast("Add a title first", true);
+    saving = true; saveBtn.disabled = true;
+    try {
+      slug = await store.putPost(slug, newSlug, meta, f.body.value);
+      changed = false; toast(store.savedMsg);
+      open.href = `/writing/${slug}.html`;
+      del.hidden = false;
+    } catch (err) { toast(err.message, true); }
+    saving = false; saveBtn.disabled = false;
+  }
+  const open = h("a", { class: "btn", href: slug ? `/writing/${slug}.html` : "/writing/index.html", target: "_blank", rel: "noopener" }, "View ↗");
+  const del = h("button", { class: "btn danger", hidden: !slug, onclick: async () => {
+    if (!confirm(LOCAL ? "Delete this post? (it goes to content/.trash)" : "Delete this post? (it stays in your GitHub history)")) return;
+    try { await store.deletePost(slug); toast("Deleted"); changed = false; viewPosts(); } catch (err) { toast(err.message, true); }
+  } }, "Delete");
+  const saveBtn = h("button", { class: "btn primary", onclick: save }, "Save");
+  main.append(
+    h("div", { class: "bar" }, h("button", { class: "btn", onclick: () => { if (!changed || confirm("Leave without saving?")) viewPosts(); } }, "← Posts"),
+      h("h1", {}, slug ? "Edit post" : "New post"), open, del, saveBtn),
+    h("div", { class: "panel" },
+      h("label", { class: "field wide" }, h("span", {}, "Title"), f.title),
+      h("label", { class: "field" }, h("span", {}, "URL slug (a-z, 0-9, -)"), f.slug),
+      h("label", { class: "field" }, h("span", {}, "Date"), f.date),
+      h("label", { class: "field wide" }, h("span", {}, "Summary"), f.summary),
+      h("label", { class: "field" }, h("span", {}, "Language"), f.lang),
+      h("label", { class: "check" }, f.draft, "Draft (hidden from the site)"),
+      h("div", { class: "field wide" }, h("span", {}, "Text · Markdown: ## heading, **bold**, *italic*, - list, > quote, [link](url). Images/videos on their own line; 2–3 in a row make a gallery."),
+        h("div", { class: "tools" }, h("button", { type: "button", class: "btn small", onclick: () => fileIn.click() }, "+ Insert image / video"), fileIn), f.body)));
+  main.onkeydown = e => { if ((e.ctrlKey || e.metaKey) && e.key === "s") { e.preventDefault(); save(); } };
+  if (!matchMedia("(pointer: coarse)").matches) (slug ? f.body : f.title).focus();
+}
+
+async function saveSite() {
+  const btn = $("#save");
+  try {
+    btn.disabled = true; $("#saveState").textContent = "saving…";
+    await store.putSite(site);
+    dirty = false; $("#saveState").textContent = "saved"; toast(store.savedMsg);
+  } catch (err) { btn.disabled = false; $("#saveState").textContent = "unsaved"; toast(err.message, true); }
+}
+addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "s" && section !== "posts") { e.preventDefault(); if (dirty) saveSite(); } });
+
+/* ---------- navigation ---------- */
+function footText() {
+  return LOCAL
+    ? ["Editing on this computer. Saving rebuilds the site instantly. Backups: content/.backup"]
+    : [h("span", {}, `Connected to ${gh.repo}. Saving commits to GitHub; the site updates in about a minute.`), h("button", { class: "btn small", onclick: signOut }, "Sign out of this device")];
+}
+const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
+function drawNav() {
+  const nav = $("#nav"); nav.textContent = "";
+  nav.append(h("div", { class: "brand" }, h("b", {}, site.name), " · editor"));
+  SECTIONS.forEach(s => {
+    if (s === "-") return nav.append(h("div", { class: "sep" }));
+    const [id, label] = s, def = LISTS[id];
+    nav.append(h("button", { "aria-current": section === id ? "page" : false, onclick: () => go(id) }, label || def.label, def ? h("span", {}, listOf(def).length) : ""));
+  });
+  nav.append(h("div", { class: "foot" }, footText()));
+  const cur = $("nav button[aria-current]");
+  if (cur) cur.scrollIntoView({ block: "nearest", inline: "center" });
+}
+function go(id) {
+  if (section === "posts" && id !== "posts" && $("#main textarea.body") && !confirm("Leave this post? Unsaved text will be lost.")) return;
+  section = id; history.replaceState(null, "", "#" + id); drawNav();
+  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else viewList(id);
+}
+const valid = id => id === "profile" || id === "posts" || !!LISTS[id];
+addEventListener("hashchange", () => { const id = location.hash.slice(1); if (site && valid(id) && id !== section) go(id); });
+
+/* ---------- GitHub sign-in (only on the live site) ---------- */
+function loadCfg() {
+  for (const s of [sessionStorage, localStorage]) { try { const c = JSON.parse(s.getItem(CFG_KEY) || "null"); if (c && c.token) return c; } catch (_) {} }
+  return null;
+}
+function signOut() {
+  if (dirty && !confirm("You have unsaved changes. Sign out anyway?")) return;
+  try { localStorage.removeItem(CFG_KEY); sessionStorage.removeItem(CFG_KEY); } catch (_) {}
+  dirty = false; location.reload();
+}
+function showLogin(msg) {
+  document.body.textContent = "";
+  let last = {};
+  try { last = JSON.parse(localStorage.getItem(CFG_KEY + "-repo") || "{}"); } catch (_) {}
+  const repo = h("input", { type: "text", placeholder: "your-username/my-website", value: last.repo || "", autocapitalize: "off", autocorrect: "off", spellcheck: "false" });
+  const branch = h("input", { type: "text", value: last.branch || "main", autocapitalize: "off", autocorrect: "off" });
+  const token = h("input", { type: "password", placeholder: "github_pat_…", autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
+  const remember = h("input", { type: "checkbox", checked: true });
+  const btn = h("button", { class: "btn primary", type: "button" }, "Connect");
+  const err = h("p", { class: "note", style: "color:#ff8a8a" }, msg || "");
+  btn.onclick = async () => {
+    const cfg = { repo: repo.value.trim().replace(/^https:\/\/github\.com\//, "").replace(/\.git$|\/$/g, ""), branch: branch.value.trim() || "main", token: token.value.trim() };
+    if (!/^[\w.-]+\/[\w.-]+$/.test(cfg.repo) || !cfg.token) { err.textContent = "Fill in the repository (owner/name) and your token."; return; }
+    btn.disabled = true; err.textContent = "";
+    gh = cfg;
+    try {
+      const info = await ghReq("");
+      if (!info.permissions || !info.permissions.push) throw new Error("This token can read the repository but not write to it. Give it Contents: Read and write.");
+      try {
+        localStorage.setItem(CFG_KEY + "-repo", JSON.stringify({ repo: cfg.repo, branch: cfg.branch }));
+        (remember.checked ? localStorage : sessionStorage).setItem(CFG_KEY, JSON.stringify(cfg));
+      } catch (_) {}
+      start();
+    } catch (e) { gh = null; err.textContent = e.message; btn.disabled = false; }
+  };
+  token.addEventListener("keydown", e => { if (e.key === "Enter") btn.click(); });
+  document.body.append(h("div", { class: "login" },
+    h("h1", {}, "Editor"),
+    h("p", {}, "Connect to the GitHub repository that holds your site. Only someone with your token can make changes."),
+    h("label", { class: "field" }, h("span", {}, "Repository"), repo),
+    h("label", { class: "field" }, h("span", {}, "Branch"), branch),
+    h("label", { class: "field" }, h("span", {}, "Fine-grained personal access token (Contents: read & write, this repository only)"), token),
+    h("label", { class: "check", style: "padding-top:0" }, remember, "Remember on this device"),
+    btn, err,
+    h("p", { class: "note" }, "Your token is stored only in this browser and is sent only to api.github.com.")));
+  (last.repo ? token : repo).focus();
+}
+
+async function start() {
+  document.body.textContent = "";
+  document.body.append(h("nav", { id: "nav", "aria-label": "Sections" }), h("main", { id: "main" }), h("div", { class: "toast", id: "toast", role: "status" }));
+  try { site = await store.getSite(); }
+  catch (e) {
+    if (!LOCAL) return showLogin(e.message);
+    document.body.textContent = "Could not load content: " + e.message; return;
+  }
+  const first = location.hash.slice(1);
+  go(valid(first) ? first : "profile");
+}
+
+if (LOCAL) start();
+else { gh = loadCfg(); if (gh) start(); else showLogin(); }
+</script>
+</body>
+</html>

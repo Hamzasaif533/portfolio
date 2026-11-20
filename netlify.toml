@@ -1,0 +1,7 @@
+# Netlify reads this automatically. (On Cloudflare Pages, use the same build command and output folder.)
+[build]
+  command = "node build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

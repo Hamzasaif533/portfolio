@@ -195,7 +195,8 @@
       "year": 2024,
       "by": "Denis Villeneuve",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/dune-part-two-wauiyivxpd.jpg"
     },
     {
       "title": "Oppenheimer",
@@ -343,7 +344,8 @@
       "year": 2017,
       "by": "Denis Villeneuve",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/blade-runner-2049-ilryazdmjw.jpg"
     },
     {
       "title": "Get Out",
@@ -363,7 +365,8 @@
       "title": "Arrival",
       "year": 2016,
       "by": "Denis Villeneuve",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/arrival-r8fd6cc3gg.jpg"
     },
     {
       "title": "La La Land",
@@ -420,7 +423,8 @@
       "year": 2014,
       "by": "Christopher Nolan",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/interstellar-5c3rrilkki.jpg"
     },
     {
       "title": "Gone Girl",
@@ -701,7 +705,8 @@
     {
       "title": "Le Cochon Danseur",
       "year": 1907,
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/le-cochon-danseur-kv7kocn92m.jpg"
     }
   ],
   "games": [

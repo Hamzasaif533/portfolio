@@ -108,75 +108,87 @@
       "year": 2026,
       "by": "James Watkins",
       "rating": 3.5,
-      "now": true
+      "now": true,
+      "frame": "assets/frames/clayface-3yhedqu5mc.jpg"
     },
     {
       "title": "The Sheep Detectives",
       "year": 2026,
       "by": "Kyle Balda",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/the-sheep-detectives-g6uevedsbx.jpg"
     },
     {
       "title": "Marty Supreme",
       "year": 2025,
       "by": "Josh Safdie",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/marty-supreme-jbohqsbzel.jpg"
     },
     {
       "title": "I Swear",
       "year": 2025,
       "by": "Kirk Jones",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/i-swear-u1zvmpwc7w.jpg"
     },
     {
       "title": "Obsession",
       "year": 2025,
       "by": "Curry Barker",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/obsession-diozbadnb2.jpg"
     },
     {
       "title": "Hamnet",
       "year": 2025,
       "by": "Chloé Zhao",
       "rating": 4.5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/hamnet-yt9m5ciu2m.jpg"
     },
     {
       "title": "No Other Choice",
       "year": 2025,
       "by": "Park Chan-wook",
-      "rating": 3.5
+      "rating": 3.5,
+      "frame": "assets/frames/no-other-choice-wgpaegoj7z.jpg"
     },
     {
       "title": "Bugonia",
       "year": 2025,
       "by": "Yorgos Lanthimos",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/bugonia-inadbqgyxy.jpg"
     },
     {
       "title": "Weapons",
       "year": 2025,
       "by": "Zach Cregger",
-      "rating": 2.5
+      "rating": 2.5,
+      "frame": "assets/frames/weapons-9mkhhhbfia.jpg"
     },
     {
       "title": "Mission: Impossible – The Final Reckoning",
       "year": 2025,
       "by": "Christopher McQuarrie",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/mission-impossible-the-final-reckoning-1p5ai299yb.jpg"
     },
     {
       "title": "Sinners",
       "year": 2025,
       "by": "Ryan Coogler",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/sinners-jonsbz92k3.jpg"
     },
     {
       "title": "We Live in Time",
       "year": 2024,
       "by": "John Crowley",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/we-live-in-time-p9uplkcepj.jpg"
     },
     {
       "title": "Dune: Part Two",
@@ -190,44 +202,51 @@
       "title": "Oppenheimer",
       "year": 2023,
       "by": "Christopher Nolan",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/oppenheimer-ycno0cjsar.jpg"
     },
     {
       "title": "Mission: Impossible – Dead Reckoning Part One",
       "year": 2023,
       "by": "Christopher McQuarrie",
-      "rating": 4.5
+      "rating": 4.5,
+      "frame": "assets/frames/mission-impossible-dead-reckoning-part-one-mrdnsdtjsn.jpg"
     },
     {
       "title": "Smile",
       "year": 2022,
       "by": "Parker Finn",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/smile-zdtxarmbkd.jpg"
     },
     {
       "title": "The Menu",
       "year": 2022,
       "by": "Mark Mylod",
-      "rating": 4
+      "rating": 4,
+      "frame": "assets/frames/the-menu-i7pwdlwmvv.jpg"
     },
     {
       "title": "Barbarian",
       "year": 2022,
       "by": "Zach Cregger",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/barbarian-b5sq1p2qnl.jpg"
     },
     {
       "title": "Fall",
       "year": 2022,
       "by": "Scott Mann",
-      "rating": 3
+      "rating": 3,
+      "frame": "assets/frames/fall-bl0hrjh8tn.jpg"
     },
     {
       "title": "Everything Everywhere All at Once",
       "year": 2022,
       "by": "Daniel Kwan & Daniel Scheinert",
       "rating": 5,
-      "liked": true
+      "liked": true,
+      "frame": "assets/frames/everything-everywhere-all-at-once-wp3vpswaij.jpg"
     },
     {
       "title": "The Batman",

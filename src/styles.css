@@ -230,7 +230,8 @@ button.tile { display: block; width: 100%; padding: 0; border: 0; font: inherit;
 .viewer[open] { display: flex; flex-direction: column; }
 .viewer::backdrop { background: #000; }
 .vw-fig { flex: 1; min-height: 0; display: grid; place-items: center; margin: 0; }
-.vw-fig img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 14px; }
+.vw-fig img { max-width: 86%; max-height: 86%; width: auto; height: auto; object-fit: contain; border-radius: 14px; }
+@media (max-width: 700px) { .vw-fig img { max-width: 100%; max-height: 90%; } }
 .vw-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; max-width: 900px; width: 100%; margin: 0 auto; padding: 18px 0 26px; }
 .vw-title { font-size: 16px; }
 .vw-meta { font-size: 13px; color: var(--mute); }

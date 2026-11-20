@@ -447,12 +447,12 @@ async function editPost(slug) {
     try {
       slug = await store.putPost(slug, newSlug, meta, f.body.value);
       changed = false; toast(store.savedMsg);
-      open.href = `/writing/${slug}.html`;
+      open.href = `/writing/${slug}`;
       del.hidden = false;
     } catch (err) { toast(err.message, true); }
     saving = false; saveBtn.disabled = false;
   }
-  const open = h("a", { class: "btn", href: slug ? `/writing/${slug}.html` : "/writing/index.html", target: "_blank", rel: "noopener" }, "View ↗");
+  const open = h("a", { class: "btn", href: slug ? `/writing/${slug}` : "/writing/", target: "_blank", rel: "noopener" }, "View ↗");
   const del = h("button", { class: "btn danger", hidden: !slug, onclick: async () => {
     if (!confirm(LOCAL ? "Delete this post? (it goes to content/.trash)" : "Delete this post? (it stays in your GitHub history)")) return;
     try { await store.deletePost(slug); toast("Deleted"); changed = false; viewPosts(); } catch (err) { toast(err.message, true); }

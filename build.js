@@ -265,7 +265,7 @@ function layout({ site, css, title, description, root, active, body, bodyClass =
   const i = TABS.findIndex(t => t[2] === active);
   const prev = TABS[(i - 1 + TABS.length) % TABS.length], next = TABS[(i + 1) % TABS.length];
   const attrs = { root, prev: root + prev[1], next: root + next[1], ...data };
-  const spec = { prefetch: [{ urls: [attrs.prev, attrs.next], eagerness: "eager" }, { where: { href_matches: "/*" }, eagerness: "moderate" }] };
+  const spec = { prefetch: [{ urls: [cleanUrl(attrs.prev), cleanUrl(attrs.next)], eagerness: "eager" }, { where: { href_matches: "/*" }, eagerness: "moderate" }] };
   const socials = (site.socials || [])
     .map(s => `<li><a href="${esc(s.url)}"${linkAttrs(s.url)} aria-label="${esc(s.label)}" title="${esc(s.label)}">${icon(s.icon)}</a></li>`)
     .join("");
@@ -511,6 +511,16 @@ function minifyCSS(css) {
 function minifyJS(js) {
   return js.replace(/^\s*\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\n\s*/g, "\n").trim();
 }
+/* Clean addresses: "shelf.html#x" -> "shelf#x", "writing/index.html" -> "writing/".
+   Hosts like Cloudflare serve pages without ".html", so this saves a redirect on every click. */
+function cleanUrl(u) {
+  if (/^(https?:|mailto:|#|data:)/.test(u)) return u;
+  return u.replace(/^((?:\.\.\/|\/)*)(.*?)(index)?\.html(?=$|#|\?)/, (_, up, p, idx) => up + p + (idx && !p && !up ? "./" : ""));
+}
+function cleanUrls(html) {
+  return html.replace(/(\s(?:href|data-(?:prev|next|prevpost|nextpost)))="([^"]*)"/g, (_, attr, u) => `${attr}="${cleanUrl(u)}"`);
+}
+
 function write(rel, content) {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -540,7 +550,7 @@ function build() {
 
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(OUT, { recursive: true });
-  const page = (rel, o) => write(rel, layout({ site, css, ...o }));
+  const page = (rel, o) => write(rel, cleanUrls(layout({ site, css, ...o })));
   const desc = site.description;
 
   page("index.html", { title: site.name, description: desc, root: "", active: "hey", bodyClass: "is-home", body: homePage(site, posts) });
@@ -562,7 +572,7 @@ function build() {
     body: `<main class="home" id="main"><section class="status"><h1 class="sr-only">Page not found</h1><p class="s-lead">${words("This page is:")}</p><p class="s-big">${words("NOT HERE")}</p><p class="s-tail">${words("or anywhere, really")}</p><a class="s-note" href="/index.html">Go back home →</a></section></main><div class="cursor" aria-hidden="true"></div>`,
   });
 
-  write("search.json", JSON.stringify(searchIndex(site, posts)));
+  write("search.json", JSON.stringify(searchIndex(site, posts).map(it => ({ ...it, u: cleanUrl(it.u) }))));
   write("app.js", minifyJS(fs.readFileSync(path.join(ROOT, "src/app.js"), "utf8")));
   // the editor on the live site: works only with your GitHub token (see README → Edit from anywhere)
   write("admin/index.html", fs.readFileSync(path.join(ROOT, "src/admin.html"), "utf8"));
@@ -711,6 +721,7 @@ function dev() {
     } catch (e) { return send(res, 500, { error: e.message }); }
 
     if (p.endsWith("/")) p += "index.html";
+    else if (!path.extname(p)) p += ".html"; // clean addresses: /shelf -> shelf.html
     const rel = path.normalize(p).replace(/^(\.\.[/\\])+/, "");
     const fallback = p.startsWith("/assets/") ? path.join(ROOT, rel) : null; // fresh uploads, before the next build copies them
     const serve = f => fs.readFile(f, (err, data) => {

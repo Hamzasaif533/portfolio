@@ -392,6 +392,8 @@ function filmDiary(movies = []) {
     groups.get(y).push(m);
   });
   const order = [...groups.keys()].sort((a, b) => (a === "Film diary" ? 1 : b === "Film diary" ? -1 : b.localeCompare(a)));
+  // TMDB's terms ask for a credit wherever their images are shown
+  const credit = withFrames.some(m => /\.jpe?g$/i.test(m.frame || "")) ? `<p class="credit">Stills via TMDB</p>` : "";
   return order.map(y => {
     const list = groups.get(y).sort((a, b) => String(b.watched || "").localeCompare(String(a.watched || "")));
     return `<section class="diary" aria-label="${esc(y)}">
@@ -403,7 +405,7 @@ function filmDiary(movies = []) {
         </button>`;
       }).join("")}</div>
     </section>`;
-  }).join("");
+  }).join("") + credit;
 }
 
 const SHOW = 5; // items shown before "Show more"

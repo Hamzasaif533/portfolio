@@ -138,6 +138,7 @@ button { font: inherit; color: inherit; }
 .empty-note { padding: 18px 0; color: var(--dim); font-size: 13px; }
 .diary-head { display: none; }
 .diary { margin: 0; }
+.credit { margin-top: 10px; font-size: 11px; color: var(--dim); }
 
 /* ---------- about ---------- */
 .about { max-width: 980px; margin: 0 auto; padding: 100px 28px calc(var(--bar-h) + 60px); }

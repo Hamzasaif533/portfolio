@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.github.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org; base-uri 'none'; form-action 'none'">
 <title>Editor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,6 +73,18 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .media .row input { flex: 1 1 160px; }
 .panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
 .empty { color: var(--dim); padding: 20px 0; }
+.pick-list { display: grid; gap: 22px; }
+.pick header { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+.pick header b { font-weight: 500; }
+.pick header small { color: var(--mute); }
+.pick header .has { color: var(--dim); }
+.strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #222 transparent; min-height: 40px; align-items: center; }
+.still { flex: none; width: 180px; aspect-ratio: 16 / 9; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #0b0b0b; cursor: pointer; scroll-snap-align: start; }
+.still img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.still.on { border-color: var(--fg); }
+.steps { display: grid; gap: 6px; padding-left: 1.2em; color: var(--mute); }
+.steps a { color: var(--fg); }
+@media (max-width: 760px) { .still { width: 150px; } }
 .toast { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); max-width: calc(100% - 36px); padding: 10px 16px; border-radius: 10px; background: var(--chip); border: 1px solid var(--chip-line); opacity: 0; transform: translateY(8px); transition: .2s; pointer-events: none; z-index: 20; }
 .toast.on { opacity: 1; transform: none; }
 .toast.err { color: #ff8a8a; }
@@ -240,7 +252,70 @@ const GitHubStore = {
     return path;
   },
 };
+/* several files + content in ONE commit (one site rebuild instead of dozens) */
+async function ghCommit(files, message) {
+  const ref = await ghReq(`/git/ref/heads/${encodeURIComponent(gh.branch)}`);
+  const parent = await ghReq(`/git/commits/${ref.object.sha}`);
+  const tree = [];
+  for (const f of files) {
+    const blob = await ghReq("/git/blobs", { method: "POST", body: JSON.stringify({ content: f.b64, encoding: "base64" }) });
+    tree.push({ path: f.path, mode: "100644", type: "blob", sha: blob.sha });
+  }
+  const newTree = await ghReq("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: parent.tree.sha, tree }) });
+  const commit = await ghReq("/git/commits", { method: "POST", body: JSON.stringify({ message, tree: newTree.sha, parents: [ref.object.sha] }) });
+  await ghReq(`/git/refs/heads/${encodeURIComponent(gh.branch)}`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
+  for (const f of files) delete shas[f.path];
+}
+LocalStore.saveFrames = async (picks, data) => {
+  for (const p of picks) p.movie.frame = await LocalStore.upload(new File([p.blob], p.name, { type: p.blob.type || "image/jpeg" }), "frames");
+  await LocalStore.putSite(data);
+};
+GitHubStore.saveFrames = async (picks, data) => {
+  const files = [];
+  for (const p of picks) {
+    const path = `assets/frames/${p.name}`;
+    files.push({ path, b64: await fileToB64(p.blob) });
+    objectUrls[path] = URL.createObjectURL(p.blob);
+    p.movie.frame = path;
+  }
+  files.push({ path: "content/site.json", b64: textToB64(JSON.stringify(data, null, 2) + "\n") });
+  await ghCommit(files, `Add ${picks.length} film frame${picks.length === 1 ? "" : "s"}`);
+  await ghGet("content/site.json"); // pick up the new version for the next save
+};
 const store = LOCAL ? LocalStore : GitHubStore;
+
+/* ---------- TMDB: find stills for your movies ---------- */
+const TMDB_KEY = "editor-tmdb";
+const tmdbKey = () => { try { return localStorage.getItem(TMDB_KEY) || ""; } catch (_) { return ""; } };
+async function tmdb(path, params = {}) {
+  const key = tmdbKey();
+  const url = new URL("https://api.themoviedb.org/3" + path);
+  Object.entries(params).forEach(([k, v]) => v !== "" && v != null && url.searchParams.set(k, v));
+  const bearer = key.startsWith("eyJ"); // long "API Read Access Token" vs short "API Key"
+  if (!bearer) url.searchParams.set("api_key", key);
+  const res = await fetch(url, { headers: bearer ? { Authorization: `Bearer ${key}` } : {} });
+  if (res.status === 401) throw new Error("TMDB didn't accept the key.");
+  if (!res.ok) throw new Error(`TMDB error ${res.status}`);
+  return res.json();
+}
+const stillCache = new Map();
+async function findStills(m) {
+  const k = `${m.title}|${m.year || ""}`;
+  if (stillCache.has(k)) return stillCache.get(k);
+  const job = (async () => {
+    let hit = null, kind = "movie";
+    let r = await tmdb("/search/movie", { query: m.title, year: m.year });
+    hit = r.results && r.results[0];
+    if (!hit && m.year) { r = await tmdb("/search/movie", { query: m.title }); hit = r.results && r.results[0]; }
+    if (!hit) { r = await tmdb("/search/tv", { query: m.title }); hit = r.results && r.results[0]; kind = "tv"; } // e.g. series
+    if (!hit) return [];
+    const imgs = await tmdb(`/${kind}/${hit.id}/images`, { include_image_language: "null" }); // stills without text on them
+    return (imgs.backdrops || []).sort((a, b) => b.vote_average - a.vote_average || b.width - a.width).slice(0, 12).map(b => b.file_path);
+  })();
+  stillCache.set(k, job);
+  job.catch(() => stillCache.delete(k));
+  return job;
+}
 
 async function upload(file, folder) {
   toast(`Uploading ${file.name}…`);
@@ -484,13 +559,100 @@ async function saveSite() {
 }
 addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "s" && section !== "posts") { e.preventDefault(); if (dirty) saveSite(); } });
 
+/* ---------- frame picker: real stills for each movie, tap one, add them all ---------- */
+function viewFrames() {
+  const main = $("#main"); main.textContent = "";
+  if (!tmdbKey()) {
+    const key = h("input", { type: "password", placeholder: "TMDB API key or Read Access Token", autocomplete: "off", spellcheck: "false" });
+    main.append(h("div", { class: "bar" }, h("h1", {}, "Frame picker")),
+      h("div", { class: "login", style: "margin:24px 0;width:auto;max-width:560px" },
+        h("p", {}, "Frames come from TMDB (The Movie Database). It needs a free key, once per device:"),
+        h("ol", { class: "steps" },
+          h("li", {}, "Create a free account at ", h("a", { href: "https://www.themoviedb.org/signup", target: "_blank", rel: "noopener" }, "themoviedb.org"), "."),
+          h("li", {}, "Open ", h("a", { href: "https://www.themoviedb.org/settings/api", target: "_blank", rel: "noopener" }, "Settings → API"), ", request a key (choose Personal use)."),
+          h("li", {}, "Copy the API Key (or the API Read Access Token) and paste it here.")),
+        h("label", { class: "field" }, h("span", {}, "TMDB key"), key),
+        h("button", { class: "btn primary", onclick: async () => {
+          try { localStorage.setItem(TMDB_KEY, key.value.trim()); await tmdb("/configuration"); viewFrames(); }
+          catch (e) { try { localStorage.removeItem(TMDB_KEY); } catch (_) {} toast(e.message, true); }
+        } }, "Save key"),
+        h("p", { class: "note" }, "Stored only in this browser.")));
+    return;
+  }
+  const movies = listOf(LISTS.movies);
+  const picks = new Map(); // movie -> TMDB file path
+  let onlyMissing = true;
+  const addBtn = h("button", { class: "btn primary", disabled: true, onclick: addAll }, "Add frames");
+  const count = () => { addBtn.disabled = !picks.size; addBtn.textContent = picks.size ? `Add ${picks.size} frame${picks.size === 1 ? "" : "s"}` : "Add frames"; };
+  const toggle = h("button", { class: "btn small", onclick: () => { onlyMissing = !onlyMissing; draw(); } });
+  const box = h("div", { class: "pick-list" });
+  main.append(h("div", { class: "bar" }, h("h1", {}, "Frame picker"), toggle, addBtn),
+    h("p", { class: "status", style: "margin:4px 0 14px" }, "Tap a still to choose it for that film, tap again to unchoose. Then press Add. ", h("button", { class: "btn small", onclick: () => { try { localStorage.removeItem(TMDB_KEY); } catch (_) {} viewFrames(); } }, "Change TMDB key")),
+    box, h("p", { class: "note", style: "margin-top:30px;font-size:11px;color:var(--dim)" }, "Stills from TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB."));
+
+  const io = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { io.unobserve(en.target); en.target._load(); } }), { rootMargin: "400px" });
+
+  function draw() {
+    toggle.textContent = onlyMissing ? "Showing films without a frame" : "Showing all films";
+    box.textContent = "";
+    const list = movies.filter(m => m.title && (!onlyMissing || !m.frame));
+    if (!list.length) box.append(h("p", { class: "empty" }, "Every film has a frame. Switch to “all films” to change one."));
+    list.forEach(m => {
+      const strip = h("div", { class: "strip" }, h("span", { class: "status" }, "…"));
+      const row = h("section", { class: "pick" },
+        h("header", {}, h("b", { dir: "auto" }, m.title), h("small", {}, ` ${m.year || ""}`), m.frame ? h("small", { class: "has" }, " · has a frame") : null),
+        strip);
+      row._load = async () => {
+        try {
+          const paths = await findStills(m);
+          strip.textContent = "";
+          if (!paths.length) { strip.append(h("span", { class: "status" }, "No stills found on TMDB.")); return; }
+          paths.forEach(p => {
+            const b = h("button", { class: "still" + (picks.get(m) === p ? " on" : ""), "aria-pressed": picks.get(m) === p, "aria-label": `Use this still for ${m.title}`, onclick: () => {
+              const on = picks.get(m) === p;
+              if (on) picks.delete(m); else picks.set(m, p);
+              strip.querySelectorAll(".still").forEach(x => { const sel = !on && x === b; x.classList.toggle("on", sel); x.setAttribute("aria-pressed", sel); });
+              count();
+            } }, h("img", { src: `https://image.tmdb.org/t/p/w300${p}`, alt: "", loading: "lazy" }));
+            strip.append(b);
+          });
+        } catch (e) { strip.textContent = ""; strip.append(h("span", { class: "status" }, e.message)); }
+      };
+      io.observe(row);
+      box.append(row);
+    });
+  }
+
+  async function addAll() {
+    if (dirty && !confirm("You have other unsaved edits. They'll be saved together with the frames. Continue?")) return;
+    addBtn.disabled = true;
+    const chosen = [...picks.entries()];
+    try {
+      const out = [];
+      for (let i = 0; i < chosen.length; i++) {
+        const [m, p] = chosen[i];
+        addBtn.textContent = `Downloading ${i + 1}/${chosen.length}…`;
+        const res = await fetch(`https://image.tmdb.org/t/p/w1280${p}`);
+        if (!res.ok) throw new Error(`Couldn't download the still for ${m.title}`);
+        out.push({ movie: m, blob: await res.blob(), name: `${slugify(m.title) || "film"}-${p.replace(/\W|jpg$/g, "").slice(0, 10).toLowerCase()}.jpg` });
+      }
+      addBtn.textContent = "Saving…";
+      await store.saveFrames(out, site);
+      dirty = false; picks.clear(); count();
+      toast(`${out.length} frame${out.length === 1 ? "" : "s"} added · ${LOCAL ? "site rebuilt" : "live in about a minute"}`);
+      drawNav(); draw();
+    } catch (e) { toast(e.message, true); count(); }
+  }
+  draw(); count();
+}
+
 /* ---------- navigation ---------- */
 function footText() {
   return LOCAL
     ? ["Editing on this computer. Saving rebuilds the site instantly. Backups: content/.backup"]
     : [h("span", {}, `Connected to ${gh.repo}. Saving commits to GitHub; the site updates in about a minute.`), h("button", { class: "btn small", onclick: signOut }, "Sign out of this device")];
 }
-const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
+const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
 function drawNav() {
   const nav = $("#nav"); nav.textContent = "";
   nav.append(h("div", { class: "brand" }, h("b", {}, site.name), " · editor"));
@@ -506,9 +668,9 @@ function drawNav() {
 function go(id) {
   if (section === "posts" && id !== "posts" && $("#main textarea.body") && !confirm("Leave this post? Unsaved text will be lost.")) return;
   section = id; history.replaceState(null, "", "#" + id); drawNav();
-  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else viewList(id);
+  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else if (id === "frames") viewFrames(); else viewList(id);
 }
-const valid = id => id === "profile" || id === "posts" || !!LISTS[id];
+const valid = id => id === "profile" || id === "posts" || id === "frames" || !!LISTS[id];
 addEventListener("hashchange", () => { const id = location.hash.slice(1); if (site && valid(id) && id !== section) go(id); });
 
 /* ---------- GitHub sign-in (only on the live site) ---------- */

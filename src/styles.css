@@ -133,6 +133,7 @@ button { font: inherit; color: inherit; }
 .shelf .b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .shelf .r { text-align: right; white-space: nowrap; letter-spacing: .02em; }
 .shelf .n { grid-column: 1 / -1; margin-top: -2px; font-size: 12px; color: var(--dim); }
+.shelf .list li[data-view] { cursor: zoom-in; }
 .shelf li.now .t::before { content: "▸ "; font-size: 10px; vertical-align: 2px; }
 .more-btn { margin-top: 12px; padding: 6px 0; border: 0; background: none; color: var(--mute); font: 12px var(--mono); cursor: pointer; }
 .empty-note { padding: 18px 0; color: var(--dim); font-size: 13px; }

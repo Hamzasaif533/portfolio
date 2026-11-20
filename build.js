@@ -412,7 +412,11 @@ const SHOW = 5; // items shown before "Show more"
 
 function shelfPage(site) {
   const movies = site.movies || [], books = site.books || [], games = site.games || [];
-  const row = (it, i) => `<li class="${[it.now && "now", i >= SHOW && "extra"].filter(Boolean).join(" ")}" id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}">
+  // a film with a frame opens it full screen when its row is clicked (or Enter / Space)
+  const frameView = it => it.frame
+    ? ` role="button" aria-label="${esc(it.title)}: view frame"${viewAttrs("movie-list", it.frame, it.title, [it.year, it.by, ratingText(it)].filter(Boolean).join(" · "), it.note)}`
+    : "";
+  const row = (it, i) => `<li class="${[it.now && "now", i >= SHOW && "extra"].filter(Boolean).join(" ")}" id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
       <span class="t">${esc(it.title)}</span>
       <span class="y">${esc(it.year || "")}</span>
       <span class="b">${esc(it.by || "")}</span>

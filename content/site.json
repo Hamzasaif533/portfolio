@@ -66,7 +66,17 @@
         "a": "Maybe! Send me an email or dm me and tell me what you have in mind."
       }
     ],
-    "experience": []
+    "experience": [
+      {
+        "org": "Uni",
+        "roles": [
+          {
+            "title": "MTC",
+            "dates": ""
+          }
+        ]
+      }
+    ]
   },
   "movies": [
     {

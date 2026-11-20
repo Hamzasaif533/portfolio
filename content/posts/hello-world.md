@@ -25,13 +25,13 @@ lang: en        # or ar (optional, it's detected automatically)
 
 put files in `assets/posts/` and add them on their own line. one image becomes a full-width figure, and the text in the brackets becomes the caption:
 
-![A frame I keep coming back to](assets/frames/blade-runner-2049.svg)
+![A frame I keep coming back to](assets/frames/marty-supreme-jbohqsbzel.jpg)
 
 two or three images in a row become a gallery:
 
-![](assets/frames/dune-part-two.svg)
-![](assets/frames/interstellar.svg)
-![](assets/frames/past-lives.svg)
+![](assets/frames/oppenheimer-ycno0cjsar.jpg)
+![](assets/frames/sinners-jonsbz92k3.jpg)
+![](assets/frames/hamnet-yt9m5ciu2m.jpg)
 
 videos use the same syntax, just with an `.mp4` or `.webm` file. they get play controls and only load when needed:
 

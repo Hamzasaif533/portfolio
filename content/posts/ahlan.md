@@ -13,7 +13,7 @@ lang: ar
 
 لأن الكتابة طريقتي في الفهم. عندما أشاهد فيلماً جميلاً، لا أعرف حقاً لماذا أحببته حتى أحاول أن أشرح ذلك بالكلمات.
 
-![لقطة من فيلم أحببته هذا العام](assets/frames/spirited-away.svg)
+![لقطة من فيلم أحببته هذا العام](assets/frames/everything-everywhere-all-at-once-wp3vpswaij.jpg)
 
 ## ما الذي ستجده هنا
 

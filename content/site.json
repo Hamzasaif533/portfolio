@@ -89,14 +89,16 @@
       "by": "James Watkins",
       "rating": 3.5,
       "now": true,
-      "frame": "assets/frames/clayface-3yhedqu5mc.jpg"
+      "frame": "assets/frames/clayface-3yhedqu5mc.jpg",
+      "watched": "2026-11-04"
     },
     {
       "title": "The Sheep Detectives",
       "year": 2026,
       "by": "Kyle Balda",
       "rating": 3.5,
-      "frame": "assets/frames/the-sheep-detectives-g6uevedsbx.jpg"
+      "frame": "assets/frames/the-sheep-detectives-g6uevedsbx.jpg",
+      "watched": "2026-08-20"
     },
     {
       "title": "Marty Supreme",
@@ -104,21 +106,24 @@
       "by": "Josh Safdie",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/marty-supreme-jbohqsbzel.jpg"
+      "frame": "assets/frames/marty-supreme-jbohqsbzel.jpg",
+      "watched": "2026-08-07"
     },
     {
       "title": "I Swear",
       "year": 2025,
       "by": "Kirk Jones",
       "rating": 3.5,
-      "frame": "assets/frames/i-swear-u1zvmpwc7w.jpg"
+      "frame": "assets/frames/i-swear-u1zvmpwc7w.jpg",
+      "watched": "2026-03-01"
     },
     {
       "title": "Obsession",
       "year": 2025,
       "by": "Curry Barker",
       "rating": 3.5,
-      "frame": "assets/frames/obsession-diozbadnb2.jpg"
+      "frame": "assets/frames/obsession-diozbadnb2.jpg",
+      "watched": "2026-08-13"
     },
     {
       "title": "Hamnet",
@@ -126,49 +131,56 @@
       "by": "Chloé Zhao",
       "rating": 4.5,
       "liked": true,
-      "frame": "assets/frames/hamnet-yt9m5ciu2m.jpg"
+      "frame": "assets/frames/hamnet-yt9m5ciu2m.jpg",
+      "watched": "2026-03-17"
     },
     {
       "title": "No Other Choice",
       "year": 2025,
       "by": "Park Chan-wook",
       "rating": 3.5,
-      "frame": "assets/frames/no-other-choice-wgpaegoj7z.jpg"
+      "frame": "assets/frames/no-other-choice-wgpaegoj7z.jpg",
+      "watched": "2026-03-02"
     },
     {
       "title": "Bugonia",
       "year": 2025,
       "by": "Yorgos Lanthimos",
       "rating": 3,
-      "frame": "assets/frames/bugonia-inadbqgyxy.jpg"
+      "frame": "assets/frames/bugonia-inadbqgyxy.jpg",
+      "watched": "2026-07-28"
     },
     {
       "title": "Weapons",
       "year": 2025,
       "by": "Zach Cregger",
       "rating": 2.5,
-      "frame": "assets/frames/weapons-9mkhhhbfia.jpg"
+      "frame": "assets/frames/weapons-9mkhhhbfia.jpg",
+      "watched": "2026-02-24"
     },
     {
       "title": "Mission: Impossible – The Final Reckoning",
       "year": 2025,
       "by": "Christopher McQuarrie",
       "rating": 4,
-      "frame": "assets/frames/mission-impossible-the-final-reckoning-1p5ai299yb.jpg"
+      "frame": "assets/frames/mission-impossible-the-final-reckoning-1p5ai299yb.jpg",
+      "watched": "2025-05-30"
     },
     {
       "title": "Sinners",
       "year": 2025,
       "by": "Ryan Coogler",
       "rating": 3,
-      "frame": "assets/frames/sinners-jonsbz92k3.jpg"
+      "frame": "assets/frames/sinners-jonsbz92k3.jpg",
+      "watched": "2026-03-17"
     },
     {
       "title": "We Live in Time",
       "year": 2024,
       "by": "John Crowley",
       "rating": 3,
-      "frame": "assets/frames/we-live-in-time-p9uplkcepj.jpg"
+      "frame": "assets/frames/we-live-in-time-p9uplkcepj.jpg",
+      "watched": "2026-04-17"
     },
     {
       "title": "Dune: Part Two",
@@ -176,14 +188,16 @@
       "by": "Denis Villeneuve",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/dune-part-two-wauiyivxpd.jpg"
+      "frame": "assets/frames/dune-part-two-wauiyivxpd.jpg",
+      "watched": "2026-07-22"
     },
     {
       "title": "Oppenheimer",
       "year": 2023,
       "by": "Christopher Nolan",
       "rating": 4.5,
-      "frame": "assets/frames/oppenheimer-ycno0cjsar.jpg"
+      "frame": "assets/frames/oppenheimer-ycno0cjsar.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "Mission: Impossible – Dead Reckoning Part One",
@@ -197,28 +211,32 @@
       "year": 2022,
       "by": "Parker Finn",
       "rating": 4,
-      "frame": "assets/frames/smile-zdtxarmbkd.jpg"
+      "frame": "assets/frames/smile-zdtxarmbkd.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Menu",
       "year": 2022,
       "by": "Mark Mylod",
       "rating": 4,
-      "frame": "assets/frames/the-menu-i7pwdlwmvv.jpg"
+      "frame": "assets/frames/the-menu-i7pwdlwmvv.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Barbarian",
       "year": 2022,
       "by": "Zach Cregger",
       "rating": 3,
-      "frame": "assets/frames/barbarian-b5sq1p2qnl.jpg"
+      "frame": "assets/frames/barbarian-b5sq1p2qnl.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Fall",
       "year": 2022,
       "by": "Scott Mann",
       "rating": 3,
-      "frame": "assets/frames/fall-bl0hrjh8tn.jpg"
+      "frame": "assets/frames/fall-bl0hrjh8tn.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "Everything Everywhere All at Once",
@@ -226,28 +244,32 @@
       "by": "Daniel Kwan & Daniel Scheinert",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/everything-everywhere-all-at-once-wp3vpswaij.jpg"
+      "frame": "assets/frames/everything-everywhere-all-at-once-wp3vpswaij.jpg",
+      "watched": "2026-03-03"
     },
     {
       "title": "The Batman",
       "year": 2022,
       "by": "Matt Reeves",
       "rating": 4.5,
-      "frame": "assets/frames/the-batman-iyud7raixz.jpg"
+      "frame": "assets/frames/the-batman-iyud7raixz.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Uncharted",
       "year": 2022,
       "by": "Ruben Fleischer",
       "rating": 2.5,
-      "frame": "assets/frames/uncharted-ozaejrxaus.jpg"
+      "frame": "assets/frames/uncharted-ozaejrxaus.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "Dune",
       "year": 2021,
       "by": "Denis Villeneuve",
       "rating": 4,
-      "frame": "assets/frames/dune-zrkqw58mbe.jpg"
+      "frame": "assets/frames/dune-zrkqw58mbe.jpg",
+      "watched": "2026-07-21"
     },
     {
       "title": "The Conjuring: Last Rites",
@@ -261,63 +283,72 @@
       "year": 2020,
       "by": "Scott Frank",
       "rating": 3.5,
-      "frame": "assets/frames/the-queens-gambit-4atonmqcse.jpg"
+      "frame": "assets/frames/the-queens-gambit-4atonmqcse.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Platform",
       "year": 2019,
       "by": "Galder Gaztelu-Urrutia",
       "rating": 3,
-      "frame": "assets/frames/the-platform-tksnu2qdmg.jpg"
+      "frame": "assets/frames/the-platform-tksnu2qdmg.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "Joker",
       "year": 2019,
       "by": "Todd Phillips",
       "rating": 4,
-      "frame": "assets/frames/joker-j03ciuq845.jpg"
+      "frame": "assets/frames/joker-j03ciuq845.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Ready or Not",
       "year": 2019,
       "by": "Matt Bettinelli-Olpin & Tyler Gillett",
       "rating": 0.5,
-      "frame": "assets/frames/ready-or-not-ya4hxbxkux.jpg"
+      "frame": "assets/frames/ready-or-not-ya4hxbxkux.jpg",
+      "watched": "2026-02-22"
     },
     {
       "title": "Midsommar",
       "year": 2019,
       "by": "Ari Aster",
       "rating": 4,
-      "frame": "assets/frames/midsommar-eruspt9lno.jpg"
+      "frame": "assets/frames/midsommar-eruspt9lno.jpg",
+      "watched": "2026-02-25"
     },
     {
       "title": "Parasite",
       "year": 2019,
       "by": "Bong Joon Ho",
       "rating": 4,
-      "frame": "assets/frames/parasite-p0gix7ig8h.jpg"
+      "frame": "assets/frames/parasite-p0gix7ig8h.jpg",
+      "watched": "2026-08-06"
     },
     {
       "title": "The Nun",
       "year": 2018,
       "by": "Corin Hardy",
       "rating": 3.5,
-      "frame": "assets/frames/the-nun-cmnvmutb5m.jpg"
+      "frame": "assets/frames/the-nun-cmnvmutb5m.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "Avengers: Infinity War",
       "year": 2018,
       "by": "Anthony & Joe Russo",
       "rating": 3.5,
-      "frame": "assets/frames/avengers-infinity-war-k3xgg77cai.jpg"
+      "frame": "assets/frames/avengers-infinity-war-k3xgg77cai.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Black Panther",
       "year": 2018,
       "by": "Ryan Coogler",
       "rating": 3,
-      "frame": "assets/frames/black-panther-mjvilewpml.jpg"
+      "frame": "assets/frames/black-panther-mjvilewpml.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "Blade Runner 2049",
@@ -325,42 +356,48 @@
       "by": "Denis Villeneuve",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/blade-runner-2049-ilryazdmjw.jpg"
+      "frame": "assets/frames/blade-runner-2049-ilryazdmjw.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Get Out",
       "year": 2017,
       "by": "Jordan Peele",
       "rating": 4.5,
-      "frame": "assets/frames/get-out-bbqhalhraa.jpg"
+      "frame": "assets/frames/get-out-bbqhalhraa.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Split",
       "year": 2016,
       "by": "M. Night Shyamalan",
       "rating": 3.5,
-      "frame": "assets/frames/split-ghzjfec1bq.jpg"
+      "frame": "assets/frames/split-ghzjfec1bq.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Arrival",
       "year": 2016,
       "by": "Denis Villeneuve",
       "rating": 4,
-      "frame": "assets/frames/arrival-r8fd6cc3gg.jpg"
+      "frame": "assets/frames/arrival-r8fd6cc3gg.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "La La Land",
       "year": 2016,
       "by": "Damien Chazelle",
       "rating": 4,
-      "frame": "assets/frames/la-la-land-ik2d3kqxfd.jpg"
+      "frame": "assets/frames/la-la-land-ik2d3kqxfd.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "War Dogs",
       "year": 2016,
       "by": "Todd Phillips",
       "rating": 3,
-      "frame": "assets/frames/war-dogs-asuocllkn4.jpg"
+      "frame": "assets/frames/war-dogs-asuocllkn4.jpg",
+      "watched": "2026-03-07"
     },
     {
       "title": "Me Before You",
@@ -368,35 +405,40 @@
       "by": "Thea Sharrock",
       "rating": 2.5,
       "liked": true,
-      "frame": "assets/frames/me-before-you-cqeakxhr6c.jpg"
+      "frame": "assets/frames/me-before-you-cqeakxhr6c.jpg",
+      "watched": "2026-02-22"
     },
     {
       "title": "The Conjuring 2",
       "year": 2016,
       "by": "James Wan",
       "rating": 3,
-      "frame": "assets/frames/the-conjuring-2-ev5ti7q0re.jpg"
+      "frame": "assets/frames/the-conjuring-2-ev5ti7q0re.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "The Martian",
       "year": 2015,
       "by": "Ridley Scott",
       "rating": 3.5,
-      "frame": "assets/frames/the-martian-lzms0ci3fl.jpg"
+      "frame": "assets/frames/the-martian-lzms0ci3fl.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Lobster",
       "year": 2015,
       "by": "Yorgos Lanthimos",
       "rating": 3.5,
-      "frame": "assets/frames/the-lobster-s48cvfbwow.jpg"
+      "frame": "assets/frames/the-lobster-s48cvfbwow.jpg",
+      "watched": "2026-08-14"
     },
     {
       "title": "Kingsman: The Secret Service",
       "year": 2014,
       "by": "Matthew Vaughn",
       "rating": 3.5,
-      "frame": "assets/frames/kingsman-the-secret-service-cqki4ktwwc.jpg"
+      "frame": "assets/frames/kingsman-the-secret-service-cqki4ktwwc.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Interstellar",
@@ -404,133 +446,152 @@
       "by": "Christopher Nolan",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/interstellar-5c3rrilkki.jpg"
+      "frame": "assets/frames/interstellar-5c3rrilkki.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Gone Girl",
       "year": 2014,
       "by": "David Fincher",
       "rating": 2.5,
-      "frame": "assets/frames/gone-girl-h2jaqwlkha.jpg"
+      "frame": "assets/frames/gone-girl-h2jaqwlkha.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "The Imitation Game",
       "year": 2014,
       "by": "Morten Tyldum",
       "rating": 4.5,
-      "frame": "assets/frames/the-imitation-game-c7qt8yo8xs.jpg"
+      "frame": "assets/frames/the-imitation-game-c7qt8yo8xs.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Edge of Tomorrow",
       "year": 2014,
       "by": "Doug Liman",
       "rating": 3.5,
-      "frame": "assets/frames/edge-of-tomorrow-fi5zzifxj2.jpg"
+      "frame": "assets/frames/edge-of-tomorrow-fi5zzifxj2.jpg",
+      "watched": "2025-02-12"
     },
     {
       "title": "Her",
       "year": 2013,
       "by": "Spike Jonze",
       "rating": 3.5,
-      "frame": "assets/frames/her-zxttikp0sn.jpg"
+      "frame": "assets/frames/her-zxttikp0sn.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Prisoners",
       "year": 2013,
       "by": "Denis Villeneuve",
       "rating": 4.5,
-      "frame": "assets/frames/prisoners-ijgjxqq6xd.jpg"
+      "frame": "assets/frames/prisoners-ijgjxqq6xd.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Gravity",
       "year": 2013,
       "by": "Alfonso Cuarón",
       "rating": 4,
-      "frame": "assets/frames/gravity-xtjxzasfl0.jpg"
+      "frame": "assets/frames/gravity-xtjxzasfl0.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Conjuring",
       "year": 2013,
       "by": "James Wan",
       "rating": 3.5,
-      "frame": "assets/frames/the-conjuring-fmlag1cyht.jpg"
+      "frame": "assets/frames/the-conjuring-fmlag1cyht.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Now You See Me",
       "year": 2013,
       "by": "Louis Leterrier",
       "rating": 4,
-      "frame": "assets/frames/now-you-see-me-e6lc9vnkdv.jpg"
+      "frame": "assets/frames/now-you-see-me-e6lc9vnkdv.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "The Hangover Part III",
       "year": 2013,
       "by": "Todd Phillips",
       "rating": 2.5,
-      "frame": "assets/frames/the-hangover-part-iii-41ugz6luwo.jpg"
+      "frame": "assets/frames/the-hangover-part-iii-41ugz6luwo.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "Life of Pi",
       "year": 2012,
       "by": "Ang Lee",
       "rating": 4,
-      "frame": "assets/frames/life-of-pi-fozqfyampj.jpg"
+      "frame": "assets/frames/life-of-pi-fozqfyampj.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Hunt",
       "year": 2012,
       "by": "Thomas Vinterberg",
       "rating": 4,
-      "frame": "assets/frames/the-hunt-1mwjlmnixr.jpg"
+      "frame": "assets/frames/the-hunt-1mwjlmnixr.jpg",
+      "watched": "2026-10-07"
     },
     {
       "title": "21 Jump Street",
       "year": 2012,
       "by": "Phil Lord & Christopher Miller",
       "rating": 3.5,
-      "frame": "assets/frames/21-jump-street-ligjpndlds.jpg"
+      "frame": "assets/frames/21-jump-street-ligjpndlds.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "Hugo",
       "year": 2011,
       "by": "Martin Scorsese",
       "rating": 3.5,
-      "frame": "assets/frames/hugo-uctkjhzfg2.jpg"
+      "frame": "assets/frames/hugo-uctkjhzfg2.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "Rise of the Planet of the Apes",
       "year": 2011,
       "by": "Rupert Wyatt",
       "rating": 3.5,
-      "frame": "assets/frames/rise-of-the-planet-of-the-apes-fsx71msfkt.jpg"
+      "frame": "assets/frames/rise-of-the-planet-of-the-apes-fsx71msfkt.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "Drive",
       "year": 2011,
       "by": "Nicolas Winding Refn",
       "rating": 3.5,
-      "frame": "assets/frames/drive-dxbs2akbch.jpg"
+      "frame": "assets/frames/drive-dxbs2akbch.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Hangover Part II",
       "year": 2011,
       "by": "Todd Phillips",
       "rating": 3,
-      "frame": "assets/frames/the-hangover-part-ii-maeh0qobtd.jpg"
+      "frame": "assets/frames/the-hangover-part-ii-maeh0qobtd.jpg",
+      "watched": "2025-02-11"
     },
     {
       "title": "The Social Network",
       "year": 2010,
       "by": "David Fincher",
       "rating": 3.5,
-      "frame": "assets/frames/the-social-network-trefxfsolk.jpg"
+      "frame": "assets/frames/the-social-network-trefxfsolk.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "127 Hours",
       "year": 2010,
       "by": "Danny Boyle",
       "rating": 2.5,
-      "frame": "assets/frames/127-hours-3fhui9guuu.jpg"
+      "frame": "assets/frames/127-hours-3fhui9guuu.jpg",
+      "watched": "2026-02-22"
     },
     {
       "title": "Inception",
@@ -538,21 +599,24 @@
       "by": "Christopher Nolan",
       "rating": 5,
       "liked": true,
-      "frame": "assets/frames/inception-2hmlvovu1r.jpg"
+      "frame": "assets/frames/inception-2hmlvovu1r.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Zombieland",
       "year": 2009,
       "by": "Ruben Fleischer",
       "rating": 2.5,
-      "frame": "assets/frames/zombieland-2izdwa5sx9.jpg"
+      "frame": "assets/frames/zombieland-2izdwa5sx9.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Hangover",
       "year": 2009,
       "by": "Todd Phillips",
       "rating": 4,
-      "frame": "assets/frames/the-hangover-sv49holuky.jpg"
+      "frame": "assets/frames/the-hangover-sv49holuky.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Coraline",
@@ -560,7 +624,8 @@
       "by": "Henry Selick",
       "rating": 4.5,
       "liked": true,
-      "frame": "assets/frames/coraline-hofnliyf6b.jpg"
+      "frame": "assets/frames/coraline-hofnliyf6b.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "(500) Days of Summer",
@@ -568,63 +633,72 @@
       "by": "Marc Webb",
       "rating": 4.5,
       "liked": true,
-      "frame": "assets/frames/500-days-of-summer-at5sik2toy.jpg"
+      "frame": "assets/frames/500-days-of-summer-at5sik2toy.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "The Dark Knight",
       "year": 2008,
       "by": "Christopher Nolan",
       "rating": 3.5,
-      "frame": "assets/frames/the-dark-knight-pldp52mirf.jpg"
+      "frame": "assets/frames/the-dark-knight-pldp52mirf.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "The Incredible Hulk",
       "year": 2008,
       "by": "Louis Leterrier",
       "rating": 2,
-      "frame": "assets/frames/the-incredible-hulk-oklxjbzjby.jpg"
+      "frame": "assets/frames/the-incredible-hulk-oklxjbzjby.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "I Am Legend",
       "year": 2007,
       "by": "Francis Lawrence",
       "rating": 3.5,
-      "frame": "assets/frames/i-am-legend-abnlakfwat.jpg"
+      "frame": "assets/frames/i-am-legend-abnlakfwat.jpg",
+      "watched": "2024-11-16"
     },
     {
       "title": "Zodiac",
       "year": 2007,
       "by": "David Fincher",
       "rating": 3,
-      "frame": "assets/frames/zodiac-9kdtjruoxn.jpg"
+      "frame": "assets/frames/zodiac-9kdtjruoxn.jpg",
+      "watched": "2026-10-05"
     },
     {
       "title": "Casino Royale",
       "year": 2006,
       "by": "Martin Campbell",
       "rating": 2.5,
-      "frame": "assets/frames/casino-royale-6h0o2qucv8.jpg"
+      "frame": "assets/frames/casino-royale-6h0o2qucv8.jpg",
+      "watched": "2026-02-23"
     },
     {
       "title": "Charlie and the Chocolate Factory",
       "year": 2005,
       "by": "Tim Burton",
       "rating": 3,
-      "frame": "assets/frames/charlie-and-the-chocolate-factory-cz4vl9t06b.jpg"
+      "frame": "assets/frames/charlie-and-the-chocolate-factory-cz4vl9t06b.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Memories of Murder",
       "year": 2003,
       "by": "Bong Joon Ho",
       "rating": 4.5,
-      "frame": "assets/frames/memories-of-murder-1iw1zv35kh.jpg"
+      "frame": "assets/frames/memories-of-murder-1iw1zv35kh.jpg",
+      "watched": "2026-08-16"
     },
     {
       "title": "Fight Club",
       "year": 1999,
       "by": "David Fincher",
       "rating": 4.5,
-      "frame": "assets/frames/fight-club-hzkgoqyus5.jpg"
+      "frame": "assets/frames/fight-club-hzkgoqyus5.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Rush Hour 2",
@@ -638,49 +712,56 @@
       "year": 1997,
       "by": "James Cameron",
       "rating": 3,
-      "frame": "assets/frames/titanic-ajoabmname.jpg"
+      "frame": "assets/frames/titanic-ajoabmname.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Se7en",
       "year": 1995,
       "by": "David Fincher",
       "rating": 3.5,
-      "frame": "assets/frames/se7en-iwgl8zlrrf.jpg"
+      "frame": "assets/frames/se7en-iwgl8zlrrf.jpg",
+      "watched": "2026-08-06"
     },
     {
       "title": "A Bronx Tale",
       "year": 1993,
       "by": "Robert De Niro",
       "rating": 3.5,
-      "frame": "assets/frames/a-bronx-tale-ggzzn1hf4z.jpg"
+      "frame": "assets/frames/a-bronx-tale-ggzzn1hf4z.jpg",
+      "watched": "2026-05-24"
     },
     {
       "title": "Home Alone",
       "year": 1990,
       "by": "Chris Columbus",
       "rating": 3.5,
-      "frame": "assets/frames/home-alone-vmz7olsscl.jpg"
+      "frame": "assets/frames/home-alone-vmz7olsscl.jpg",
+      "watched": "2023-07-08"
     },
     {
       "title": "Blue Velvet",
       "year": 1986,
       "by": "David Lynch",
       "rating": 2.5,
-      "frame": "assets/frames/blue-velvet-8pvlgt1iuq.jpg"
+      "frame": "assets/frames/blue-velvet-8pvlgt1iuq.jpg",
+      "watched": "2026-08-26"
     },
     {
       "title": "Jaws",
       "year": 1975,
       "by": "Steven Spielberg",
       "rating": 2.5,
-      "frame": "assets/frames/jaws-kjmlpj5enr.jpg"
+      "frame": "assets/frames/jaws-kjmlpj5enr.jpg",
+      "watched": "2023-11-01"
     },
     {
       "title": "12 Angry Men",
       "year": 1957,
       "by": "Sidney Lumet",
       "rating": 5,
-      "frame": "assets/frames/12-angry-men-trmcu0uiwt.jpg"
+      "frame": "assets/frames/12-angry-men-trmcu0uiwt.jpg",
+      "watched": "2026-09-02"
     },
     {
       "title": "Le Cochon Danseur",

@@ -621,6 +621,42 @@ async function importWatched(file, items) {
   return { matched, changed, missing };
 }
 
+/* ---------- Sync Letterboxd: pull your recent diary (new films, watch dates, ratings, ♥) ---------- */
+async function syncLetterboxd(items) {
+  const res = await fetch("/api/letterboxd", LOCAL ? { headers: { "X-Admin-Token": TOKEN } } : {});
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Couldn't reach Letterboxd.");
+  const entries = data.entries || []; // newest first
+  const latest = new Map(); // the newest diary entry of each film wins
+  for (const e of entries) { const k = e.tmdb ? "t" + e.tmdb : titleKey(e.title) + (e.year || ""); if (!latest.has(k)) latest.set(k, e); }
+  const updated = [], fresh = [];
+  for (const e of latest.values()) {
+    const mv = items.find(m => e.tmdb && m.tmdb === e.tmdb)
+      || items.find(m => titleKey(m.title) === titleKey(e.title) && (!m.year || !e.year || Math.abs(m.year - e.year) <= 1));
+    if (!mv) { fresh.push(e); continue; }
+    let changed = false;
+    // only fill gaps or move forward: never overwrite a rating you changed on purpose, never go back in time
+    if (e.watched > (mv.watched || "")) { mv.watched = e.watched; changed = true; }
+    if (e.rating !== undefined && mv.rating === undefined) { mv.rating = e.rating; changed = true; }
+    if (e.liked && !mv.liked) { mv.liked = true; changed = true; }
+    if (e.tmdb && !mv.tmdb) { mv.tmdb = e.tmdb; changed = true; }
+    if (changed) updated.push(mv.title);
+  }
+  const added = [];
+  for (const e of fresh.sort((a, b) => a.watched.localeCompare(b.watched))) { // oldest first, so the newest ends up on top
+    const m = { title: e.title, watched: e.watched };
+    if (e.year) m.year = e.year;
+    if (e.tmdb) m.tmdb = e.tmdb;
+    if (e.rating !== undefined) m.rating = e.rating;
+    if (e.liked) m.liked = true;
+    if (e.tmdb && tmdbKey()) { // director, if you've set up the TMDB key
+      try { const c = await tmdb(`/movie/${e.tmdb}/credits`); const by = (c.crew || []).filter(x => x.job === "Director").map(x => x.name).slice(0, 2).join(" & "); if (by) m.by = by; } catch (_) {}
+    }
+    items.unshift(m); added.push(e.title);
+  }
+  return { total: entries.length, added, updated };
+}
+
 function viewList(id) {
   const def = LISTS[id], items = listOf(def), main = $("#main");
   main.textContent = "";
@@ -643,7 +679,19 @@ function viewList(id) {
   main.append(header(`${def.label} (${items.length})`), h("div", { class: "tools" }, search,
     ...(finder
       ? [h("button", { class: "btn primary", onclick: () => finder.open() }, "+ Find movie"), h("button", { class: "btn", onclick: manual }, "+ Manual"),
-         h("button", { class: "btn", title: "Fill in when you watched each film, from your Letterboxd export", onclick: () => importIn.click() }, "Import dates"), importIn]
+         h("button", { class: "btn", title: "Add your newest Letterboxd films and fill in dates, ratings and ♥", onclick: async e => {
+           const b = e.currentTarget;
+           b.disabled = true; b.textContent = "Syncing…";
+           try {
+             const r = await syncLetterboxd(items);
+             if (r.added.length || r.updated.length) markDirty();
+             note.hidden = false;
+             note.textContent = `Letterboxd: read your latest ${r.total} diary entries. ` + (r.added.length ? `Added ${r.added.length} new: ${r.added.join(", ")}. Pick frames for them in Frame picker. ` : "No new films. ") + (r.updated.length ? `Updated ${r.updated.length} existing. ` : "") + (r.added.length || r.updated.length ? "Press Save." : "Everything is already up to date.");
+             draw();
+           } catch (err) { toast(err.message, true); }
+           b.disabled = false; b.textContent = "Sync Letterboxd";
+         } }, "Sync Letterboxd"),
+         h("button", { class: "btn", title: "Fill in when you watched each film, from your full Letterboxd export (.zip)", onclick: () => importIn.click() }, "Import export"), importIn]
       : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder, note] : []), box, mobileFoot());
 
   function draw(openIndex) {

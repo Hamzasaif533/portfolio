@@ -691,6 +691,11 @@ function dev() {
         return send(res, err ? 500 : 200, err ? { error: err } : { ok: true });
       }
     }
+    if (p === "/api/letterboxd" && m === "GET") { // same code as the live Cloudflare function
+      const mod = await import(require("url").pathToFileURL(path.join(ROOT, "functions/api/letterboxd.js")).href);
+      const r = await mod.onRequestGet();
+      return send(res, r.status, await r.text());
+    }
     if (p === "/api/upload" && m === "POST") {
       const folder = q.get("folder") || "", name = q.get("name") || "";
       if (!FOLDERS.includes(folder) || !MEDIA_EXT.test(name)) return send(res, 400, { error: "Unsupported file type" });

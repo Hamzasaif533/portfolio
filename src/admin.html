@@ -73,6 +73,19 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .media .row input { flex: 1 1 160px; }
 .panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
 .empty { color: var(--dim); padding: 20px 0; }
+.finder { margin: 0 0 14px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #050505; }
+.finder[hidden] { display: none; }
+.finder .inline { display: flex; gap: 8px; align-items: center; }
+.found { margin-top: 10px; display: grid; gap: 4px; }
+.found li { list-style: none; border-radius: 10px; }
+.found li.sel { background: #161616; }
+.found li.none { padding: 10px; color: var(--dim); }
+.found button { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; padding: 6px 8px; border: 0; border-radius: 10px; background: none; text-align: start; cursor: pointer; }
+.found .poster { width: 40px; height: 60px; border-radius: 5px; background: #0b0b0b center / cover no-repeat; border: 1px solid var(--line); }
+.found .meta { display: grid; }
+.found .meta b { font-weight: 500; }
+.found small { color: var(--mute); }
+.found .have { color: var(--dim); }
 .pick-list { display: grid; gap: 22px; }
 .pick header { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
 .pick header b { font-weight: 500; }
@@ -323,9 +336,8 @@ async function findStills(m) {
   const k = `${m.title}|${m.year || ""}`;
   if (stillCache.has(k)) return stillCache.get(k);
   const job = (async () => {
-    let hit = null, kind = "movie";
-    let r = await tmdb("/search/movie", { query: m.title, year: m.year });
-    hit = r.results && r.results[0];
+    let hit = m.tmdb ? { id: m.tmdb } : null, kind = "movie", r; // films added by search remember their exact TMDB id
+    if (!hit) { r = await tmdb("/search/movie", { query: m.title, year: m.year }); hit = r.results && r.results[0]; }
     if (!hit && m.year) { r = await tmdb("/search/movie", { query: m.title }); hit = r.results && r.results[0]; }
     if (!hit) { r = await tmdb("/search/tv", { query: m.title }); hit = r.results && r.results[0]; kind = "tv"; } // e.g. series
     if (!hit) return [];
@@ -454,13 +466,96 @@ function viewProfile() {
   main.append(header("Profile & home"), h("div", { class: "panel" }, PROFILE.map(f => input(f, getPath(site, f.path), v => setPath(site, f.path, v)))), mobileFoot());
 }
 
+/* ---------- add a movie by searching TMDB: title, year and director fill in on their own ---------- */
+function movieFinder(items, onAdd) {
+  const wrap = h("section", { class: "finder", hidden: true });
+  const hide = () => { wrap.hidden = true; };
+
+  function needKey() {
+    wrap.textContent = "";
+    const key = h("input", { type: "password", placeholder: "TMDB API key or Read Access Token", autocomplete: "off", spellcheck: "false" });
+    wrap.append(h("p", { class: "status" }, "Searching movies needs a free TMDB key (once per device). ",
+        h("a", { href: "https://www.themoviedb.org/settings/api", target: "_blank", rel: "noopener" }, "Get one here"), "."),
+      h("div", { class: "inline" }, key, h("button", { class: "btn small", onclick: async () => {
+        try { localStorage.setItem(TMDB_KEY, key.value.trim()); await tmdb("/configuration"); show(); }
+        catch (e) { try { localStorage.removeItem(TMDB_KEY); } catch (_) {} toast(e.message, true); }
+      } }, "Save key"), h("button", { class: "btn small", onclick: hide }, "Close")));
+  }
+
+  function show() {
+    wrap.hidden = false;
+    if (!tmdbKey()) return needKey();
+    wrap.textContent = "";
+    const q = h("input", { type: "search", placeholder: "Type a movie title (add a year to narrow it down)…", autocomplete: "off", spellcheck: "false", "aria-label": "Search movies" });
+    const list = h("ul", { class: "found" });
+    wrap.append(h("div", { class: "inline" }, q, h("button", { class: "btn small", onclick: hide }, "Close")), list);
+    let results = [], sel = 0, timer = 0, seq = 0;
+
+    const mark = i => {
+      const rows = [...list.children];
+      if (!rows.length) return;
+      sel = (i + rows.length) % rows.length;
+      rows.forEach((li, k) => li.classList.toggle("sel", k === sel));
+      rows[sel].scrollIntoView({ block: "nearest" });
+    };
+    function render() {
+      list.textContent = "";
+      results.forEach((r, i) => {
+        const year = (r.release_date || "").slice(0, 4);
+        const have = items.some(m => m.tmdb === r.id || (m.title === r.title && String(m.year || "") === year));
+        list.append(h("li", { class: i === sel ? "sel" : "" }, h("button", { type: "button", onclick: () => pick(r) },
+          h("span", { class: "poster", style: r.poster_path ? `background-image:url("https://image.tmdb.org/t/p/w92${r.poster_path}")` : "" }),
+          h("span", { class: "meta" }, h("b", { dir: "auto" }, r.title), h("small", {}, year || "no date"), have ? h("small", { class: "have" }, " · already in your list") : null))));
+      });
+    }
+    async function run() {
+      const raw = q.value.trim(), mine = ++seq;
+      if (raw.length < 2) { results = []; render(); return; }
+      const ym = raw.match(/^(.*\S)\s+((?:19|20)\d\d)$/); // "arrival 2016"
+      try {
+        const r = await tmdb("/search/movie", { query: ym ? ym[1] : raw, year: ym ? ym[2] : "" });
+        if (mine !== seq) return; // a newer search is already running
+        results = (r.results || []).slice(0, 8); sel = 0; render();
+        if (!results.length) list.append(h("li", { class: "none" }, "No movies found."));
+      } catch (e) { toast(e.message, true); }
+    }
+    async function pick(r) {
+      const year = (r.release_date || "").slice(0, 4);
+      const dupe = items.findIndex(m => m.tmdb === r.id || (m.title === r.title && String(m.year || "") === year));
+      if (dupe >= 0) { toast("Already in your list"); hide(); onAdd(dupe); return; }
+      let by = "";
+      try { const c = await tmdb(`/movie/${r.id}/credits`); by = (c.crew || []).filter(x => x.job === "Director").map(x => x.name).slice(0, 2).join(" & "); } catch (_) {}
+      const m = { title: r.title, tmdb: r.id };
+      if (year) m.year = Number(year);
+      if (by) m.by = by;
+      items.unshift(m); markDirty(); hide();
+      toast(`Added “${r.title}”. Set your rating below, then Save.`);
+      onAdd(0);
+    }
+    q.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 250); });
+    q.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown") { e.preventDefault(); mark(sel + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); mark(sel - 1); }
+      else if (e.key === "Enter") { e.preventDefault(); clearTimeout(timer); if (results[sel]) pick(results[sel]); else run(); }
+      else if (e.key === "Escape") hide();
+    });
+    q.focus();
+  }
+  wrap.open = show;
+  return wrap;
+}
+
 function viewList(id) {
   const def = LISTS[id], items = listOf(def), main = $("#main");
   main.textContent = "";
   const search = h("input", { type: "search", placeholder: `Search ${def.label.toLowerCase()}…`, oninput: () => draw() });
   const box = h("div", { class: "items" });
+  const manual = () => { items.unshift({}); markDirty(); draw(0); };
+  const finder = id === "movies" ? movieFinder(items, i => { draw(i); const el = $(".item.open"); if (el) el.scrollIntoView({ block: "center" }); }) : null;
   main.append(header(`${def.label} (${items.length})`), h("div", { class: "tools" }, search,
-    h("button", { class: "btn", onclick: () => { items.unshift({}); markDirty(); draw(0); } }, "+ Add")), box, mobileFoot());
+    ...(finder
+      ? [h("button", { class: "btn primary", onclick: () => finder.open() }, "+ Find movie"), h("button", { class: "btn", onclick: manual }, "+ Manual")]
+      : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder] : []), box, mobileFoot());
 
   function draw(openIndex) {
     const q = search.value.trim().toLowerCase();

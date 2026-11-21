@@ -685,28 +685,104 @@
     {
       "title": "Hollow Knight",
       "year": 2017,
-      "by": "Team Cherry",
-      "rating": 5,
-      "note": "Atmosphere masterclass.",
-      "now": true
-    },
-    {
-      "title": "Outer Wilds",
-      "year": 2019,
-      "by": "Mobius Digital",
-      "rating": 5
-    },
-    {
-      "title": "Hades",
-      "year": 2020,
-      "by": "Supergiant Games",
-      "rating": 4
+      "by": "Team Cherry"
     },
     {
       "title": "Celeste",
       "year": 2018,
-      "by": "Maddy Makes Games",
-      "rating": 4
+      "by": "Maddy Makes Games"
+    },
+    {
+      "title": "Resident Evil 7: Biohazard",
+      "year": 2017,
+      "by": "Capcom"
+    },
+    {
+      "title": "Resident Evil Village",
+      "year": 2021,
+      "by": "Capcom"
+    },
+    {
+      "title": "The Last of Us",
+      "by": "Naughty Dog"
+    },
+    {
+      "title": "Horizon Zero Dawn",
+      "year": 2017,
+      "by": "Guerrilla Games"
+    },
+    {
+      "title": "How to Fish"
+    },
+    {
+      "title": "Call of Duty: Infinite Warfare",
+      "year": 2016,
+      "by": "Infinity Ward"
+    },
+    {
+      "title": "Minecraft",
+      "year": 2011,
+      "by": "Mojang Studios"
+    },
+    {
+      "title": "Assassin's Creed Origins",
+      "year": 2017,
+      "by": "Ubisoft Montreal"
+    },
+    {
+      "title": "Undertale",
+      "year": 2015,
+      "by": "Toby Fox"
+    },
+    {
+      "title": "No, I'm Not a Human",
+      "year": 2022,
+      "by": "Trioskaz"
+    },
+    {
+      "title": "The Binding of Isaac: Repentance",
+      "year": 2021,
+      "by": "Edmund McMillen"
+    },
+    {
+      "title": "Detroit: Become Human",
+      "year": 2018,
+      "by": "Quantic Dream"
+    },
+    {
+      "title": "Little Nightmares II",
+      "year": 2021,
+      "by": "Tarsier Studios"
+    },
+    {
+      "title": "Balatro",
+      "year": 2024,
+      "by": "LocalThunk"
+    },
+    {
+      "title": "Cuphead",
+      "year": 2017,
+      "by": "Studio MDHR"
+    },
+    {
+      "title": "It Takes Two",
+      "year": 2021,
+      "by": "Hazelight Studios"
+    },
+    {
+      "title": "Portal",
+      "year": 2007,
+      "by": "Valve"
+    },
+    {
+      "title": "Horizon Forbidden West",
+      "year": 2022,
+      "by": "Guerrilla Games"
+    },
+    {
+      "title": "Uncharted 4: A Thief's End",
+      "year": 2016,
+      "by": "Naughty Dog"
     }
   ],
   "books": [

@@ -423,7 +423,7 @@ function input(def, value, onChange) {
       : def.type === "roles" ? (value || []).map(r => `${r.title || ""} | ${r.dates || ""}`).join("\n") : value || "";
     wrap.append(h("textarea", { dir: "auto", oninput: e => {
       const v = e.target.value;
-      if (def.type === "paras") { const parts = v.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); set(parts.length > 1 ? parts : parts[0]); }
+      if (def.type === "paras") { const parts = v.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); set(parts.length ? parts : undefined); // always a list, even for one paragraph }
       else if (def.type === "roles") set(v.split("\n").map(l => l.trim()).filter(Boolean).map(l => { const [title, dates = ""] = l.split("|").map(s => s.trim()); return { title, dates }; }));
       else set(v || undefined);
     } }, txt));

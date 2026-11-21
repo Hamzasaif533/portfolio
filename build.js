@@ -451,7 +451,7 @@ function aboutPage(site) {
   <h1 class="sr-only">About</h1>
   <section class="row">
     <div class="side">${avatar}</div>
-    <div class="body bio">${(a.bio || []).map(p => `<p dir="auto">${inline(p)}</p>`).join("")}${a.signoff ? `<p class="dim">${esc(a.signoff)}</p>` : ""}</div>
+    <div class="body bio">${[].concat(a.bio || []).map(p => `<p dir="auto">${inline(p)}</p>`).join("")}${a.signoff ? `<p class="dim">${esc(a.signoff)}</p>` : ""}</div>
   </section>
   <section class="row">
     <h2 class="side">Q&amp;A</h2>

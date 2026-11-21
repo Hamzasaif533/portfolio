@@ -41,7 +41,7 @@ main { padding: 22px 32px 120px; max-width: 1000px; width: 100%; min-width: 0; }
 .btn.small { min-height: 30px; padding: 3px 12px; font-size: 12px; }
 .status { font-size: 12px; color: var(--mute); }
 
-.tools { display: flex; gap: 10px; align-items: center; margin: 14px 0 10px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
 .tools input[type=search] { flex: 1; }
 input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea {
   width: 100%; padding: 8px 10px; background: #0b0b0b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
@@ -525,7 +525,7 @@ function movieFinder(items, onAdd) {
       if (dupe >= 0) { toast("Already in your list"); hide(); onAdd(dupe); return; }
       let by = "";
       try { const c = await tmdb(`/movie/${r.id}/credits`); by = (c.crew || []).filter(x => x.job === "Director").map(x => x.name).slice(0, 2).join(" & "); } catch (_) {}
-      const m = { title: r.title, tmdb: r.id };
+      const m = { title: r.title, tmdb: r.id, watched: new Date().toLocaleDateString("en-CA") }; // watched today (you can change it)
       if (year) m.year = Number(year);
       if (by) m.by = by;
       items.unshift(m); markDirty(); hide();
@@ -545,6 +545,82 @@ function movieFinder(items, onAdd) {
   return wrap;
 }
 
+/* ---------- import real watch dates from a Letterboxd export (.zip, or diary.csv / watched.csv) ---------- */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cur = "", quoted = false;
+  text = text.replace(/^﻿/, "");
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else quoted = false; } else cur += c; }
+    else if (c === '"') quoted = true;
+    else if (c === ",") { row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); cur = ""; if (row.length > 1 || row[0] !== "") rows.push(row); row = []; }
+    else cur += c;
+  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  const head = rows.shift() || [];
+  return rows.map(r => Object.fromEntries(head.map((k, i) => [k.trim(), (r[i] || "").trim()])));
+}
+async function readZip(buf) {
+  const dv = new DataView(buf), u8 = new Uint8Array(buf), files = {};
+  let end = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 66000); i--) if (dv.getUint32(i, true) === 0x06054b50) { end = i; break; }
+  if (end < 0) throw new Error("That doesn't look like a zip file.");
+  const count = dv.getUint16(end + 10, true);
+  let p = dv.getUint32(end + 16, true);
+  for (let n = 0; n < count && dv.getUint32(p, true) === 0x02014b50; n++) {
+    const method = dv.getUint16(p + 10, true), size = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nl));
+    p += 46 + nl + el + cl;
+    if (!/(^|\/)(diary|watched)\.csv$/i.test(name)) continue;
+    const start = off + 30 + dv.getUint16(off + 26, true) + dv.getUint16(off + 28, true);
+    let data = u8.subarray(start, start + size);
+    if (method === 8) data = new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+    else if (method !== 0) continue;
+    files[name.split("/").pop().toLowerCase()] = new TextDecoder().decode(data);
+  }
+  return files;
+}
+const titleKey = s => String(s).toLowerCase().normalize("NFKD").replace(/&/g, "and").replace(/[^a-z0-9]+/g, "");
+async function importWatched(file, items) {
+  let diary = "", watched = "";
+  const buf = await file.arrayBuffer();
+  if (buf.byteLength > 4 && new DataView(buf).getUint16(0, false) === 0x504b) {
+    const z = await readZip(buf);
+    diary = z["diary.csv"] || ""; watched = z["watched.csv"] || "";
+    if (!diary && !watched) throw new Error("No diary.csv or watched.csv inside that zip.");
+  } else {
+    const text = new TextDecoder().decode(buf);
+    if (/Watched Date/i.test(text.split("\n")[0])) diary = text; else watched = text;
+  }
+  const index = (rows, col) => {
+    const map = new Map();
+    rows.forEach(r => {
+      if (!r.Name || !/^\d{4}-\d{2}-\d{2}$/.test(r[col] || "")) return;
+      const k = titleKey(r.Name);
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push({ year: Number(r.Year) || 0, date: r[col] });
+    });
+    return map;
+  };
+  // the diary has the real "watched on" dates; watched.csv only fills films that aren't in the diary
+  const maps = [index(parseCSV(diary), "Watched Date"), index(parseCSV(watched), "Date")];
+  let matched = 0, changed = 0;
+  const missing = [];
+  for (const mv of items) {
+    let best = "";
+    for (const map of maps) {
+      const hit = (map.get(titleKey(mv.title)) || []).filter(x => !mv.year || !x.year || Math.abs(x.year - mv.year) <= 1);
+      if (hit.length) { best = hit.map(x => x.date).sort().pop(); break; } // a rewatch counts as the latest date
+    }
+    if (!best) { missing.push(mv.title); continue; }
+    matched++;
+    if (mv.watched !== best) { mv.watched = best; changed++; }
+  }
+  return { matched, changed, missing };
+}
+
 function viewList(id) {
   const def = LISTS[id], items = listOf(def), main = $("#main");
   main.textContent = "";
@@ -552,10 +628,23 @@ function viewList(id) {
   const box = h("div", { class: "items" });
   const manual = () => { items.unshift({}); markDirty(); draw(0); };
   const finder = id === "movies" ? movieFinder(items, i => { draw(i); const el = $(".item.open"); if (el) el.scrollIntoView({ block: "center" }); }) : null;
+  const note = h("p", { class: "status", hidden: true, style: "margin:0 0 12px;line-height:1.7" });
+  const importIn = finder ? h("input", { type: "file", accept: ".zip,.csv", hidden: true, onchange: async e => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    try {
+      const r = await importWatched(f, items);
+      if (r.changed) markDirty();
+      note.hidden = false;
+      note.textContent = `Matched ${r.matched} of ${items.length} films${r.changed ? `; ${r.changed} watch dates updated. Press Save.` : "; their dates were already up to date."}` + (r.missing.length ? ` Not found in the export: ${r.missing.join(", ")}.` : "");
+      draw();
+    } catch (err) { toast(err.message, true); }
+  } }) : null;
   main.append(header(`${def.label} (${items.length})`), h("div", { class: "tools" }, search,
     ...(finder
-      ? [h("button", { class: "btn primary", onclick: () => finder.open() }, "+ Find movie"), h("button", { class: "btn", onclick: manual }, "+ Manual")]
-      : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder] : []), box, mobileFoot());
+      ? [h("button", { class: "btn primary", onclick: () => finder.open() }, "+ Find movie"), h("button", { class: "btn", onclick: manual }, "+ Manual"),
+         h("button", { class: "btn", title: "Fill in when you watched each film, from your Letterboxd export", onclick: () => importIn.click() }, "Import dates"), importIn]
+      : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder, note] : []), box, mobileFoot());
 
   function draw(openIndex) {
     const q = search.value.trim().toLowerCase();

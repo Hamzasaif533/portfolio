@@ -382,8 +382,13 @@ function designPage(site) {
 }
 
 /* film diary: one frame per movie, grouped by the year you watched it */
+/* Newest watched first. Films without a watched date keep your list order, after the dated ones. */
+const byWatched = movies => movies.map((m, i) => [m, i])
+  .sort((a, b) => (b[0].watched ? 1 : 0) - (a[0].watched ? 1 : 0) || String(b[0].watched || "").localeCompare(String(a[0].watched || "")) || a[1] - b[1])
+  .map(([m]) => m);
+
 function filmDiary(movies = []) {
-  const withFrames = movies.filter(m => m.frame);
+  const withFrames = byWatched(movies).filter(m => m.frame);
   if (!withFrames.length) return "";
   const groups = new Map();
   withFrames.forEach(m => {
@@ -395,7 +400,7 @@ function filmDiary(movies = []) {
   // TMDB's terms ask for a credit wherever their images are shown
   const credit = withFrames.some(m => /\.jpe?g$/i.test(m.frame || "")) ? `<p class="credit">Stills via TMDB</p>` : "";
   return order.map(y => {
-    const list = groups.get(y).sort((a, b) => String(b.watched || "").localeCompare(String(a.watched || "")));
+    const list = groups.get(y); // already newest-watched first
     return `<section class="diary" aria-label="${esc(y)}">
       <h2 class="diary-head"><span>${esc(y)}</span><span>${pad2(list.length)}</span></h2>
       <div class="frames">${list.map(m => {
@@ -411,7 +416,7 @@ function filmDiary(movies = []) {
 const SHOW = 5; // items shown before "Show more"
 
 function shelfPage(site) {
-  const movies = site.movies || [], books = site.books || [], games = site.games || [];
+  const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // a film with a frame opens it full screen when its row is clicked (or Enter / Space)
   const frameView = it => it.frame
     ? ` role="button" aria-label="${esc(it.title)}: view frame"${viewAttrs("movie-list", it.frame, it.title, [it.year, it.by, ratingText(it)].filter(Boolean).join(" · "), it.note)}`

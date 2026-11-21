@@ -388,29 +388,18 @@ const byWatched = movies => movies.map((m, i) => [m, i])
   .map(([m]) => m);
 
 function filmDiary(movies = []) {
-  const withFrames = byWatched(movies).filter(m => m.frame);
+  const withFrames = byWatched(movies).filter(m => m.frame); // newest watched first, one continuous wall
   if (!withFrames.length) return "";
-  const groups = new Map();
-  withFrames.forEach(m => {
-    const y = (m.watched || "").slice(0, 4) ? `${m.watched.slice(0, 4)} film diary` : "Film diary";
-    if (!groups.has(y)) groups.set(y, []);
-    groups.get(y).push(m);
-  });
-  const order = [...groups.keys()].sort((a, b) => (a === "Film diary" ? 1 : b === "Film diary" ? -1 : b.localeCompare(a)));
   // TMDB's terms ask for a credit wherever their images are shown
-  const credit = withFrames.some(m => /\.jpe?g$/i.test(m.frame || "")) ? `<p class="credit">Stills via TMDB</p>` : "";
-  return order.map(y => {
-    const list = groups.get(y); // already newest-watched first
-    return `<section class="diary" aria-label="${esc(y)}">
-      <h2 class="diary-head"><span>${esc(y)}</span><span>${pad2(list.length)}</span></h2>
-      <div class="frames">${list.map(m => {
-        const meta = [m.year, m.by, ratingText(m), m.watched ? `watched ${m.watched.replace(/-/g, ".")}` : ""].filter(Boolean).join(" · ");
-        return `<button type="button" class="tile frame" id="f-${slug(m.title)}" data-item${viewAttrs("frames", m.frame, m.title, meta, m.note)}>
-          ${tileImg(m.frame, `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
-        </button>`;
-      }).join("")}</div>
-    </section>`;
-  }).join("") + credit;
+  const credit = withFrames.some(m => /.jpe?g$/i.test(m.frame || "")) ? `<p class="credit">Stills via TMDB</p>` : "";
+  return `<section class="diary" aria-label="Film diary">
+    <div class="frames">${withFrames.map(m => {
+      const meta = [m.year, m.by, ratingText(m), m.watched ? `watched ${m.watched.replace(/-/g, ".")}` : ""].filter(Boolean).join(" · ");
+      return `<button type="button" class="tile frame" id="f-${slug(m.title)}" data-item${viewAttrs("frames", m.frame, m.title, meta, m.note)}>
+        ${tileImg(m.frame, `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
+      </button>`;
+    }).join("")}</div>
+  </section>${credit}`;
 }
 
 const SHOW = 5; // items shown before "Show more"

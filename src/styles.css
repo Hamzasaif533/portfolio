@@ -226,9 +226,9 @@ article[lang="ar"] h1 { font-size: 26px; font-weight: 600; line-height: 1.6; }
 .diary { margin: 18px 0 64px; }
 .diary-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--line); font-weight: 400; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
 .diary-head span:first-child { color: var(--fg); }
-.frames { columns: 3; column-gap: 6px; }
+.frames { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; align-items: start; } /* reads left to right, then down: newest first */
 button.tile { display: block; width: 100%; padding: 0; border: 0; font: inherit; color: inherit; text-align: start; cursor: zoom-in; }
-.tile.frame { border-radius: 14px; margin-bottom: 6px; }
+.tile.frame { border-radius: 14px; margin: 0; }
 .tile:focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; }
 
 /* ---------- viewer ---------- */
@@ -314,8 +314,8 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .today a { grid-template-columns: 6.2em minmax(0, 1fr) 22px auto; gap: 8px; }
   .today .r { min-width: 2.6em; }
   .masonry, .duo { columns: 1; }
-  .frames { column-gap: 4px; }
-  .tile.frame { border-radius: 10px; margin-bottom: 4px; }
+  .frames { gap: 4px; }
+  .tile.frame { border-radius: 10px; }
   .viewer { padding: 60px 12px 0; }
   .vw-nav { display: none; }
   .gallery.g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -327,7 +327,7 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .page-head p { width: 100%; }
   .shelf-tabs { gap: 14px; }
   .shelf-tabs button { font-size: 13px; gap: 6px; }
-  .frames { columns: 2; }
+  .frames { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shelf .b { display: none; }
   .sort { justify-content: flex-start; }
   .about { padding: 84px 24px calc(var(--bar-h) + 40px); }

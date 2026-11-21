@@ -581,7 +581,11 @@ function build() {
   write("search.json", JSON.stringify(searchIndex(site, posts).map(it => ({ ...it, u: cleanUrl(it.u) }))));
   write("app.js", minifyJS(fs.readFileSync(path.join(ROOT, "src/app.js"), "utf8")));
   // the editor on the live site: works only with your GitHub token (see README → Edit from anywhere)
-  write("admin/index.html", fs.readFileSync(path.join(ROOT, "src/admin.html"), "utf8"));
+  const adminHtml = fs.readFileSync(path.join(ROOT, "src/admin.html"), "utf8");
+  // stop the build (so a broken editor is never published) if its script has a syntax error
+  try { new Function(adminHtml.match(/<script>([\s\S]*?)<\/script>/)[1]); }
+  catch (e) { throw new Error("src/admin.html has a script error: " + e.message); }
+  write("admin/index.html", adminHtml);
   write("robots.txt", "User-agent: *\nDisallow: /admin/\n");
   // host settings (Netlify + Cloudflare Pages both read this file)
   write("_headers", [

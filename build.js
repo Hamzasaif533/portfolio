@@ -436,9 +436,10 @@ function watchlistPanel(site) {
   const wl = site.watchlist || [];
   if (!wl.length) return `<p class="empty-note">Your Letterboxd watchlist shows here after the next build.</p>`;
   const note = wl.some(f => f.lbRating) ? `<p class="wl-note">Ratings are Letterboxd averages</p>` : "";
-  return note + `<ul class="list wl">${wl.map(f => {
-    const url = `https://letterboxd.com/film/${f.slug}/`;
-    return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item><span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span><span class="r"${f.lbRating ? ` title="Letterboxd average" aria-label="Letterboxd average ${f.lbRating.toFixed(2)} out of 5"` : ""}>${f.lbRating ? `${f.lbRating.toFixed(1)}<i>★</i>` : ""}</span></a></li>`;
+  return note + `<ul class="list pl wl">${wl.map(f => {
+    const url = `https://letterboxd.com/film/${f.slug}/`, p = coverPath("film", f);
+    const poster = `<span class="p" aria-hidden="true">${localFile(p) ? `<img src="${esc(p)}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(f.title)}</span>`}</span>`;
+    return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item>${poster}<span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span><span class="r"${f.lbRating ? ` title="Letterboxd average" aria-label="Letterboxd average ${f.lbRating.toFixed(2)} out of 5"` : ""}>${f.lbRating ? `${f.lbRating.toFixed(1)}<i>★</i>` : ""}</span></a></li>`;
   }).join("")}</ul>`;
 }
 
@@ -632,13 +633,13 @@ function shelfPage(site) {
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // rows are plain (frames open from the Movie frames tab only)
   const frameView = () => "";
-  // every movie is a poster card: the poster you chose in the editor, else Letterboxd's
-  const thumb = it => {
-    const own = localFile(it.poster), p = own ? it.poster : localFile(smallPoster(it)) ? smallPoster(it) : "";
+  // every movie, game and book is a poster card: the poster you chose in the editor, else the one found for it
+  const thumb = (it, kind) => {
+    const own = localFile(it.poster), p = own ? it.poster : localFile(coverPath(kind, it)) ? coverPath(kind, it) : "";
     return `<span class="p" aria-hidden="true">${p ? `<img src="${esc(p)}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(it.title)}</span>`}</span>`;
   };
   const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
-      ${posters ? thumb(it) : ""}<span class="t">${esc(it.title)}</span>
+      ${posters ? thumb(it, posters) : ""}<span class="t">${esc(it.title)}</span>
       <span class="y">${esc(it.year || "")}</span>
       <span class="b">${esc(it.by || "")}</span>
       <span class="r"${it.rating != null ? ` aria-label="${it.rating} out of 5${it.liked ? ", liked" : ""}"` : ""}>${ratingText(it)}</span>
@@ -649,10 +650,10 @@ function shelfPage(site) {
     .map(([k, t]) => `<button type="button" data-item data-sort="${k}" aria-pressed="${k === "recent"}" data-arrow="↓">${t}</button>`).join("")}</div>`;
   const frames = movies.filter(m => m.frame).length;
   const TABS_ = [
-    ["movies", "Movies", movies.length, sortBar + list(movies, true)],
+    ["movies", "Movies", movies.length, sortBar + list(movies, "film")],
     ["diary", "Movie frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
-    ["games", "Games", games.length, list(games)],
-    ["books", "Books", books.length, list(books)],
+    ["games", "Games", games.length, list(games, "game")],
+    ["books", "Books", books.length, list(books, "book")],
     ["watchlist", "Watchlist", (site.watchlist || []).length, watchlistPanel(site)],
     ["stats", "Stats", null, statsPanel(site)],
   ];
@@ -799,7 +800,8 @@ const nameYear = n => { const m = unent(n).match(/^(.*) \((\d{4})\)$/); return m
 const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, n, slug]) => ({ ...nameYear(n), slug }));
 const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
-const smallPoster = m => `assets/posters/film/${[slug(m.title), m.year].filter(Boolean).join("-")}.jpg`;
+// posters and covers live in assets/posters/<film|game|book>/<title>-<year>.jpg (the editor uses the same names)
+const coverPath = (kind, it) => `assets/posters/${kind}/${[slug(it.title), it.year].filter(Boolean).join("-")}.jpg`;
 const localFile = p => p && !/^(https?:)?\/\//i.test(p) && fs.existsSync(path.join(ROOT, p)); // a file in this repo
 // your top 4 from content/site.json; films picked in the editor have no Letterboxd slug yet, so find it
 const topFour = (site, titles = {}) => (site.top4 || []).filter(f => f && (f.slug || f.title)).slice(0, 4)
@@ -895,11 +897,13 @@ async function refreshLetterboxd() {
     } catch (_) {}
   }
 
-  // a poster for every movie on the shelf, named after the film so the editor can find them
-  const smallJobs = (site.movies || []).map(mv => {
-    const m = meta.films[meta.titles[filmKey(mv.title, mv.year)]], file = path.join(ROOT, smallPoster(mv));
-    return m && m.poster && !fs.existsSync(file) ? { url: m.poster.replace(/-0-\d+-0-\d+-crop/, "-0-460-0-690-crop"), file } : null;
-  }).filter(Boolean);
+  // a poster for every movie on the shelf and the watchlist, named after the film so the editor can find them
+  const smallJobs = (site.movies || []).map(mv => [mv, meta.films[meta.titles[filmKey(mv.title, mv.year)]]])
+    .concat(films.map(f => [f, meta.films[f.slug]]))
+    .map(([it, m]) => {
+      const file = path.join(ROOT, coverPath("film", it));
+      return m && m.poster && !fs.existsSync(file) ? { url: m.poster.replace(/-0-\d+-0-\d+-crop/, "-0-460-0-690-crop"), file } : null;
+    }).filter(Boolean);
   let got = 0;
   const grab = async () => {
     for (let j; (j = smallJobs.shift());) {
@@ -1199,7 +1203,70 @@ function dev() {
   });
 }
 
-Promise.all([refreshRepos(), refreshLetterboxd()]).then(() => {
+/* Covers for games and books, found before each build and kept in assets/posters/<game|book>/.
+   Games: Steam's portrait art, else the box art on Wikipedia, else Steam's wide header.
+   Books: Open Library. Anything nothing was found for is retried after 30 days (content/covers.json).
+   A cover you choose in the editor (the item's "poster") always wins. */
+const COVERS_JSON = path.join(ROOT, "content/covers.json");
+const COVER_UA = { "User-Agent": "static-site-builder/1.0" };
+const coverNorm = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, " ").trim();
+async function getJSON(u) { const r = await fetch(u, { headers: COVER_UA, signal: AbortSignal.timeout(12000) }); if (!r.ok) throw new Error(r.status); return r.json(); }
+async function getImage(u) { const r = await fetch(u, { headers: COVER_UA, signal: AbortSignal.timeout(15000) }); return r.ok && /^image\//.test(r.headers.get("content-type") || "") ? Buffer.from(await r.arrayBuffer()) : null; }
+async function gameCover(g) {
+  let id = null;
+  try {
+    const r = await getJSON(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(g.title)}&cc=us&l=en`);
+    const hit = (r.items || []).find(i => coverNorm(i.name) === coverNorm(g.title));
+    if (hit) id = hit.id;
+  } catch (_) {}
+  if (id) for (const f of ["library_600x900_2x.jpg", "library_600x900.jpg"]) { const b = await getImage(`https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/${f}`).catch(() => null); if (b) return b; }
+  try {
+    const r = await getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&gsrlimit=1&gsrsearch=${encodeURIComponent(`${g.title} ${g.year || ""} video game`)}&prop=pageimages&piprop=original&pilicense=any`);
+    const p = Object.values((r.query || {}).pages || {})[0];
+    if (p && p.original && coverNorm(p.title).includes(coverNorm(g.title).split(" ").slice(0, 2).join(" "))) { const b = await getImage(p.original.source); if (b) return b; }
+  } catch (_) {}
+  if (id) try {
+    const d = await getJSON(`https://store.steampowered.com/api/appdetails?appids=${id}&filters=basic`);
+    const h = d[id] && d[id].data && d[id].data.header_image;
+    if (h) return await getImage(h);
+  } catch (_) {}
+  return null;
+}
+async function bookCover(b) {
+  try {
+    const author = String(b.by || "").split(/&| and /)[0].trim();
+    const r = await getJSON(`https://openlibrary.org/search.json?title=${encodeURIComponent(b.title)}${author ? `&author=${encodeURIComponent(author)}` : ""}&limit=5&fields=cover_i`);
+    const d = (r.docs || []).find(d => d.cover_i);
+    return d ? await getImage(`https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg`) : null;
+  } catch (_) { return null; }
+}
+async function refreshCovers() {
+  let site; try { site = loadSite(); } catch (_) { return; }
+  if (typeof fetch !== "function") return;
+  let misses = {}; try { misses = JSON.parse(fs.readFileSync(COVERS_JSON, "utf8")).missing || {}; } catch (_) {}
+  const now = Date.now(), jobs = [];
+  for (const [kind, items, find] of [["game", site.games || [], gameCover], ["book", site.books || [], bookCover]])
+    for (const it of items) {
+      const file = coverPath(kind, it);
+      if (!it.title || localFile(it.poster) || fs.existsSync(path.join(ROOT, file))) continue;
+      if (misses[file] && now - new Date(misses[file]) < 30 * 864e5) continue;
+      jobs.push({ file, it, find });
+    }
+  let got = 0, changed = false;
+  const total = jobs.length;
+  const work = async () => { // two at a time: Wikipedia and Steam turn away bursts
+    for (let j; (j = jobs.shift());) {
+      const buf = await j.find(j.it).catch(() => null);
+      if (buf) { fs.mkdirSync(path.dirname(path.join(ROOT, j.file)), { recursive: true }); fs.writeFileSync(path.join(ROOT, j.file), buf); got++; if (misses[j.file]) { delete misses[j.file]; changed = true; } }
+      else { misses[j.file] = new Date().toISOString().slice(0, 10); changed = true; }
+    }
+  };
+  await Promise.all([work(), work()]);
+  if (changed) fs.writeFileSync(COVERS_JSON, JSON.stringify({ missing: misses }, null, 2) + "\n");
+  if (total) console.log(`covers: ${got} of ${total} found`);
+}
+
+Promise.all([refreshRepos(), refreshLetterboxd(), refreshCovers()]).then(() => {
   build();
   if (process.argv.includes("--dev")) dev();
 });

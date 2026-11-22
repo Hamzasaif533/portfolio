@@ -954,21 +954,22 @@ async function shrinkPoster(blob, w) {
     return await new Promise(r => c.toBlob(b => r(b || blob), "image/jpeg", .86));
   } catch (_) { return blob; }
 }
-const smallPoster = m => `assets/posters/film/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // made by the build from Letterboxd
+const coverPath = (kind, m) => `assets/posters/${kind}/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // found by the build (Letterboxd, Steam, Wikipedia, Open Library)
 const filmKeyOf = m => `${m.title}|${m.year || ""}`;
 
 /* One poster chooser: current poster, TMDB posters, upload, back to Letterboxd.
    o.film() → the movie (title, year, tmdb) · o.current() → your chosen path · o.fallback() → what shows otherwise
-   o.set(path) / o.clear() · o.width → resize to this width · o.changed() → after any change */
+   o.set(path) / o.clear() · o.width → resize to this width · o.changed() → after any change
+   o.label → name of the default ("Letterboxd poster") · o.noTmdb → upload only (games, books) */
 function posterChooser(o) {
   const preview = h("div", { class: "poster-now" });
   const strip = h("div", { class: "strip posters" });
   const showNow = () => {
     preview.textContent = "";
     const own = o.current(), src = own || o.fallback();
-    const none = o.film() ? "Letterboxd poster after the next build" : "Empty";
+    const def = o.label || "Letterboxd poster", none = !o.film() ? "Empty" : o.noTmdb ? "No cover found yet" : `${def} after the next build`;
     preview.append(src ? h("img", { src: thumbUrl(src), alt: "", onerror: e => e.target.replaceWith(h("span", {}, none)) }) : h("span", {}, none),
-      h("small", {}, own ? "Your choice" : o.fallbackLabel ? o.fallbackLabel() : "Letterboxd poster"));
+      h("small", {}, own ? "Your choice" : o.fallbackLabel ? o.fallbackLabel() : def));
   };
   const changed = () => { markDirty(); showNow(); if (o.changed) o.changed(); };
   const choose = async (blob, name) => {
@@ -983,6 +984,7 @@ function posterChooser(o) {
   const load = async () => {
     strip.textContent = "";
     const f = o.film();
+    if (o.noTmdb) return strip.append(h("span", { class: "status" }, "Upload a cover image (portrait works best)."));
     if (!f) return strip.append(h("span", { class: "status" }, "Pick a film to see its posters."));
     if (!tmdbKey()) return strip.append(h("span", { class: "status" }, "Add a TMDB key (in Frame picker) to browse posters."));
     strip.append(h("span", { class: "status" }, "…"));
@@ -1008,7 +1010,7 @@ function posterChooser(o) {
   } });
   const tools = [
     h("button", { class: "btn small", onclick: () => fileIn.click() }, "Upload your own"), fileIn,
-    h("button", { class: "btn small", onclick: () => { if (o.current()) { o.clear(); strip.querySelectorAll(".still").forEach(x => x.classList.remove("on")); changed(); } } }, "Use Letterboxd poster"),
+    h("button", { class: "btn small", onclick: () => { if (o.current()) { o.clear(); strip.querySelectorAll(".still").forEach(x => x.classList.remove("on")); changed(); } } }, `Use ${o.label || "Letterboxd poster"}`),
   ];
   showNow();
   return { preview, strip, tools, load, showNow };
@@ -1020,12 +1022,15 @@ function viewPosters() {
   const movies = listOf(LISTS.movies).filter(m => m.title);
   const movieOf = f => f && movies.find(x => filmKeyOf(x) === filmKeyOf(f));
   const box = h("div", { class: "pick-list" });
-  const grid = h("div", { class: "poster-grid" });
+  const games = listOf(LISTS.games).filter(m => m.title), books = listOf(LISTS.books).filter(m => m.title);
+  const grid = h("div", { class: "poster-grid" }), gameGrid = h("div", { class: "poster-grid" }), bookGrid = h("div", { class: "poster-grid" });
   main.append(header("Posters"),
-    h("p", { class: "status", style: "margin:4px 0 14px" }, "Every movie shows a small poster on your Shelf, and your Top 4 show big ones on Stats. Keep the Letterboxd poster, or choose one from TMDB or upload your own. Press Save when you're done."),
+    h("p", { class: "status", style: "margin:4px 0 14px" }, "Every movie, game and book is a poster card on your Shelf, and your Top 4 lead Stats. Keep the poster that was found, choose a movie poster from TMDB, or upload your own. Press Save when you're done."),
     tmdbKey() ? null : h("p", { class: "note", style: "margin:0 0 14px" }, "To browse TMDB posters, add your TMDB key in ", h("button", { class: "btn small", onclick: () => go("frames") }, "Frame picker"), " first. Uploading works without it."),
     h("h3", { class: "sub" }, "Top 4"), box,
     h("h3", { class: "sub" }, `All movies `, h("small", {}, `${movies.length} · tap one to change its poster`)), grid,
+    h("h3", { class: "sub" }, `Games `, h("small", {}, `${games.length} · covers from Steam or Wikipedia`)), gameGrid,
+    h("h3", { class: "sub" }, `Books `, h("small", {}, `${books.length} · covers from Open Library`)), bookGrid,
     h("p", { class: "note", style: "margin-top:30px;font-size:11px;color:var(--dim)" }, "Fan-made posters belong to the artists who made them: upload one only if you have their permission. Posters from TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB."),
     mobileFoot());
 
@@ -1055,15 +1060,16 @@ function viewPosters() {
     box.append(row);
   }
 
-  // All movies: a grid of posters; tapping one opens its chooser
+  // All movies, games, books: grids of posters; tapping one opens its chooser
   const dlg = h("dialog", { class: "poster-dlg", onclick: e => { if (e.target === dlg) dlg.close(); } });
   main.append(dlg);
-  const cell = m => {
-    const img = () => h("img", { src: thumbUrl(m.poster || smallPoster(m)), alt: "", loading: "lazy", onerror: e => e.target.replaceWith(h("span", { class: "ph" }, "after next build")) });
+  const cell = (m, kind) => {
+    const img = () => h("img", { src: thumbUrl(m.poster || coverPath(kind, m)), alt: "", loading: "lazy", onerror: e => e.target.replaceWith(h("span", { class: "ph" }, m.title)) });
     const b = h("button", { class: "pg-cell" + (m.poster ? " own" : ""), title: `${m.title}${m.year ? ` (${m.year})` : ""}`, onclick: () => {
       const ch = posterChooser({
-        film: () => m, current: () => m.poster || "", fallback: () => smallPoster(m),
-        set: p => { m.poster = p; }, clear: () => { delete m.poster; }, width: 360,
+        film: () => m, current: () => m.poster || "", fallback: () => coverPath(kind, m),
+        label: kind === "film" ? "Letterboxd poster" : "found cover", noTmdb: kind !== "film",
+        set: p => { m.poster = p; }, clear: () => { delete m.poster; }, width: 400,
         changed: () => { b.classList.toggle("own", !!m.poster); b.firstChild.replaceWith(img()); },
       });
       dlg.textContent = "";
@@ -1074,7 +1080,9 @@ function viewPosters() {
     } }, img(), h("span", {}, m.title));
     return b;
   };
-  movies.forEach(m => grid.append(cell(m)));
+  movies.forEach(m => grid.append(cell(m, "film")));
+  games.forEach(m => gameGrid.append(cell(m, "game")));
+  books.forEach(m => bookGrid.append(cell(m, "book")));
 }
 
 /* ---------- navigation ---------- */

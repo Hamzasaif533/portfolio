@@ -503,3 +503,9 @@ html:has(dialog[open]) { overflow: hidden; }
   .shelf .list.pl .y, .shelf .list.pl .r { font-size: 11px; }
   .shelf .list.pl .b, .shelf .list.pl .n { display: none; }
 }
+/* watchlist cards open the film on Letterboxd */
+.shelf .list.pl.wl li { display: block; }
+.shelf .list.pl.wl a { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "p p" "t t" "y r"; gap: 0 8px; align-items: baseline; padding: 0; }
+.shelf .list.pl.wl .r i { font-style: normal; color: var(--dim); }
+.shelf .list.pl .p > span { padding: 16px; background: radial-gradient(120% 80% at 30% 0%, #262626, #0c0c0c 70%); color: var(--fg); font-size: 15px; letter-spacing: .02em; }
+@media (max-width: 700px) { .shelf .list.pl .p > span { padding: 8px; font-size: 12px; } }

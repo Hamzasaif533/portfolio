@@ -474,3 +474,6 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
 }
 .shelf .list li { transition: background .6s; }
 .shelf .list li.flash { background: #1c1c1c; transition: none; }
+/* while a popup is open (film list, search, viewer, shortcuts) the page behind it stays still */
+html:has(dialog[open]) { overflow: hidden; }
+.fl-list, .pal-list { overscroll-behavior: contain; }

@@ -98,6 +98,16 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .steps { display: grid; gap: 6px; padding-left: 1.2em; color: var(--mute); }
 .steps a { color: var(--fg); }
 @media (max-width: 760px) { .still { width: 150px; } }
+.top4-pick header { flex-wrap: wrap; align-items: center; gap: 8px; }
+.top4-pick header b { width: 1.4em; }
+.top4-pick select { flex: 1 1 220px; min-width: 0; }
+.poster-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: start; }
+.poster-now { display: grid; gap: 6px; }
+.poster-now img, .poster-now span { display: grid; place-items: center; width: 120px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); background: #0b0b0b; color: var(--dim); font-size: 11px; text-align: center; padding: 0; }
+.poster-now span { padding: 8px; }
+.poster-now small { color: var(--mute); font-size: 11px; }
+.still.poster { width: 120px; aspect-ratio: 2 / 3; }
+@media (max-width: 760px) { .poster-row { grid-template-columns: 90px minmax(0, 1fr); } .poster-now img, .poster-now span { width: 90px; } .still.poster { width: 96px; } }
 .toast { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); max-width: calc(100% - 36px); padding: 10px 16px; border-radius: 10px; background: var(--chip); border: 1px solid var(--chip-line); opacity: 0; transform: translateY(8px); transition: .2s; pointer-events: none; z-index: 20; }
 .toast.on { opacity: 1; transform: none; }
 .toast.err { color: #ff8a8a; }
@@ -898,13 +908,105 @@ function viewFrames() {
   draw(); count();
 }
 
+/* ---------- Top 4: choose the four films and a poster for each ----------
+   Posters: any poster TMDB has for the film (official, alternative, textless, international),
+   one you upload yourself (e.g. a fan poster you have permission to use), or the Letterboxd one. */
+const posterCache = new Map();
+async function findPosters(m) {
+  const k = `${m.title}|${m.year || ""}`;
+  if (posterCache.has(k)) return posterCache.get(k);
+  const job = (async () => {
+    let hit = m.tmdb ? { id: m.tmdb } : null, r;
+    if (!hit) { r = await tmdb("/search/movie", { query: m.title, year: m.year }); hit = r.results && r.results[0]; }
+    if (!hit && m.year) { r = await tmdb("/search/movie", { query: m.title }); hit = r.results && r.results[0]; }
+    if (!hit) return [];
+    const imgs = await tmdb(`/movie/${hit.id}/images`, { include_image_language: "en,null" });
+    return (imgs.posters || []).sort((a, b) => b.vote_count - a.vote_count || b.vote_average - a.vote_average).slice(0, 40).map(p => p.file_path);
+  })();
+  posterCache.set(k, job);
+  job.catch(() => posterCache.delete(k));
+  return job;
+}
+function viewPosters() {
+  const main = $("#main"); main.textContent = "";
+  site.top4 = Array.isArray(site.top4) ? site.top4 : [];
+  const movies = listOf(LISTS.movies).filter(m => m.title);
+  const keyOf = m => `${m.title}|${m.year || ""}`;
+  const box = h("div", { class: "pick-list" });
+  main.append(header("Top 4 posters"),
+    h("p", { class: "status", style: "margin:4px 0 14px" }, "Choose your four films, then a poster for each: tap one from TMDB, upload your own, or keep the Letterboxd poster. Press Save when you're done."),
+    tmdbKey() ? null : h("p", { class: "note", style: "margin:0 0 14px" }, "To browse TMDB posters, add your TMDB key in ", h("button", { class: "btn small", onclick: () => go("frames") }, "Frame picker"), " first. Uploading works without it."),
+    box,
+    h("p", { class: "note", style: "margin-top:30px;font-size:11px;color:var(--dim)" }, "Fan-made posters belong to the artists who made them: upload one only if you have their permission. Posters from TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB."),
+    mobileFoot());
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { io.unobserve(en.target); en.target._load(); } }), { rootMargin: "300px" });
+
+  for (let i = 0; i < 4; i++) {
+    const slot = () => site.top4[i] || null;
+    const preview = h("div", { class: "poster-now" });
+    const showNow = () => {
+      preview.textContent = "";
+      const f = slot();
+      const src = f && (f.poster || (f.slug ? `assets/posters/${f.slug}.jpg` : ""));
+      preview.append(src ? h("img", { src: thumbUrl(src), alt: "", onerror: e => e.target.replaceWith(h("span", {}, "Letterboxd poster after the next build")) }) : h("span", {}, f ? "Letterboxd poster after the next build" : "Empty"),
+        h("small", {}, f && f.poster ? "Your choice" : "Letterboxd poster"));
+    };
+    const choose = async (blob, name) => {
+      const f = slot(); if (!f) return toast("Pick a film first", true);
+      try {
+        const path = await upload(new File([blob], name, { type: blob.type || "image/jpeg" }), "posters");
+        f.poster = path; markDirty(); showNow(); toast("Poster chosen · press Save");
+      } catch (e) { toast(e.message, true); }
+    };
+    const strip = h("div", { class: "strip posters" });
+    const loadStrip = async () => {
+      strip.textContent = "";
+      const f = slot();
+      if (!f) return strip.append(h("span", { class: "status" }, "Pick a film to see its posters."));
+      if (!tmdbKey()) return strip.append(h("span", { class: "status" }, "Add a TMDB key to browse posters."));
+      strip.append(h("span", { class: "status" }, "…"));
+      try {
+        const m = movies.find(x => keyOf(x) === keyOf(f)) || f;
+        const paths = await findPosters(m);
+        strip.textContent = "";
+        if (!paths.length) return strip.append(h("span", { class: "status" }, "No posters found on TMDB."));
+        paths.forEach(p => strip.append(h("button", { class: "still poster", "aria-label": `Use this poster for ${f.title}`, onclick: async e => {
+          const b = e.currentTarget; b.disabled = true;
+          try {
+            const res = await fetch(`https://image.tmdb.org/t/p/w780${p}`);
+            if (!res.ok) throw new Error("Couldn't download that poster");
+            strip.querySelectorAll(".still").forEach(x => x.classList.toggle("on", x === b));
+            await choose(await res.blob(), `${slugify(f.title) || "film"}-${p.replace(/\W|jpg$/g, "").slice(0, 10).toLowerCase()}.jpg`);
+          } catch (err) { toast(err.message, true); } finally { b.disabled = false; }
+        } }, h("img", { src: `https://image.tmdb.org/t/p/w185${p}`, alt: "", loading: "lazy" }))));
+      } catch (e) { strip.textContent = ""; strip.append(h("span", { class: "status" }, e.message)); }
+    };
+    const select = h("select", { onchange: () => {
+      const m = movies.find(x => keyOf(x) === select.value);
+      site.top4[i] = m ? { title: m.title, year: m.year } : undefined; // the Letterboxd link is found when the site builds
+      site.top4 = site.top4.filter(Boolean); // no gaps
+      markDirty(); viewPosters();
+    } }, h("option", { value: "" }, "— choose a film —"),
+      ...movies.slice().sort((a, b) => a.title.localeCompare(b.title)).map(m => h("option", { value: keyOf(m), selected: slot() && keyOf(slot()) === keyOf(m) }, `${m.title}${m.year ? ` (${m.year})` : ""}`)));
+    const fileIn = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp", style: "display:none", onchange: () => { const file = fileIn.files[0], f = slot(); if (file && f) choose(file, `${slugify(f.title) || "film"}-own-${file.name}`); else if (file) toast("Pick a film first", true); fileIn.value = ""; } });
+    const row = h("section", { class: "pick top4-pick" },
+      h("header", {}, h("b", {}, `${i + 1}`), select,
+        h("button", { class: "btn small", onclick: () => fileIn.click() }, "Upload your own"), fileIn,
+        h("button", { class: "btn small", onclick: () => { const f = slot(); if (f && f.poster) { delete f.poster; markDirty(); showNow(); strip.querySelectorAll(".still").forEach(x => x.classList.remove("on")); } } }, "Use Letterboxd poster")),
+      h("div", { class: "poster-row" }, preview, strip));
+    row._load = loadStrip;
+    showNow(); io.observe(row);
+    box.append(row);
+  }
+}
+
 /* ---------- navigation ---------- */
 function footText() {
   return LOCAL
     ? ["Editing on this computer. Saving rebuilds the site instantly. Backups: content/.backup"]
     : [h("span", {}, `Connected to ${gh.repo}. Saving commits to GitHub; the site updates in about a minute.`), h("button", { class: "btn small", onclick: signOut }, "Sign out of this device")];
 }
-const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
+const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["posters", "Top 4 posters"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
 function drawNav() {
   const nav = $("#nav"); nav.textContent = "";
   nav.append(h("div", { class: "brand" }, h("b", {}, site.name), " · editor"));
@@ -920,9 +1022,9 @@ function drawNav() {
 function go(id) {
   if (section === "posts" && id !== "posts" && $("#main textarea.body") && !confirm("Leave this post? Unsaved text will be lost.")) return;
   section = id; history.replaceState(null, "", "#" + id); drawNav();
-  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else if (id === "frames") viewFrames(); else viewList(id);
+  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else if (id === "frames") viewFrames(); else if (id === "posters") viewPosters(); else viewList(id);
 }
-const valid = id => id === "profile" || id === "posts" || id === "frames" || !!LISTS[id];
+const valid = id => id === "profile" || id === "posts" || id === "frames" || id === "posters" || !!LISTS[id];
 addEventListener("hashchange", () => { const id = location.hash.slice(1); if (site && valid(id) && id !== section) go(id); });
 
 /* ---------- GitHub sign-in (only on the live site) ---------- */

@@ -501,7 +501,7 @@ function statsPanel(site) {
   const favs = (site.favourites || []).slice(0, 4);
   const top4 = favs.length ? `<section class="top4-wrap" aria-label="Top 4">
     <p class="st-label"><span>Top 4</span><span>from Letterboxd</span></p>
-    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img${f.own ? "" : ` class="mono"`} src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
   </section>` : "";
 
   /* ---- headline numbers ---- */
@@ -765,7 +765,11 @@ function loadSite() {
   const lbRead = f => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (_) { return {}; } };
   const wl = lbRead(WATCHLIST_JSON), meta = lbRead(FILM_META_JSON), mf = meta.films || {}, mt = meta.titles || {};
   site.watchlist = (wl.films || []).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating }));
-  site.favourites = (site.top4 || []).filter(f => f && f.slug).slice(0, 4).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating, poster: fs.existsSync(path.join(ROOT, "assets/posters", f.slug + ".jpg")) ? `assets/posters/${f.slug}.jpg` : "" }));
+  site.favourites = topFour(site, mt).map(f => {
+    const own = f.poster && !/^https?:/i.test(f.poster) && fs.existsSync(path.join(ROOT, f.poster)); // a poster you chose in the editor
+    const lb = `assets/posters/${f.slug}.jpg`;
+    return { ...f, lbRating: (mf[f.slug] || {}).rating, own: !!own, poster: own ? f.poster : fs.existsSync(path.join(ROOT, lb)) ? lb : "" };
+  });
   site.meta = {}; // film title|year -> Letterboxd details (countries, genres, cast…), for the stats
   for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.meta[m.title + "|" + (m.year || "")] = mf[slug]; }
   return site;
@@ -788,6 +792,9 @@ const nameYear = n => { const m = unent(n).match(/^(.*) \((\d{4})\)$/); return m
 const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, n, slug]) => ({ ...nameYear(n), slug }));
 const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
+// your top 4 from content/site.json; films picked in the editor have no Letterboxd slug yet, so find it
+const topFour = (site, titles = {}) => (site.top4 || []).filter(f => f && (f.slug || f.title)).slice(0, 4)
+  .map(f => ({ ...f, slug: f.slug || titles[filmKey(f.title, f.year)] || lbSlug(f.title) }));
 
 async function lbGet(url) {
   const res = await fetch(url, { headers: LB_HEADERS, redirect: "follow", signal: AbortSignal.timeout(12000) });
@@ -826,7 +833,7 @@ async function refreshLetterboxd() {
   const save = (f, data) => { const next = JSON.stringify(data, null, 2) + "\n"; if (!fs.existsSync(f) || fs.readFileSync(f, "utf8") !== next) fs.writeFileSync(f, next); };
   const saved = read(WATCHLIST_JSON, {});
   let films = saved.films || [];
-  const favourites = (site.top4 || []).filter(f => f && f.slug).slice(0, 4);
+  const favourites = topFour(site, read(FILM_META_JSON, {}).titles);
 
   // watchlist pages + favourites from the profile
   try {
@@ -1010,7 +1017,7 @@ function dev() {
   };
   const POSTS = path.join(ROOT, "content/posts");
   const SLUG = /^[a-z0-9][a-z0-9-]{0,80}$/;
-  const FOLDERS = ["frames", "code", "designs", "posts", "me"];
+  const FOLDERS = ["frames", "code", "designs", "posts", "me", "posters"];
   const MEDIA_EXT = /\.(jpe?g|png|webp|avif|gif|svg|mp4|webm|mov)$/i;
 
   const send = (res, code, body, type = "application/json") => {

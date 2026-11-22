@@ -4,7 +4,7 @@
   --bg: #000;
   --fg: #f2f2f2;
   --mute: #8b8b8b;
-  --dim: #6a6a6a;
+  --dim: #555;
   --line: #1f1f1f;
   --chip: #141414;
   --chip-line: rgba(255, 255, 255, .07);
@@ -23,8 +23,8 @@
 @keyframes vt-in { from { opacity: 0; transform: translateY(6px); } }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; background: #000; -webkit-tap-highlight-color: transparent; }
-body { background: transparent; color: var(--fg); font: 16px/1.7 var(--mono); letter-spacing: .01em; -webkit-font-smoothing: antialiased; min-height: 100svh; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.7 var(--mono); letter-spacing: .01em; -webkit-font-smoothing: antialiased; min-height: 100svh; }
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 img { display: block; max-width: 100%; height: auto; }
@@ -38,7 +38,6 @@ button { font: inherit; color: inherit; }
 .duo .tile-cap b { font-weight: 400; color: var(--fg); margin-right: 8px; }
 .duo .tile { background: none; border-radius: 0; margin-bottom: 14px; }
 .duo .tile .media { border-radius: 4px; }
-#bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; } /* minesweeper background, drawn by app.js */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dim { color: var(--mute); }
 

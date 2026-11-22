@@ -2,6 +2,7 @@
   "name": "Ham7a",
   "initial": "H",
   "description": "Movies, games and books I love, plus my writing, code and Photoshop work.",
+  "github": "Hamzasaif533",
   "status": {
     "lead": "Today I'm mostly:",
     "big": "TRYING THINGS OUT ",
@@ -13,12 +14,12 @@
     {
       "label": "GitHub",
       "icon": "github",
-      "url": "https://github.com/"
+      "url": "https://github.com/Hamzasaif533"
     },
     {
       "label": "Letterboxd",
       "icon": "film",
-      "url": "https://letterboxd.com/"
+      "url": "https://letterboxd.com/ham7a533/"
     },
     {
       "label": "Goodreads",
@@ -897,82 +898,7 @@
       "rating": 4
     }
   ],
-  "projects": [
-    {
-      "name": "This Website",
-      "description": "Zero-dependency static site builder with scrambling type and keyboard navigation.",
-      "tags": [
-        "Node",
-        "CSS"
-      ],
-      "status": "2026",
-      "now": true,
-      "repo": "https://github.com/",
-      "image": "assets/code/code-1.svg",
-      "width": 1200,
-      "height": 800
-    },
-    {
-      "name": "Dither Lab",
-      "description": "Turn any image into ordered-dither pixel art in the browser.",
-      "tags": [
-        "JavaScript",
-        "Canvas"
-      ],
-      "status": "concept 2026",
-      "live": "https://example.com/",
-      "image": "assets/code/code-2.svg",
-      "width": 900,
-      "height": 1200
-    },
-    {
-      "name": "Watchlist CLI",
-      "description": "Log movies, games and books with ratings from the terminal.",
-      "tags": [
-        "Python",
-        "SQLite"
-      ],
-      "status": "shipped 2025",
-      "repo": "https://github.com/",
-      "image": "assets/code/code-3.svg",
-      "width": 1200,
-      "height": 900
-    },
-    {
-      "name": "Mood Player",
-      "description": "A music player that picks a playlist from the weather.",
-      "tags": [
-        "React",
-        "API"
-      ],
-      "status": "concept 2025",
-      "image": "assets/code/code-4.svg",
-      "width": 900,
-      "height": 1100
-    },
-    {
-      "name": "Pixel Chat",
-      "description": "Tiny realtime chat room with a retro skin.",
-      "tags": [
-        "WebSocket"
-      ],
-      "status": "archived 2024",
-      "image": "assets/code/code-5.svg",
-      "width": 1200,
-      "height": 760
-    },
-    {
-      "name": "Habit Garden",
-      "description": "Habit tracker where every streak grows a plant.",
-      "tags": [
-        "Flutter"
-      ],
-      "status": "concept 2026",
-      "image": "assets/code/code-6.svg",
-      "width": 900,
-      "height": 1300
-    }
-  ],
+  "projects": [],
   "designs": [
     {
       "title": "Blue Hour",

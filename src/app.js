@@ -11,9 +11,9 @@
   /* ---------- dialogs ---------- */
   const pal = $(".palette"), help = $(".help"), viewer = $(".viewer");
   const openDialog = dlg => { if (dlg && !dlg.open) { $$("dialog[open]").forEach(x => x.close()); dlg.showModal(); } };
-  $$("dialog").forEach(dl => dl.addEventListener("click", e => { if (e.target === dl) dl.close(); })); // click outside closes
+  $$("dialog:not(.viewer)").forEach(dl => dl.addEventListener("click", e => { if (e.target === dl) dl.close(); })); // click outside closes
 
-  /* ---------- shelf: tabs, show more, sorting ---------- */
+  /* ---------- shelf: tabs, sorting ---------- */
   function openTab(id, push) {
     const tab = document.getElementById("tab-" + id);
     if (!tab) return;
@@ -21,23 +21,12 @@
     $$("[role=tabpanel]").forEach(p => (p.hidden = p.id !== id));
     if (push) history.replaceState(null, "", "#" + id);
   }
-  function setOpen(list, open) {
-    list.classList.toggle("open", open);
-    const btn = list.nextElementSibling;
-    if (btn && btn.matches("[data-more]")) btn.textContent = open ? "Show less" : `Show more (${btn.dataset.more})`;
-  }
-  // a link to something inside a hidden tab or a collapsed list shows it first
+  // a link to something inside a hidden tab shows that tab first
   function reveal(el) {
     const panel = el.matches("[role=tabpanel]") ? el : el.closest("[role=tabpanel]");
     if (panel) openTab(panel.id);
-    if (el.matches("li.extra")) setOpen(el.parentElement, true);
   }
   $$("[data-tab]").forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab, true)));
-  $$("[data-more]").forEach(b => b.addEventListener("click", () => {
-    const list = b.previousElementSibling, open = !list.classList.contains("open");
-    setOpen(list, open);
-    if (!open) b.scrollIntoView({ block: "nearest" });
-  }));
   const SORTS = {
     recent: (a, b) => a.dataset.i - b.dataset.i,
     year: (a, b) => b.dataset.year - a.dataset.year || b.dataset.score - a.dataset.score,
@@ -52,7 +41,7 @@
     btn.dataset.arrow = flip ? "↑" : "↓";
     const rows = $$("li", list).sort(SORTS[btn.dataset.sort]);
     if (flip) rows.reverse();
-    rows.forEach((li, i) => { li.classList.toggle("extra", i >= 5); list.appendChild(li); });
+    rows.forEach(li => list.appendChild(li));
   }));
 
   /* ---------- deep links (#id) land focus on that item ---------- */
@@ -203,6 +192,7 @@
     $(".vw-meta", viewer).textContent = s.meta || "";
     $(".vw-note", viewer).textContent = s.desc || "";
     $(".vw-n", viewer).textContent = `${String(cur + 1).padStart(2, "0")} / ${String(group.length).padStart(2, "0")}`;
+    viewer.style.setProperty("--p", (cur + 1) / group.length);
     // warm up the neighbours so browsing is instant
     [cur + 1, cur - 1].forEach(k => { const n = group[(k + group.length) % group.length]; if (n) new Image().src = n.dataset.src; });
   }
@@ -216,6 +206,11 @@
     $(".vw-close", viewer).addEventListener("click", () => viewer.close());
     $(".vw-prev", viewer).addEventListener("click", () => show(cur - 1));
     $(".vw-next", viewer).addEventListener("click", () => show(cur + 1));
+    // like stories: tap the left third to go back, anywhere else to go forward
+    viewer.addEventListener("click", e => {
+      if (e.target.closest("button, .vw-bar")) return;
+      show(cur + (e.clientX < innerWidth / 3 ? -1 : 1));
+    });
     // after the browser restores focus to the opener, move it to the frame that was last on screen
     viewer.addEventListener("close", () => setTimeout(() => { const el = group[cur] || opener; if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: "nearest" }); } }));
   }
@@ -269,9 +264,10 @@
   addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
   addEventListener("touchend", e => {
     const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (viewer && viewer.open && dy > 90 && dy > Math.abs(dx) * 1.5 && Date.now() - st < 600) { viewer.close(); return; } // swipe down closes
     if (Date.now() - st > 600 || Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
     if (viewer && viewer.open) { show(cur + (dx < 0 ? 1 : -1)); return; }
-    if ($("dialog[open]") || e.target.closest("pre, .gallery, .shelf-tabs, .sort")) return;
+    if ($("dialog[open]") || e.target.closest("pre, .gallery, .shelf-tabs, .sort, .tabs")) return;
     location.href = dx < 0 ? d.next : d.prev;
   }, { passive: true });
 

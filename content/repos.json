@@ -1,0 +1,32 @@
+{
+  "user": "Hamzasaif533",
+  "repos": [
+    {
+      "name": "portfolio",
+      "description": "",
+      "language": "HTML",
+      "stars": 0,
+      "pushed": "2026-11-22T09:53:25Z",
+      "url": "https://github.com/Hamzasaif533/portfolio",
+      "homepage": ""
+    },
+    {
+      "name": "sstv",
+      "description": "Send and receive pictures as sound (SSTV) in the browser",
+      "language": "JavaScript",
+      "stars": 0,
+      "pushed": "2026-11-21T17:36:08Z",
+      "url": "https://github.com/Hamzasaif533/sstv",
+      "homepage": "https://hamzasaif533.github.io/sstv/"
+    },
+    {
+      "name": "groundx",
+      "description": "",
+      "language": "JavaScript",
+      "stars": 0,
+      "pushed": "2026-11-15T17:27:07Z",
+      "url": "https://github.com/Hamzasaif533/groundx",
+      "homepage": ""
+    }
+  ]
+}

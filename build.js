@@ -217,11 +217,11 @@ const words = text => String(text || "").trim().split(/\s+/).filter(Boolean).map
    ========================================================== */
 const TABS = [
   ["Hey", "index.html", "hey"],
+  ["Shelf", "shelf.html", "shelf"],
   ["Code", "code.html", "code"],
   ["Design", "design.html", "design"],
-  ["Shelf", "shelf.html", "shelf"],
-  ["About", "about.html", "about"],
   ["Writing", "writing/index.html", "writing"],
+  ["About", "about.html", "about"],
 ];
 
 const fontsUrl = arabic =>
@@ -322,7 +322,7 @@ function homePage(site, posts) {
     ["Reading", site.books, "book", "shelf.html#books"],
     ["Building", site.projects, "code", "code.html"],
   ]
-    .map(([k, list, ic, href]) => [k, (list || []).find(x => x.now), ic, href])
+    .map(([k, list, ic, href]) => [k, (list || []).find(x => x.now) || (k === "Building" && site.repos && site.repos[0] && { title: site.repos[0].name, status: site.repos[0].language }), ic, href])
     .filter(([, x]) => x)
     .map(([k, x, ic, href]) => `<li><a href="${href}" data-item>
       <span class="k">${k}</span>
@@ -357,7 +357,26 @@ const pageHead = (title, note) => `<header class="page-head"><h1>${esc(title)}</
 const viewAttrs = (group, src, title, meta, note) =>
   ` data-view="${group}" data-src="${esc(src)}" data-title="${esc(title)}" data-meta="${esc(meta || "")}" data-desc="${esc(note || "")}"`;
 
+/* GitHub repos, newest push first (fetched at build time into content/repos.json) */
+const ago = iso => {
+  const days = Math.floor((Date.now() - new Date(iso)) / 864e5);
+  return days < 1 ? "today" : days < 30 ? `${days}d ago` : days < 365 ? `${Math.floor(days / 30)}mo ago` : `${Math.floor(days / 365)}y ago`;
+};
+function repoList(repos) {
+  if (!repos.length) return "";
+  return `<ul class="repos">${repos.map(r => `<li id="r-${slug(r.name)}">
+    <a class="rp" href="${esc(r.url)}"${linkAttrs(r.url)} data-item>
+      <span class="t">${esc(r.name)}</span>
+      <span class="l">${esc(r.language || "")}</span>
+      <span class="u">${esc(ago(r.pushed))}</span>
+      <span class="s">${r.stars ? `★ ${r.stars}` : ""}</span>
+      ${r.description ? `<span class="d" dir="auto">${esc(r.description)}</span>` : ""}
+    </a>${r.homepage ? `<a class="live" href="${esc(r.homepage)}"${linkAttrs(r.homepage)} data-item>${esc(prettyUrl(r.homepage))} ↗</a>` : ""}
+  </li>`).join("")}</ul>`;
+}
+
 function codePage(site) {
+  const repos = site.repos || [];
   const tiles = (site.projects || []).map((p, i) => {
     const link = p.live || p.repo || "";
     const meta = [p.tags && p.tags.join(" · "), p.status || p.year].filter(Boolean).join(" / ");
@@ -367,7 +386,11 @@ function codePage(site) {
       <span class="tile-cap"><b>${esc(p.name)}</b>${esc(p.description)}</span>
     </${tag}>`;
   }).join("");
-  return `<main class="grid-page" id="main">${pageHead("Code", `${(site.projects || []).length} projects`)}<div class="masonry">${tiles}</div></main><div class="fade" aria-hidden="true"></div><div class="cap" aria-hidden="true"></div>`;
+  const gh = site.github ? `github.com/${site.github}` : "";
+  const note = [repos.length && `${repos.length} repos`, tiles && `${(site.projects || []).length} projects`].filter(Boolean).join(" · ");
+  return `<main class="grid-page code-page" id="main">${pageHead("Code", note)}
+    ${repoList(repos)}${gh && repos.length ? `<a class="gh-all" href="https://${gh}"${linkAttrs("https://" + gh)} data-item>${esc(gh)} ↗</a>` : ""}
+    ${tiles ? `<div class="masonry">${tiles}</div>` : ""}</main><div class="fade" aria-hidden="true"></div><div class="cap" aria-hidden="true"></div>`;
 }
 
 function designPage(site) {
@@ -402,22 +425,20 @@ function filmDiary(movies = []) {
   </section>${credit}`;
 }
 
-const SHOW = 5; // items shown before "Show more"
-
 function shelfPage(site) {
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // a film with a frame opens it full screen when its row is clicked (or Enter / Space)
   const frameView = it => it.frame
     ? ` role="button" aria-label="${esc(it.title)}: view frame"${viewAttrs("movie-list", it.frame, it.title, [it.year, it.by, ratingText(it)].filter(Boolean).join(" · "), it.note)}`
     : "";
-  const row = (it, i) => `<li class="${[it.now && "now", i >= SHOW && "extra"].filter(Boolean).join(" ")}" id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
+  const row = (it, i) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
       <span class="t">${esc(it.title)}</span>
       <span class="y">${esc(it.year || "")}</span>
       <span class="b">${esc(it.by || "")}</span>
       <span class="r"${it.rating != null ? ` aria-label="${it.rating} out of 5${it.liked ? ", liked" : ""}"` : ""}>${ratingText(it)}</span>
       ${it.note ? `<span class="n" dir="auto">${esc(it.note)}</span>` : ""}
     </li>`;
-  const list = items => `<ul class="list">${items.map(row).join("")}</ul>${items.length > SHOW ? `<button class="more-btn" type="button" data-item data-more="${items.length - SHOW}">Show more (${items.length - SHOW})</button>` : ""}`;
+  const list = items => `<ul class="list">${items.map(row).join("")}</ul>`;
   const sortBar = `<div class="sort" role="group" aria-label="Sort movies"><span>sort</span>${[["recent", "recent"], ["year", "year"], ["score", "score"], ["liked", "♥"]]
     .map(([k, t]) => `<button type="button" data-item data-sort="${k}" aria-pressed="${k === "recent"}" data-arrow="↓">${t}</button>`).join("")}</div>`;
   const frames = movies.filter(m => m.frame).length;
@@ -493,6 +514,7 @@ function searchIndex(site, posts) {
   TABS.forEach(([t, h]) => out.push({ t, k: "page", u: h }));
   posts.forEach(p => out.push({ t: p.title, k: "post", u: `writing/${p.slug}.html`, d: p.summary }));
   (site.projects || []).forEach(p => out.push({ t: p.name, k: "code", u: `code.html#p-${slug(p.name)}`, d: (p.tags || []).join(" ") }));
+  (site.repos || []).forEach(r => out.push({ t: r.name, k: "code", u: `code.html#r-${slug(r.name)}`, d: [r.description, r.language].join(" ") }));
   (site.designs || []).forEach((d, i) => out.push({ t: d.title, k: "design", u: `design.html#d-${i + 1}`, d: d.tools }));
   (site.movies || []).filter(m => m.frame).forEach(m => out.push({ t: m.title, k: "frame", u: `shelf.html#f-${slug(m.title)}`, d: m.by }));
   [["movie", site.movies], ["game", site.games], ["book", site.books]].forEach(([k, list]) =>
@@ -529,10 +551,39 @@ function write(rel, content) {
 
 const SITE_JSON = path.join(ROOT, "content/site.json");
 function loadSite() {
-  if (fs.existsSync(SITE_JSON)) return JSON.parse(fs.readFileSync(SITE_JSON, "utf8"));
-  const p = require.resolve("./content/site.js"); // older format still works
-  delete require.cache[p];
-  return require(p);
+  let site;
+  if (fs.existsSync(SITE_JSON)) site = JSON.parse(fs.readFileSync(SITE_JSON, "utf8"));
+  else {
+    const p = require.resolve("./content/site.js"); // older format still works
+    delete require.cache[p];
+    site = require(p);
+  }
+  try { site.repos = JSON.parse(fs.readFileSync(REPOS_JSON, "utf8")).repos || []; } catch (_) { site.repos = []; }
+  return site;
+}
+
+/* Pull your public GitHub repos (not forks) into content/repos.json before building.
+   If GitHub can't be reached, the last saved copy is used, so the build never fails because of it. */
+const REPOS_JSON = path.join(ROOT, "content/repos.json");
+async function refreshRepos() {
+  let user;
+  try { user = loadSite().github; } catch (_) {}
+  if (!user || typeof fetch !== "function") return;
+  try {
+    const headers = { "User-Agent": "static-site-build", Accept: "application/vnd.github+json" };
+    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=100&sort=pushed`, { headers, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error("GitHub answered " + res.status);
+    const repos = (await res.json())
+      .filter(r => !r.fork && !r.private && !r.archived)
+      .sort((a, b) => (a.pushed_at < b.pushed_at ? 1 : -1))
+      .map(r => ({ name: r.name, description: r.description || "", language: r.language || "", stars: r.stargazers_count || 0, pushed: r.pushed_at, url: r.html_url, homepage: r.homepage || "" }));
+    const next = JSON.stringify({ user, repos }, null, 2) + "\n";
+    if (!fs.existsSync(REPOS_JSON) || fs.readFileSync(REPOS_JSON, "utf8") !== next) fs.writeFileSync(REPOS_JSON, next);
+    console.log(`repos: ${repos.length} from github.com/${user}`);
+  } catch (e) {
+    console.warn(`repos: using saved copy (${e.message})`);
+  }
 }
 
 function build() {
@@ -652,7 +703,7 @@ function dev() {
 
   async function api(req, res, p, q) {
     const m = req.method;
-    if (p === "/api/site" && m === "GET") return send(res, 200, loadSite());
+    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; return send(res, 200, s); } // repos live in their own file
     if (p === "/api/site" && m === "PUT") {
       const data = await readJSON(req);
       if (!data || typeof data !== "object" || Array.isArray(data) || !data.name) return send(res, 400, { error: "invalid content" });
@@ -763,5 +814,7 @@ function dev() {
   });
 }
 
-build();
-if (process.argv.includes("--dev")) dev();
+refreshRepos().then(() => {
+  build();
+  if (process.argv.includes("--dev")) dev();
+});

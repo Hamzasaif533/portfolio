@@ -102,7 +102,8 @@
       "by": "Olivia Wilde",
       "rating": 2.5,
       "frame": "assets/frames/the-invite-lewqbgnr65.jpg",
-      "watched": "2026-11-22"
+      "watched": "2026-11-22",
+      "poster": "assets/posters/the-invite-xht8gzicgv-2.jpg"
     },
     {
       "title": "Clayface",
@@ -131,7 +132,8 @@
       "liked": true,
       "frame": "assets/frames/marty-supreme-jbohqsbzel.jpg",
       "watched": "2026-08-07",
-      "tmdb": 1317288
+      "tmdb": 1317288,
+      "poster": "assets/posters/marty-supreme-kvvamisrnb-2.jpg"
     },
     {
       "title": "I Swear",
@@ -140,7 +142,8 @@
       "rating": 3.5,
       "frame": "assets/frames/i-swear-u1zvmpwc7w.jpg",
       "watched": "2026-03-01",
-      "tmdb": 1317149
+      "tmdb": 1317149,
+      "poster": "assets/posters/i-swear-x8dkjserkk-2.jpg"
     },
     {
       "title": "Obsession",
@@ -149,7 +152,8 @@
       "rating": 3.5,
       "frame": "assets/frames/obsession-diozbadnb2.jpg",
       "watched": "2026-08-13",
-      "tmdb": 1339713
+      "tmdb": 1339713,
+      "poster": "assets/posters/obsession-dbptgeyomd-2.jpg"
     },
     {
       "title": "Hamnet",
@@ -168,7 +172,8 @@
       "rating": 3.5,
       "frame": "assets/frames/no-other-choice-wgpaegoj7z.jpg",
       "watched": "2026-03-02",
-      "tmdb": 639988
+      "tmdb": 639988,
+      "poster": "assets/posters/no-other-choice-sbpxtglzkn.jpg"
     },
     {
       "title": "Bugonia",
@@ -186,7 +191,8 @@
       "rating": 2.5,
       "frame": "assets/frames/weapons-9mkhhhbfia.jpg",
       "watched": "2026-02-24",
-      "tmdb": 1078605
+      "tmdb": 1078605,
+      "poster": "assets/posters/weapons-yrnqjlabbh.jpg"
     },
     {
       "title": "Mission: Impossible – The Final Reckoning",
@@ -194,7 +200,8 @@
       "by": "Christopher McQuarrie",
       "rating": 4,
       "frame": "assets/frames/mission-impossible-the-final-reckoning-1p5ai299yb.jpg",
-      "watched": "2025-05-30"
+      "watched": "2025-05-30",
+      "poster": "assets/posters/mission-impossible-the-final-reckoning-ikpsc9efua.jpg"
     },
     {
       "title": "Sinners",
@@ -203,7 +210,8 @@
       "rating": 3,
       "frame": "assets/frames/sinners-jonsbz92k3.jpg",
       "watched": "2026-03-17",
-      "tmdb": 1233413
+      "tmdb": 1233413,
+      "poster": "assets/posters/sinners-fwpgbnt2ls.jpg"
     },
     {
       "title": "We Live in Time",
@@ -230,14 +238,16 @@
       "by": "Christopher Nolan",
       "rating": 4.5,
       "frame": "assets/frames/oppenheimer-ycno0cjsar.jpg",
-      "watched": "2023-11-01"
+      "watched": "2023-11-01",
+      "poster": "assets/posters/oppenheimer-aqz75on6yd.jpg"
     },
     {
       "title": "Mission: Impossible – Dead Reckoning Part One",
       "year": 2023,
       "by": "Christopher McQuarrie",
       "rating": 4.5,
-      "frame": "assets/frames/mission-impossible-dead-reckoning-part-one-mrdnsdtjsn.jpg"
+      "frame": "assets/frames/mission-impossible-dead-reckoning-part-one-mrdnsdtjsn.jpg",
+      "poster": "assets/posters/mission-impossible-dead-reckoning-part-one-tuipxmvtxo.jpg"
     },
     {
       "title": "Smile",
@@ -245,7 +255,8 @@
       "by": "Parker Finn",
       "rating": 4,
       "frame": "assets/frames/smile-zdtxarmbkd.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/smile-67myda9zan.jpg"
     },
     {
       "title": "The Menu",
@@ -261,7 +272,8 @@
       "by": "Zach Cregger",
       "rating": 3,
       "frame": "assets/frames/barbarian-b5sq1p2qnl.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/barbarian-mmb9m9hsbb.jpg"
     },
     {
       "title": "Fall",
@@ -287,7 +299,8 @@
       "by": "Matt Reeves",
       "rating": 4.5,
       "frame": "assets/frames/the-batman-iyud7raixz.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/the-batman-seywfggina.jpg"
     },
     {
       "title": "Uncharted",
@@ -295,7 +308,8 @@
       "by": "Ruben Fleischer",
       "rating": 2.5,
       "frame": "assets/frames/uncharted-ozaejrxaus.jpg",
-      "watched": "2025-02-11"
+      "watched": "2025-02-11",
+      "poster": "assets/posters/uncharted-77dlklwa1v.jpg"
     },
     {
       "title": "Dune",
@@ -311,7 +325,8 @@
       "year": 2025,
       "by": "Michael Chaves",
       "rating": 3,
-      "frame": "assets/frames/the-conjuring-last-rites-6yj51c0lbo.jpg"
+      "frame": "assets/frames/the-conjuring-last-rites-6yj51c0lbo.jpg",
+      "poster": "assets/posters/the-conjuring-last-rites-vufnnzdamz.jpg"
     },
     {
       "title": "The Queen's Gambit",
@@ -343,7 +358,8 @@
       "by": "Matt Bettinelli-Olpin & Tyler Gillett",
       "rating": 0.5,
       "frame": "assets/frames/ready-or-not-ya4hxbxkux.jpg",
-      "watched": "2026-02-22"
+      "watched": "2026-02-22",
+      "poster": "assets/posters/ready-or-not-detjxkcnzl.jpg"
     },
     {
       "title": "Midsommar",
@@ -361,7 +377,8 @@
       "rating": 4,
       "frame": "assets/frames/parasite-p0gix7ig8h.jpg",
       "watched": "2026-08-06",
-      "tmdb": 496243
+      "tmdb": 496243,
+      "poster": "assets/posters/parasite-up7ewfvwdb.jpg"
     },
     {
       "title": "The Nun",
@@ -394,7 +411,8 @@
       "rating": 5,
       "liked": true,
       "frame": "assets/frames/blade-runner-2049-ilryazdmjw.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/blade-runner-2049-gpkflmnbqz.jpg"
     },
     {
       "title": "Get Out",
@@ -410,7 +428,8 @@
       "by": "M. Night Shyamalan",
       "rating": 3.5,
       "frame": "assets/frames/split-ghzjfec1bq.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/split-iglfzrz8qq.jpg"
     },
     {
       "title": "Arrival",
@@ -418,7 +437,8 @@
       "by": "Denis Villeneuve",
       "rating": 4,
       "frame": "assets/frames/arrival-r8fd6cc3gg.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/arrival-7pix7m8gfn.jpg"
     },
     {
       "title": "La La Land",
@@ -453,7 +473,8 @@
       "by": "James Wan",
       "rating": 3,
       "frame": "assets/frames/the-conjuring-2-ev5ti7q0re.jpg",
-      "watched": "2023-11-01"
+      "watched": "2023-11-01",
+      "poster": "assets/posters/the-conjuring-2-56jyzzcso8.jpg"
     },
     {
       "title": "The Martian",
@@ -461,7 +482,8 @@
       "by": "Ridley Scott",
       "rating": 3.5,
       "frame": "assets/frames/the-martian-lzms0ci3fl.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/the-martian-fasz8a0yfe.jpg"
     },
     {
       "title": "The Lobster",
@@ -495,7 +517,8 @@
       "by": "David Fincher",
       "rating": 2.5,
       "frame": "assets/frames/gone-girl-h2jaqwlkha.jpg",
-      "watched": "2025-02-11"
+      "watched": "2025-02-11",
+      "poster": "assets/posters/gone-girl-qkpqnf5qmi.jpg"
     },
     {
       "title": "The Imitation Game",
@@ -503,7 +526,8 @@
       "by": "Morten Tyldum",
       "rating": 4.5,
       "frame": "assets/frames/the-imitation-game-c7qt8yo8xs.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/the-imitation-game-ato4argxir.jpg"
     },
     {
       "title": "Edge of Tomorrow",
@@ -527,7 +551,8 @@
       "by": "Denis Villeneuve",
       "rating": 4.5,
       "frame": "assets/frames/prisoners-ijgjxqq6xd.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/prisoners-lpxr2aqmus.jpg"
     },
     {
       "title": "Gravity",
@@ -551,7 +576,8 @@
       "by": "Louis Leterrier",
       "rating": 4,
       "frame": "assets/frames/now-you-see-me-e6lc9vnkdv.jpg",
-      "watched": "2024-11-16"
+      "watched": "2024-11-16",
+      "poster": "assets/posters/now-you-see-me-8qirp5d6g1.jpg"
     },
     {
       "title": "The Hangover Part III",
@@ -567,7 +593,8 @@
       "by": "Ang Lee",
       "rating": 4,
       "frame": "assets/frames/life-of-pi-fozqfyampj.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/life-of-pi-5z9bk5mlco.jpg"
     },
     {
       "title": "The Hunt",
@@ -576,7 +603,8 @@
       "rating": 4,
       "frame": "assets/frames/the-hunt-1mwjlmnixr.jpg",
       "watched": "2026-10-07",
-      "tmdb": 103663
+      "tmdb": 103663,
+      "poster": "assets/posters/the-hunt-9gccdnrrdx.jpg"
     },
     {
       "title": "21 Jump Street",
@@ -624,7 +652,8 @@
       "by": "David Fincher",
       "rating": 3.5,
       "frame": "assets/frames/the-social-network-trefxfsolk.jpg",
-      "watched": "2023-11-01"
+      "watched": "2023-11-01",
+      "poster": "assets/posters/the-social-network-uvkktvyuyp.jpg"
     },
     {
       "title": "127 Hours",
@@ -641,7 +670,8 @@
       "rating": 5,
       "liked": true,
       "frame": "assets/frames/inception-2hmlvovu1r.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/inception-rq0uejr9eo.jpg"
     },
     {
       "title": "Zombieland",
@@ -666,7 +696,8 @@
       "rating": 4.5,
       "liked": true,
       "frame": "assets/frames/coraline-hofnliyf6b.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/coraline-ip9fq6dady.jpg"
     },
     {
       "title": "(500) Days of Summer",
@@ -675,7 +706,8 @@
       "rating": 4.5,
       "liked": true,
       "frame": "assets/frames/500-days-of-summer-at5sik2toy.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/500-days-of-summer-zqs9sildjd.jpg"
     },
     {
       "title": "The Dark Knight",
@@ -699,7 +731,8 @@
       "by": "Francis Lawrence",
       "rating": 3.5,
       "frame": "assets/frames/i-am-legend-abnlakfwat.jpg",
-      "watched": "2024-11-16"
+      "watched": "2024-11-16",
+      "poster": "assets/posters/i-am-legend-lxbihgpoc1.jpg"
     },
     {
       "title": "Zodiac",
@@ -708,7 +741,8 @@
       "rating": 3,
       "frame": "assets/frames/zodiac-9kdtjruoxn.jpg",
       "watched": "2026-10-05",
-      "tmdb": 1949
+      "tmdb": 1949,
+      "poster": "assets/posters/zodiac-hqhcbb8jvp.jpg"
     },
     {
       "title": "Casino Royale",
@@ -725,7 +759,8 @@
       "by": "Tim Burton",
       "rating": 3,
       "frame": "assets/frames/charlie-and-the-chocolate-factory-cz4vl9t06b.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/charlie-and-the-chocolate-factory-rinpacwefq.jpg"
     },
     {
       "title": "Memories of Murder",
@@ -734,7 +769,8 @@
       "rating": 4.5,
       "frame": "assets/frames/memories-of-murder-1iw1zv35kh.jpg",
       "watched": "2026-08-16",
-      "tmdb": 11423
+      "tmdb": 11423,
+      "poster": "assets/posters/memories-of-murder-jcgujx1qcu.jpg"
     },
     {
       "title": "Fight Club",
@@ -742,7 +778,8 @@
       "by": "David Fincher",
       "rating": 4.5,
       "frame": "assets/frames/fight-club-hzkgoqyus5.jpg",
-      "watched": "2023-07-08"
+      "watched": "2023-07-08",
+      "poster": "assets/posters/fight-club-xfn0lzk6tb.jpg"
     },
     {
       "title": "Rush Hour",
@@ -751,7 +788,8 @@
       "rating": 3,
       "frame": "assets/frames/rush-hour-2-1ly6qbbmrd.jpg",
       "watched": "2026-10-03",
-      "tmdb": 2109
+      "tmdb": 2109,
+      "poster": "assets/posters/rush-hour-3wsle6ftxe.jpg"
     },
     {
       "title": "Titanic",
@@ -794,7 +832,8 @@
       "rating": 2.5,
       "frame": "assets/frames/blue-velvet-8pvlgt1iuq.jpg",
       "watched": "2026-08-26",
-      "tmdb": 793
+      "tmdb": 793,
+      "poster": "assets/posters/blue-velvet-wpahxf3hcu.jpg"
     },
     {
       "title": "Jaws",
@@ -811,7 +850,8 @@
       "rating": 5,
       "frame": "assets/frames/12-angry-men-trmcu0uiwt.jpg",
       "watched": "2026-09-02",
-      "tmdb": 389
+      "tmdb": 389,
+      "poster": "assets/posters/12-angry-men-dmmk0zxrd6.jpg"
     },
     {
       "title": "The Dancing Pig",

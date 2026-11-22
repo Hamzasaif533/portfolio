@@ -199,6 +199,7 @@
   if (viewer) {
     $$("[data-view]").forEach(el => el.addEventListener("click", () => {
       group = $$(`[data-view="${el.dataset.view}"]`);
+      viewer.classList.toggle("bare", el.dataset.view === "design"); // posters show on their own, no caption
       opener = el;
       show(group.indexOf(el));
       openDialog(viewer);

@@ -334,6 +334,69 @@
     setTimeout(() => tiles.forEach(t => { if (t.getBoundingClientRect().top < innerHeight) t.classList.add("seen"); }), 900);
   }
 
+  /* ---------- background: a minesweeper field, reversed (opened cells are the lighter ones) ---------- */
+  (() => {
+    const cv = document.createElement("canvas");
+    cv.id = "bg";
+    cv.setAttribute("aria-hidden", "true");
+    document.body.prepend(cv);
+    const ctx = cv.getContext("2d"), base = document.createElement("canvas"), bctx = base.getContext("2d");
+    let W = 0, H = 0, S = 30, dpr = 1, hover = null;
+    // fixed pseudo-random numbers, so every page shows the same field
+    const hash = (x, y) => { let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
+    const ease = t => t * t * (3 - 2 * t);
+    const noise = (x, y) => {
+      const xi = Math.floor(x), yi = Math.floor(y), u = ease(x - xi), v = ease(y - yi);
+      const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+      return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+    };
+    const opened = (x, y, rows) => noise(x / 7, y / 7) * 0.6 + noise(x / 3 + 40, y / 3 + 40) * 0.4 + (y / rows) * 0.35 > 0.72; // more opened towards the bottom
+
+    function draw() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight; S = W < 700 ? 24 : 30;
+      const cols = Math.ceil(W / S) + 1, rows = Math.ceil(H / S) + 1;
+      for (const c of [cv, base]) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+      cv.style.width = W + "px"; cv.style.height = H + "px";
+      const open = Array.from({ length: rows }, (_, y) => Array.from({ length: cols }, (_, x) => opened(x, y, rows)));
+      bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      bctx.fillStyle = "#000";
+      bctx.fillRect(0, 0, W, H);
+      bctx.font = `${Math.round(S * 0.32)}px "Geist Mono", ui-monospace, monospace`;
+      bctx.textAlign = "center"; bctx.textBaseline = "middle";
+      for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+        if (open[y][x]) { bctx.fillStyle = "#101010"; bctx.fillRect(x * S, y * S, S, S); continue; }
+        let n = 0; // unopened cells next to the opened area show a number, like in minesweeper
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && open[y + dy] && open[y + dy][x + dx]) n++;
+        if (n) { bctx.fillStyle = "#2e2e2e"; bctx.fillText(String(Math.min(3, Math.ceil(n / 3))), x * S + S / 2, y * S + S / 2 + 0.5); }
+      }
+      paint();
+    }
+    function paint() {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(base, 0, 0);
+      if (!hover) return;
+      const [x, y] = hover;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = "rgba(60, 80, 255, .10)"; ctx.fillRect((x - 1) * S, (y - 1) * S, S * 3, S * 3);
+      ctx.fillStyle = "rgba(70, 90, 255, .32)"; ctx.fillRect(x * S, y * S, S, S);
+    }
+    draw();
+    if (document.fonts) document.fonts.ready.then(draw); // redraw once the mono font has loaded
+    let t = 0;
+    addEventListener("resize", () => { clearTimeout(t); t = setTimeout(draw, 150); }, { passive: true });
+    if (finePointer && !reduce) { // the cell under the mouse glows
+      let raf = 0;
+      addEventListener("pointermove", e => {
+        const c = [Math.floor(e.clientX / S), Math.floor(e.clientY / S)];
+        if (hover && c[0] === hover[0] && c[1] === hover[1]) return;
+        hover = c;
+        if (!raf) raf = requestAnimationFrame(() => { raf = 0; paint(); });
+      }, { passive: true });
+      document.addEventListener("pointerleave", () => { hover = null; paint(); });
+    }
+  })();
+
   /* ---------- caption card pinned to the mouse ---------- */
   const cap = $(".cap");
   if (cap && finePointer) {

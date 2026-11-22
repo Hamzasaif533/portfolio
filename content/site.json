@@ -78,6 +78,14 @@
   },
   "movies": [
     {
+      "title": "Whiplash",
+      "tmdb": 244786,
+      "watched": "2026-11-23",
+      "year": 2014,
+      "by": "Damien Chazelle",
+      "frame": "assets/frames/whiplash-ttnlkfaihf.jpg"
+    },
+    {
       "title": "The Godfather",
       "watched": "2026-11-22",
       "year": 1972,

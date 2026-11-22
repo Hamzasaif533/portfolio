@@ -1,0 +1,1401 @@
+{
+  "films": {
+    "1917": {
+      "year": 2019,
+      "countries": [
+        "USA",
+        "UK",
+        "Spain",
+        "India"
+      ],
+      "rating": 4.13,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/0/1/5/5/460155-1917-0-600-0-900-crop.jpg?v=9eb1d95df5",
+      "fetched": "2026-11-22"
+    },
+    "the-invite-2026": {
+      "year": 2026,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.92,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
+      "fetched": "2026-11-22"
+    },
+    "clayface": {
+      "year": 2026,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.71,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/4/6/3/6/1284636-clayface-0-600-0-900-crop.jpg?v=eb305849d5",
+      "fetched": "2026-11-22"
+    },
+    "the-sheep-detectives": {
+      "year": 2026,
+      "countries": [
+        "USA",
+        "UK"
+      ],
+      "rating": 3.77,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/3/1/3/5/1183135-the-sheep-detectives-0-600-0-900-crop.jpg?v=c7b622176e",
+      "fetched": "2026-11-22"
+    },
+    "the-godfather": {
+      "year": 1972,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.51,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/1/8/51818-the-godfather-0-600-0-900-crop.jpg?v=bca8b67402",
+      "fetched": "2026-11-22"
+    },
+    "marty-supreme": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.01,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/7/4/9/9/1197499-marty-supreme-0-600-0-900-crop.jpg?v=b14a26bb43",
+      "fetched": "2026-11-22"
+    },
+    "obsession-2025": {
+      "year": 2025,
+      "countries": [
+        "USA",
+        "UK"
+      ],
+      "rating": 4.05,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/3/4/4/7/2/1234472-obsession-2025-2-0-600-0-900-crop.jpg?v=cff6fc00b6",
+      "fetched": "2026-11-22"
+    },
+    "i-swear": {
+      "year": 2025,
+      "countries": [
+        "UK"
+      ],
+      "rating": 4.26,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/7/8/4/2/1197842-i-swear-0-600-0-900-crop.jpg?v=b8f019138e",
+      "fetched": "2026-11-22"
+    },
+    "no-other-choice-2025": {
+      "year": 2025,
+      "countries": [
+        "South Korea",
+        "France"
+      ],
+      "rating": 4.08,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/6/5/9/5/2/565952-no-other-choice-2025-0-600-0-900-crop.jpg?v=87ef42b9f5",
+      "fetched": "2026-11-22"
+    },
+    "bugonia": {
+      "year": 2025,
+      "countries": [
+        "Ireland",
+        "South Korea",
+        "USA",
+        "Canada"
+      ],
+      "rating": 3.83,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/6/2/5/4/0/0/625400-bugonia-0-600-0-900-crop.jpg?v=4c6649150e",
+      "fetched": "2026-11-22"
+    },
+    "hamnet": {
+      "year": 2025,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.2,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/7/7/2/2/3/2/772232-hamnet-0-600-0-900-crop.jpg?v=631489314d",
+      "fetched": "2026-11-22"
+    },
+    "weapons-2025": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.57,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/2/1/0/9/972109-weapons-2025-0-600-0-900-crop.jpg?v=8100270337",
+      "fetched": "2026-11-22"
+    },
+    "mission-impossible-the-final-reckoning": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.47,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/3/4/0/3/503403-mission-impossible-the-final-reckoning-0-600-0-900-crop.jpg?v=00eae3744d",
+      "fetched": "2026-11-22"
+    },
+    "sinners-2025": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.1,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/6/6/0/0/1116600-sinners-2025-0-600-0-900-crop.jpg?v=5996b7d555",
+      "fetched": "2026-11-22"
+    },
+    "we-live-in-time": {
+      "year": 2024,
+      "countries": [
+        "UK"
+      ],
+      "rating": 3.68,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/1/7/8/6/991786-we-live-in-time-0-600-0-900-crop.jpg?v=14245ba118",
+      "fetched": "2026-11-22"
+    },
+    "dune-part-two": {
+      "year": 2024,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.38,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/7/4/4/3/617443-dune-part-two-0-600-0-900-crop.jpg?v=cc533700f8",
+      "fetched": "2026-11-22"
+    },
+    "oppenheimer-2023": {
+      "year": 2023,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.15,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/7/8/4/3/2/8/784328-oppenheimer-0-600-0-900-crop.jpg?v=e3c6e7a32c",
+      "fetched": "2026-11-22"
+    },
+    "mission-impossible-dead-reckoning": {
+      "year": 2023,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.7,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/3/4/0/2/503402-mission-impossible-dead-reckoning-part-one-0-600-0-900-crop.jpg?v=34b8b35ec9",
+      "fetched": "2026-11-22"
+    },
+    "smile-2022": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.88,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/7/9/3/8/8/3/793883-smile-0-600-0-900-crop.jpg?v=54791d7575",
+      "fetched": "2026-11-22"
+    },
+    "the-menu-2022": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.53,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/2/1/3/2/3/521323-the-menu-0-600-0-900-crop.jpg?v=d00a0d03a8",
+      "fetched": "2026-11-22"
+    },
+    "barbarian-2022": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.43,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/1/9/6/4/8/819648-barbarian-0-600-0-900-crop.jpg?v=75b067327a",
+      "fetched": "2026-11-22"
+    },
+    "fall-2022": {
+      "year": 2022,
+      "countries": [
+        "USA",
+        "UK"
+      ],
+      "rating": 2.6,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/8/7/6/2/1/887621-fall-0-600-0-900-crop.jpg?v=6bf31e9474",
+      "fetched": "2026-11-22"
+    },
+    "everything-everywhere-all-at-once": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.23,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/4/4/7/4/474474-everything-everywhere-all-at-once-0-600-0-900-crop.jpg?v=281f1a041e",
+      "fetched": "2026-11-22"
+    },
+    "the-batman": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.06,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/4/8/9/1/4/348914-the-batman-0-600-0-900-crop.jpg?v=ec12a8b7ce",
+      "fetched": "2026-11-22"
+    },
+    "the-conjuring-last-rites": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.8,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/6/0/6/5/936065-the-conjuring-last-rites-0-600-0-900-crop.jpg?v=597eedcd06",
+      "fetched": "2026-11-22"
+    },
+    "the-queens-gambit": {
+      "year": 2020,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.25,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/6/6/8/0/7/7/668077-the-queen-s-gambit-0-600-0-900-crop.jpg?v=13d0025c03",
+      "fetched": "2026-11-22"
+    },
+    "uncharted-2022": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.73,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/4/3/2/8/264328-uncharted-0-600-0-900-crop.jpg?v=988669139a",
+      "fetched": "2026-11-22"
+    },
+    "dune-2021": {
+      "year": 2021,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.9,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/nx/8b/vs/gc/cDbNAY0KM84cxXhmj8f0dLWza3t-0-600-0-900-crop.jpg?v=49eed12751",
+      "fetched": "2026-11-22"
+    },
+    "the-platform": {
+      "year": 2019,
+      "countries": [
+        "Spain"
+      ],
+      "rating": 3.23,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/4/5/9/8/5/545985-the-platform-0-600-0-900-crop.jpg?v=b3d868a021",
+      "fetched": "2026-11-22"
+    },
+    "joker-2019": {
+      "year": 2019,
+      "countries": [
+        "Canada",
+        "USA"
+      ],
+      "rating": 3.85,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/0/6/7/7/5/406775-joker-0-600-0-900-crop.jpg?v=e4ea7f98cc",
+      "fetched": "2026-11-22"
+    },
+    "ready-or-not-2019": {
+      "year": 2019,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.5,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/5/9/6/9/495969-ready-or-not-0-600-0-900-crop.jpg?v=13279f6ca8",
+      "fetched": "2026-11-22"
+    },
+    "midsommar": {
+      "year": 2019,
+      "countries": [
+        "Sweden",
+        "USA"
+      ],
+      "rating": 3.73,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/9/5/6/4/459564-midsommar-0-600-0-900-crop.jpg?v=ed7b8ded1f",
+      "fetched": "2026-11-22"
+    },
+    "parasite-2019": {
+      "year": 2019,
+      "countries": [
+        "South Korea"
+      ],
+      "rating": 4.51,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/6/4/0/6/426406-parasite-0-600-0-900-crop.jpg?v=8f5653f710",
+      "fetched": "2026-11-22"
+    },
+    "avengers-infinity-war": {
+      "year": 2018,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.1,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/6/6/6/1/226661-avengers-infinity-war-0-600-0-900-crop.jpg?v=8b35f60c0c",
+      "fetched": "2026-11-22"
+    },
+    "black-panther": {
+      "year": 2018,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.72,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/0/9/3/8/3/209383-black-panther-0-600-0-900-crop.jpg?v=d6e7e2c7a4",
+      "fetched": "2026-11-22"
+    },
+    "the-nun-2018": {
+      "year": 2018,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.38,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/1/8/4/2/371842-the-nun-0-600-0-900-crop.jpg?v=f5b4ea0e76",
+      "fetched": "2026-11-22"
+    },
+    "blade-runner-2049": {
+      "year": 2017,
+      "countries": [
+        "Canada",
+        "UK",
+        "USA"
+      ],
+      "rating": 4.1,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/5/4/3/9/265439-blade-runner-2049-0-600-0-900-crop.jpg?v=86735e0bb8",
+      "fetched": "2026-11-22"
+    },
+    "get-out-2017": {
+      "year": 2017,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.13,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/5/3/1/1/7/353117-get-out-0-600-0-900-crop.jpg?v=136acec030",
+      "fetched": "2026-11-22"
+    },
+    "la-la-land": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.13,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/4/0/3/4/4/240344-la-la-land-0-600-0-900-crop.jpg?v=053670ff84",
+      "fetched": "2026-11-22"
+    },
+    "split-2016": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.55,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/5e/pw/vs/km/8CHJcVc5IGXS1sC5DyjeMwTDEQH-0-600-0-900-crop.jpg?v=ab64d75800",
+      "fetched": "2026-11-22"
+    },
+    "arrival-2016": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.14,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/3u/dy/qd/qd/4Iu5f2nv7huqvuYkmZvSPOtbFjs-0-600-0-900-crop.jpg?v=0fc28fdf2c",
+      "fetched": "2026-11-22"
+    },
+    "the-conjuring-2": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.49,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/8/3/2/5/5/183255-the-conjuring-2-0-600-0-900-crop.jpg?v=d3a6df245b",
+      "fetched": "2026-11-22"
+    },
+    "the-martian": {
+      "year": 2015,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.83,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/1/1/5/1/1/211511-the-martian-0-600-0-900-crop.jpg?v=71ca0c832e",
+      "fetched": "2026-11-22"
+    },
+    "war-dogs-2016": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.54,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/7b/d2/2z/ef/aqhAqttDq7zgsTaBHtCD8wmTk6k-0-600-0-900-crop.jpg?v=b1d4ca3acb",
+      "fetched": "2026-11-22"
+    },
+    "me-before-you": {
+      "year": 2016,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.61,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/3/3/9/3/223393-me-before-you-0-600-0-900-crop.jpg?v=710c5c01aa",
+      "fetched": "2026-11-22"
+    },
+    "kingsman-the-secret-service": {
+      "year": 2014,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.78,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/2/0/0/148200-kingsman-the-secret-service-0-600-0-900-crop.jpg?v=cd49b739cf",
+      "fetched": "2026-11-22"
+    },
+    "interstellar": {
+      "year": 2014,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.46,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/6/2/1/117621-interstellar-0-600-0-900-crop.jpg?v=7ad89e6666",
+      "fetched": "2026-11-22"
+    },
+    "the-lobster": {
+      "year": 2015,
+      "countries": [
+        "France",
+        "Greece",
+        "Ireland",
+        "Netherlands",
+        "UK"
+      ],
+      "rating": 3.73,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/7/8/1/2/3/178123-the-lobster-0-600-0-900-crop.jpg?v=1de42bb7a6",
+      "fetched": "2026-11-22"
+    },
+    "gone-girl": {
+      "year": 2014,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.07,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/9/8/5/7/149857-gone-girl-0-600-0-900-crop.jpg?v=dfe3c8018b",
+      "fetched": "2026-11-22"
+    },
+    "edge-of-tomorrow": {
+      "year": 2014,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.78,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/5/1/8/3/105183-edge-of-tomorrow-0-600-0-900-crop.jpg?v=114551fc99",
+      "fetched": "2026-11-22"
+    },
+    "her": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.95,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/au/nb/i6/lq/fsoTLnUXEUTNuVCBxAJMY0HPPd-0-600-0-900-crop.jpg?v=16789732be",
+      "fetched": "2026-11-22"
+    },
+    "prisoners": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.35,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/iw/eg/4g/nm/3w79tTsv6tmlT8Jww6snyPrgVok-0-600-0-900-crop.jpg?v=778c7ae8b8",
+      "fetched": "2026-11-22"
+    },
+    "the-imitation-game": {
+      "year": 2014,
+      "countries": [
+        "USA",
+        "UK"
+      ],
+      "rating": 3.85,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/6/9/5/4/146954-the-imitation-game-0-600-0-900-crop.jpg?v=818ff18071",
+      "fetched": "2026-11-22"
+    },
+    "the-conjuring": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.64,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/6/2/6/2/106262-the-conjuring-0-600-0-900-crop.jpg?v=8cbb976912",
+      "fetched": "2026-11-22"
+    },
+    "now-you-see-me": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.49,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/10/vk/qc/6e/1NybAlflbmRXMIr9WoYxtlt1b6m-0-600-0-900-crop.jpg?v=ecf9142ef2",
+      "fetched": "2026-11-22"
+    },
+    "the-hangover-part-iii": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.82,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/9/5/3/87953-the-hangover-part-iii-0-600-0-900-crop.jpg?v=f0e2a6655e",
+      "fetched": "2026-11-22"
+    },
+    "gravity-2013": {
+      "year": 2013,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.52,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/4c/kn/9m/6a/221dfc20f8690b357b6b9ad66c13b5be-0-600-0-900-crop.jpg?v=9a0ce1ad93",
+      "fetched": "2026-11-22"
+    },
+    "life-of-pi": {
+      "year": 2012,
+      "countries": [
+        "USA",
+        "UK",
+        "Taiwan"
+      ],
+      "rating": 3.77,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/7/4/3/4/8/74348-life-of-pi-0-600-0-900-crop.jpg?v=5b5f120090",
+      "fetched": "2026-11-22"
+    },
+    "hugo": {
+      "year": 2011,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.51,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/kp/9v/8u/7j/rSmmVKeW3nsP86V2S6R7ePs4CFw-0-600-0-900-crop.jpg?v=2e7a1b811a",
+      "fetched": "2026-11-22"
+    },
+    "21-jump-street": {
+      "year": 2012,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.65,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/7/9/279-21-jump-street-0-600-0-900-crop.jpg?v=94d6b03998",
+      "fetched": "2026-11-22"
+    },
+    "the-hunt-2012": {
+      "year": 2012,
+      "countries": [
+        "Denmark",
+        "Sweden"
+      ],
+      "rating": 4.29,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/0/5/1/84051-the-hunt-0-600-0-900-crop.jpg?v=f1c08cc1a2",
+      "fetched": "2026-11-22"
+    },
+    "rise-of-the-planet-of-the-apes": {
+      "year": 2011,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.7,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/4/8/4948-rise-of-the-planet-of-the-apes-0-600-0-900-crop.jpg?v=2185768098",
+      "fetched": "2026-11-22"
+    },
+    "the-hangover-part-ii": {
+      "year": 2011,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.21,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/14/sk/45/1c/hFUsdnUoQDQ02EVlKTyhDTdehEr-0-600-0-900-crop.jpg?v=b607a95894",
+      "fetched": "2026-11-22"
+    },
+    "the-social-network": {
+      "year": 2010,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.92,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/nw/cm/pa/ai/sGQv3ZMZBDBnl3z42Q0mEQ5uiDe-0-600-0-900-crop.jpg?v=54ee59f7cd",
+      "fetched": "2026-11-22"
+    },
+    "drive-2011": {
+      "year": 2011,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.91,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/6d/6l/r3/e9/nu7XIa67cXc2t7frXCE5voXUJcN.jpg-0-600-0-900-crop.jpg?v=58a476ae28",
+      "fetched": "2026-11-22"
+    },
+    "127-hours": {
+      "year": 2010,
+      "countries": [
+        "France",
+        "UK",
+        "USA"
+      ],
+      "rating": 3.48,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/1/0/5/0/21050-127-hours-0-600-0-900-crop.jpg?v=00379b4446",
+      "fetched": "2026-11-22"
+    },
+    "inception": {
+      "year": 2010,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.24,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/sv/95/s9/4j/inception-0-600-0-900-crop.jpg?v=30d7224316",
+      "fetched": "2026-11-22"
+    },
+    "zombieland": {
+      "year": 2009,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.52,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/3/5/2/39352-zombieland-0-600-0-900-crop.jpg?v=f8bb88fc79",
+      "fetched": "2026-11-22"
+    },
+    "the-hangover": {
+      "year": 2009,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.77,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/0/1/0/0/40100-the-hangover-0-600-0-900-crop.jpg?v=6464871bf5",
+      "fetched": "2026-11-22"
+    },
+    "coraline": {
+      "year": 2009,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.2,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/7/7/9/42779-coraline-0-600-0-900-crop.jpg?v=b792483e2a",
+      "fetched": "2026-11-22"
+    },
+    "500-days-of-summer": {
+      "year": 2009,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.65,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/3/5/0/39350--500-days-of-summer-0-600-0-900-crop.jpg?v=05995ae0b3",
+      "fetched": "2026-11-22"
+    },
+    "the-dark-knight": {
+      "year": 2008,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.5,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/78/y5/zg/ej/oefdD26aey8GPdx7Rm45PNncJdU-0-600-0-900-crop.jpg?v=2d0ce4be25",
+      "fetched": "2026-11-22"
+    },
+    "i-am-legend": {
+      "year": 2007,
+      "countries": [
+        "USA",
+        "UK"
+      ],
+      "rating": 3.49,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/2/9/6/48296-i-am-legend-0-600-0-900-crop.jpg?v=5ad5d3b4e2",
+      "fetched": "2026-11-22"
+    },
+    "the-incredible-hulk": {
+      "year": 2008,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.59,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/8/2/7/50827-the-incredible-hulk-0-600-0-900-crop.jpg?v=f03c15122c",
+      "fetched": "2026-11-22"
+    },
+    "zodiac": {
+      "year": 2007,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.03,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/58/tf/z6/gw/qKQIjErYaN149hZRP5Vgf8RoC7S-0-600-0-900-crop.jpg?v=72ee5db942",
+      "fetched": "2026-11-22"
+    },
+    "casino-royale-2006": {
+      "year": 2006,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.04,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/qb/if/j8/jr/zlWBxz2pTA9p45kUTrI8AQiKrHm-0-600-0-900-crop.jpg?v=c06add9fe8",
+      "fetched": "2026-11-22"
+    },
+    "charlie-and-the-chocolate-factory": {
+      "year": 2005,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.38,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/9/3/2/51932-charlie-and-the-chocolate-factory-0-600-0-900-crop.jpg?v=cf68e10228",
+      "fetched": "2026-11-22"
+    },
+    "memories-of-murder": {
+      "year": 2003,
+      "countries": [
+        "South Korea"
+      ],
+      "rating": 4.42,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/84/xt/e8/mw/gawnVe9cFowdoDLo9Pok12NTw39-0-600-0-900-crop.jpg?v=7cad204593",
+      "fetched": "2026-11-22"
+    },
+    "fight-club": {
+      "year": 1999,
+      "countries": [
+        "Germany",
+        "USA"
+      ],
+      "rating": 4.27,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/6/8/51568-fight-club-0-600-0-900-crop.jpg?v=768b32dfa4",
+      "fetched": "2026-11-22"
+    },
+    "rush-hour": {
+      "year": 1998,
+      "countries": [
+        "USA",
+        "Hong Kong"
+      ],
+      "rating": 3.69,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/5/1/7/50517-rush-hour-0-600-0-900-crop.jpg?v=43dae7f97d",
+      "fetched": "2026-11-22"
+    },
+    "titanic-1997": {
+      "year": 1997,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.84,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/2/4/51524-titanic-0-600-0-900-crop.jpg?v=7517ea94ce",
+      "fetched": "2026-11-22"
+    },
+    "se7en": {
+      "year": 1995,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.39,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/4/5/51345-se7en-0-600-0-900-crop.jpg?v=76a14ef6b4",
+      "fetched": "2026-11-22"
+    },
+    "a-bronx-tale": {
+      "year": 1993,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.17,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/3/2/50932-a-bronx-tale-0-600-0-900-crop.jpg?v=70eaa993de",
+      "fetched": "2026-11-22"
+    },
+    "home-alone": {
+      "year": 1990,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.87,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/e6/mn/oi/ky/8IWPBT1rkAaI8Kpk5V3WfQRklJ7-0-600-0-900-crop.jpg?v=cb22d36a0e",
+      "fetched": "2026-11-22"
+    },
+    "jaws": {
+      "year": 1975,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.91,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/4/2/51542-jaws-0-600-0-900-crop.jpg?v=03299455f6",
+      "fetched": "2026-11-22"
+    },
+    "blue-velvet": {
+      "year": 1986,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.06,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/5/9/51359-blue-velvet-0-600-0-900-crop.jpg?v=b0ee3c20f6",
+      "fetched": "2026-11-22"
+    },
+    "12-angry-men": {
+      "year": 1957,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.63,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/7/0/0/51700-12-angry-men-0-600-0-900-crop.jpg?v=b8aaf291a9",
+      "fetched": "2026-11-22"
+    },
+    "the-dancing-pig": {
+      "year": 1907,
+      "countries": [
+        "France"
+      ],
+      "rating": 3.07,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/2/2/6/108226-the-dancing-pig-0-600-0-900-crop.jpg?v=dc798d58f7",
+      "fetched": "2026-11-22"
+    },
+    "amadeus": {
+      "year": 1984,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.37,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/bn/hr/ki/ay/eP2pJudgGzUlo2kZuh0tF1MInsb-0-600-0-900-crop.jpg?v=907dc282ae",
+      "fetched": "2026-11-22"
+    },
+    "perfect-blue": {
+      "year": 1997,
+      "countries": [
+        "Japan"
+      ],
+      "rating": 4.37,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/1/7/5/46175-perfect-blue-0-600-0-900-crop.jpg?v=1ed5878cce",
+      "fetched": "2026-11-22"
+    },
+    "its-a-wonderful-life": {
+      "year": 1946,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.45,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/4/9/50949-it-s-a-wonderful-life-0-600-0-900-crop.jpg?v=64b72dd083",
+      "fetched": "2026-11-22"
+    },
+    "la-haine": {
+      "year": 1995,
+      "countries": [
+        "France"
+      ],
+      "rating": 4.5,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/8/4/51684-la-haine-0-600-0-900-crop.jpg?v=b6677cc136",
+      "fetched": "2026-11-22"
+    },
+    "yi-yi": {
+      "year": 2000,
+      "countries": [
+        "Taiwan",
+        "Japan"
+      ],
+      "rating": 4.53,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/7s/h0/6e/0f/hhsYCYVPy1V0eTjkGNGdvpDO2qk-0-600-0-900-crop.jpg?v=f8d5b0fe80",
+      "fetched": "2026-11-22"
+    },
+    "the-godfather-part-ii": {
+      "year": 1974,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.59,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/1/6/51816-the-godfather-part-ii-0-600-0-900-crop.jpg?v=6a49853f25",
+      "fetched": "2026-11-22"
+    },
+    "look-back-2024": {
+      "year": 2024,
+      "countries": [
+        "Japan"
+      ],
+      "rating": 4.28,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/7/6/6/9/1127669-look-back-0-600-0-900-crop.jpg?v=6a67407577",
+      "fetched": "2026-11-22"
+    },
+    "there-will-be-blood": {
+      "year": 2007,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.46,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/jg/cd/7y/f5/there%20will%20be%20blood-0-600-0-900-crop.jpg?v=8a533d5350",
+      "fetched": "2026-11-22"
+    },
+    "law-abiding-citizen": {
+      "year": 2009,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.44,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/or/48/a8/mq/p7zwLp8gCKyrNLCHP3RhmN5izHo-0-600-0-900-crop.jpg?v=e4f895d955",
+      "fetched": "2026-11-22"
+    },
+    "the-voice-of-hind-rajab": {
+      "year": 2025,
+      "countries": [
+        "France",
+        "Tunisia",
+        "USA",
+        "UK",
+        "Cyprus",
+        "Saudi Arabia",
+        "Italy",
+        "Netherlands",
+        "State of Palestine"
+      ],
+      "rating": 4.41,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/5/7/4/0/2/1357402-the-voice-of-hind-rajab-0-600-0-900-crop.jpg?v=c5d8abe27e",
+      "fetched": "2026-11-22"
+    },
+    "dead-poets-society": {
+      "year": 1989,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.36,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/4/6/51846-dead-poets-society-0-600-0-900-crop.jpg?v=9273e8acf7",
+      "fetched": "2026-11-22"
+    },
+    "chronicle": {
+      "year": 2012,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.55,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/85/vy/rs/s4/dMULLYV1wxEdG6P3uziGqdo6uFl-0-600-0-900-crop.jpg?v=7e5bf356e6",
+      "fetched": "2026-11-22"
+    },
+    "anna-2019": {
+      "year": 2019,
+      "countries": [
+        "France",
+        "Guadeloupe",
+        "Russia",
+        "Serbia",
+        "USA"
+      ],
+      "rating": 3.01,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/1/5/4/7/7/415477-anna-0-600-0-900-crop.jpg?v=2d657eb849",
+      "fetched": "2026-11-22"
+    },
+    "eternal-sunshine-of-the-spotless-mind": {
+      "year": 2004,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.24,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/ay/bp/kl/1y/uBfQ7IGpi0jXSP3GPCzp9Pzm10v-0-600-0-900-crop.jpg?v=116621c401",
+      "fetched": "2026-11-22"
+    },
+    "fantastic-mr-fox": {
+      "year": 2009,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.3,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/3/4/4/46344-fantastic-mr-fox-0-600-0-900-crop.jpg?v=3a2a858065",
+      "fetched": "2026-11-22"
+    },
+    "detachment": {
+      "year": 2011,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.91,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/8e/5j/1t/9e/e0uefngyZyVVTm9SVHdEsB6egTi-0-600-0-900-crop.jpg?v=481e5530de",
+      "fetched": "2026-11-22"
+    },
+    "oceans-eleven-2001": {
+      "year": 2001,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.95,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/9/0/51890-oceans-eleven-2001-0-600-0-900-crop.jpg?v=9986b9227a",
+      "fetched": "2026-11-22"
+    },
+    "casino": {
+      "year": 1995,
+      "countries": [
+        "France",
+        "USA"
+      ],
+      "rating": 4.22,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/6p/om/dp/mc/casino-original-0-600-0-900-crop.jpg?v=4bb9a2596f",
+      "fetched": "2026-11-22"
+    },
+    "the-gorge-2025": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.99,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/6/8/7/854687-the-gorge-2025-0-600-0-900-crop.jpg?v=fca29e60dd",
+      "fetched": "2026-11-22"
+    },
+    "companion-2025": {
+      "year": 2025,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.38,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/7/1/7/2/977172-companion-2025-0-600-0-900-crop.jpg?v=66c5c946ec",
+      "fetched": "2026-11-22"
+    },
+    "no-country-for-old-men": {
+      "year": 2007,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.3,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/dr/hr/pz/ez/ehLb2SQ3djlA1FrQKbP2WO3VH09-0-600-0-900-crop.jpg?v=6489920a92",
+      "fetched": "2026-11-22"
+    },
+    "the-good-nurse": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.25,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/0/1/0/7/470107-the-good-nurse-0-600-0-900-crop.jpg?v=036ee4619d",
+      "fetched": "2026-11-22"
+    },
+    "dahmer-monster-the-jeffrey-dahmer-story": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.61,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/9/2/6/2/8/0/926280-dahmer-monster-the-jeffrey-dahmer-story-0-600-0-900-crop.jpg?v=55f6725726",
+      "fetched": "2026-11-22"
+    },
+    "the-brutalist": {
+      "year": 2024,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.89,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/8/4/2/8/478428-the-brutalist-0-600-0-900-crop.jpg?v=2f8cae2ea5",
+      "fetched": "2026-11-22"
+    },
+    "old-2021": {
+      "year": 2021,
+      "countries": [
+        "China",
+        "USA"
+      ],
+      "rating": 2.48,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/5/8/0/5/4/558054-old-0-600-0-900-crop.jpg?v=99abfca3a4",
+      "fetched": "2026-11-22"
+    },
+    "spirited-away": {
+      "year": 2001,
+      "countries": [
+        "Japan"
+      ],
+      "rating": 4.43,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/9/2/1/51921-spirited-away-0-600-0-900-crop.jpg?v=a3ad463c55",
+      "fetched": "2026-11-22"
+    },
+    "dont-look-up-2021": {
+      "year": 2021,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.06,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/7/2/2/5/5/572255-don-t-look-up-0-600-0-900-crop.jpg?v=a58cc4aba2",
+      "fetched": "2026-11-22"
+    },
+    "good-will-hunting": {
+      "year": 1997,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.39,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/2/1/51621-good-will-hunting-0-600-0-900-crop.jpg?v=acb4766abd",
+      "fetched": "2026-11-22"
+    },
+    "whiplash-2014": {
+      "year": 2014,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.42,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/cl/dn/kr/f1/4C9LHDxMsoYI0S3iMPZdm3Oevwo-0-600-0-900-crop.jpg?v=d13ea36528",
+      "fetched": "2026-11-22"
+    },
+    "the-banshees-of-inisherin": {
+      "year": 2022,
+      "countries": [
+        "UK",
+        "USA",
+        "Ireland"
+      ],
+      "rating": 4.12,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/9/8/8/8/2/598882-the-banshees-of-inisherin-0-600-0-900-crop.jpg?v=933f9af6e7",
+      "fetched": "2026-11-22"
+    },
+    "shutter-island": {
+      "year": 2010,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.21,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/4/0/9/45409-shutter-island-0-600-0-900-crop.jpg?v=85dd4c38e3",
+      "fetched": "2026-11-22"
+    },
+    "us-2019": {
+      "year": 2019,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.63,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/0/5/2/0/390520-us-0-600-0-900-crop.jpg?v=968884c876",
+      "fetched": "2026-11-22"
+    },
+    "amelie": {
+      "year": 2001,
+      "countries": [
+        "France",
+        "Germany"
+      ],
+      "rating": 4.2,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/ly/0v/ey/u7/pM20xF4WFyX7G3ie0YBXFp75aEC-0-600-0-900-crop.jpg?v=bc8a28c252",
+      "fetched": "2026-11-22"
+    },
+    "the-shining": {
+      "year": 1980,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 4.21,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/7s/m2/bw/d0/caoYMcjUamGoBVy65i1AHJBvdzw-0-600-0-900-crop.jpg?v=88d9d6cce4",
+      "fetched": "2026-11-22"
+    },
+    "yes-man": {
+      "year": 2008,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.2,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/4/5/0/46450-yes-man-0-600-0-900-crop.jpg?v=57249aaf75",
+      "fetched": "2026-11-22"
+    },
+    "kill-bill-vol-1": {
+      "year": 2003,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.22,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/sw/w2/ep/v4/9O50TVszkz0dcP5g6Ej33UhR7vw-0-600-0-900-crop.jpg?v=5a65f5202f",
+      "fetched": "2026-11-22"
+    },
+    "glass-2019": {
+      "year": 2019,
+      "countries": [
+        "USA"
+      ],
+      "rating": 2.97,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/3/8/2/6/6/9/382669-glass-0-600-0-900-crop.jpg?v=23c456ff6d",
+      "fetched": "2026-11-22"
+    },
+    "the-green-mile": {
+      "year": 1999,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.31,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/1/3/51613-the-green-mile-0-600-0-900-crop.jpg?v=fff3d0bd1f",
+      "fetched": "2026-11-22"
+    },
+    "the-revenant-2015": {
+      "year": 2015,
+      "countries": [
+        "Canada",
+        "Hong Kong",
+        "Taiwan",
+        "USA"
+      ],
+      "rating": 3.93,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/0/7/2/2/4/207224-the-revenant-0-600-0-900-crop.jpg?v=f51b30a589",
+      "fetched": "2026-11-22"
+    },
+    "last-night-in-soho": {
+      "year": 2021,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.47,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/5/0/0/0/505000-last-night-in-soho-0-600-0-900-crop.jpg?v=0b5403ef97",
+      "fetched": "2026-11-22"
+    },
+    "the-whale-2022": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.67,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/3/4/7/8/703478-the-whale-0-600-0-900-crop.jpg?v=84e98165fb",
+      "fetched": "2026-11-22"
+    },
+    "tenet": {
+      "year": 2020,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.47,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/pq/9f/sr/vt/aCIFMriQh8rvhxpN1IWGgvH0Tlg-0-600-0-900-crop.jpg?v=f3165fe17f",
+      "fetched": "2026-11-22"
+    },
+    "it-2017": {
+      "year": 2017,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.49,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/w3/47/76/am/6uDpMsdn8bbZScDptbika5JEtSH-0-600-0-900-crop.jpg?v=ee603d8e3b",
+      "fetched": "2026-11-22"
+    },
+    "dunkirk-2017": {
+      "year": 2017,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.77,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/md/nb/pu/3i/bOXBV303Fgkzn2K4FeKDc0O31q4-0-600-0-900-crop.jpg?v=7307b1ff5b",
+      "fetched": "2026-11-22"
+    },
+    "top-gun-maverick": {
+      "year": 2022,
+      "countries": [
+        "USA"
+      ],
+      "rating": 3.98,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/9/3/4/6/5/293465-top-gun-maverick-0-600-0-900-crop.jpg?v=9f8af0f61b",
+      "fetched": "2026-11-22"
+    },
+    "the-shawshank-redemption": {
+      "year": 1994,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.6,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/7l/hn/46/uz/zGINvGjdlO6TJRu9wESQvWlOKVT-0-600-0-900-crop.jpg?v=8736d1c395",
+      "fetched": "2026-11-22"
+    },
+    "django-unchained": {
+      "year": 2012,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.35,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/5/2/5/1/6/52516-django-unchained-0-600-0-900-crop.jpg?v=f02aed63a3",
+      "fetched": "2026-11-22"
+    },
+    "baby-driver": {
+      "year": 2017,
+      "countries": [
+        "UK",
+        "USA"
+      ],
+      "rating": 3.71,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/8/9/5/0/268950-baby-driver-0-600-0-900-crop.jpg?v=61304ddfc8",
+      "fetched": "2026-11-22"
+    },
+    "the-wolf-of-wall-street": {
+      "year": 2013,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/8/6/1/1/4/86114-the-wolf-of-wall-street-0-600-0-900-crop.jpg?v=a2b958b6f1",
+      "fetched": "2026-11-22"
+    },
+    "the-truman-show": {
+      "year": 1998,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.22,
+      "poster": "https://a.ltrbxd.com/resized/sm/upload/xx/io/jp/45/the-truman-show-0-600-0-900-crop.jpg?v=704ba393f7",
+      "fetched": "2026-11-22"
+    }
+  },
+  "titles": {
+    "the invite|2026": "the-invite-2026",
+    "clayface|2026": "clayface",
+    "the sheep detectives|2026": "the-sheep-detectives",
+    "the godfather|1972": "the-godfather",
+    "marty supreme|2025": "marty-supreme",
+    "obsession|2025": "obsession-2025",
+    "i swear|2025": "i-swear",
+    "no other choice|2025": "no-other-choice-2025",
+    "bugonia|2025": "bugonia",
+    "hamnet|2025": "hamnet",
+    "weapons|2025": "weapons-2025",
+    "mission: impossible – the final reckoning|2025": "mission-impossible-the-final-reckoning",
+    "sinners|2025": "sinners-2025",
+    "we live in time|2024": "we-live-in-time",
+    "dune: part two|2024": "dune-part-two",
+    "oppenheimer|2023": "oppenheimer-2023",
+    "mission: impossible – dead reckoning part one|2023": "mission-impossible-dead-reckoning",
+    "smile|2022": "smile-2022",
+    "the menu|2022": "the-menu-2022",
+    "barbarian|2022": "barbarian-2022",
+    "fall|2022": "fall-2022",
+    "everything everywhere all at once|2022": "everything-everywhere-all-at-once",
+    "the batman|2022": "the-batman",
+    "the conjuring: last rites|2025": "the-conjuring-last-rites",
+    "the queen's gambit|2020": "the-queens-gambit",
+    "uncharted|2022": "uncharted-2022",
+    "dune|2021": "dune-2021",
+    "the platform|2019": "the-platform",
+    "joker|2019": "joker-2019",
+    "ready or not|2019": "ready-or-not-2019",
+    "midsommar|2019": "midsommar",
+    "parasite|2019": "parasite-2019",
+    "avengers: infinity war|2018": "avengers-infinity-war",
+    "black panther|2018": "black-panther",
+    "the nun|2018": "the-nun-2018",
+    "blade runner 2049|2017": "blade-runner-2049",
+    "get out|2017": "get-out-2017",
+    "la la land|2016": "la-la-land",
+    "split|2016": "split-2016",
+    "arrival|2016": "arrival-2016",
+    "the conjuring 2|2016": "the-conjuring-2",
+    "the martian|2015": "the-martian",
+    "war dogs|2016": "war-dogs-2016",
+    "me before you|2016": "me-before-you",
+    "kingsman: the secret service|2014": "kingsman-the-secret-service",
+    "interstellar|2014": "interstellar",
+    "the lobster|2015": "the-lobster",
+    "gone girl|2014": "gone-girl",
+    "edge of tomorrow|2014": "edge-of-tomorrow",
+    "her|2013": "her",
+    "prisoners|2013": "prisoners",
+    "the imitation game|2014": "the-imitation-game",
+    "the conjuring|2013": "the-conjuring",
+    "now you see me|2013": "now-you-see-me",
+    "the hangover part iii|2013": "the-hangover-part-iii",
+    "gravity|2013": "gravity-2013",
+    "life of pi|2012": "life-of-pi",
+    "hugo|2011": "hugo",
+    "21 jump street|2012": "21-jump-street",
+    "the hunt|2012": "the-hunt-2012",
+    "rise of the planet of the apes|2011": "rise-of-the-planet-of-the-apes",
+    "the hangover part ii|2011": "the-hangover-part-ii",
+    "the social network|2010": "the-social-network",
+    "drive|2011": "drive-2011",
+    "127 hours|2010": "127-hours",
+    "inception|2010": "inception",
+    "zombieland|2009": "zombieland",
+    "the hangover|2009": "the-hangover",
+    "coraline|2009": "coraline",
+    "(500) days of summer|2009": "500-days-of-summer",
+    "the dark knight|2008": "the-dark-knight",
+    "i am legend|2007": "i-am-legend",
+    "the incredible hulk|2008": "the-incredible-hulk",
+    "zodiac|2007": "zodiac",
+    "casino royale|2006": "casino-royale-2006",
+    "charlie and the chocolate factory|2005": "charlie-and-the-chocolate-factory",
+    "memories of murder|2003": "memories-of-murder",
+    "fight club|1999": "fight-club",
+    "rush hour|1998": "rush-hour",
+    "titanic|1997": "titanic-1997",
+    "se7en|1995": "se7en",
+    "a bronx tale|1993": "a-bronx-tale",
+    "home alone|1990": "home-alone",
+    "jaws|1975": "jaws",
+    "blue velvet|1986": "blue-velvet",
+    "12 angry men|1957": "12-angry-men",
+    "the dancing pig|1907": "the-dancing-pig"
+  }
+}

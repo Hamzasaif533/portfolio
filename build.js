@@ -435,9 +435,10 @@ function filmDiary(movies = []) {
 function watchlistPanel(site) {
   const wl = site.watchlist || [];
   if (!wl.length) return `<p class="empty-note">Your Letterboxd watchlist shows here after the next build.</p>`;
-  return `<ul class="list wl">${wl.map(f => {
+  const note = wl.some(f => f.lbRating) ? `<p class="wl-note">Ratings are Letterboxd averages</p>` : "";
+  return note + `<ul class="list wl">${wl.map(f => {
     const url = `https://letterboxd.com/film/${f.slug}/`;
-    return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item><span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span></a></li>`;
+    return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item><span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span><span class="r"${f.lbRating ? ` title="Letterboxd average" aria-label="Letterboxd average ${f.lbRating.toFixed(2)} out of 5"` : ""}>${f.lbRating ? `${f.lbRating.toFixed(1)}<i>★</i>` : ""}</span></a></li>`;
   }).join("")}</ul>`;
 }
 
@@ -510,11 +511,27 @@ function statsPanel(site) {
     <ol class="hbars">${top.map(([name, n]) => `<li><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(n / topMax).toFixed(3)}"></i></span><span class="ct">${n}</span><span class="av">${dirAvg(name)}</span></li>`).join("")}</ol>
   </figure>` : "";
 
-  // highest rated, liked first
-  const best = rated.slice().sort((a, b) => b.rating - a.rating || (b.liked ? 1 : 0) - (a.liked ? 1 : 0) || String(b.watched || "").localeCompare(String(a.watched || ""))).slice(0, 5);
-  const bestList = best.length ? `<figure class="chart wide">
-    <figcaption><span>Highest rated</span></figcaption>
-    <ol class="toplist">${best.map(m => `<li><span class="nm">${esc(m.title)}</span><span class="ct">${esc(m.year || "")}</span><span class="av">${ratingText(m)}</span></li>`).join("")}</ol>
+  // where the films are from (a film made in two countries counts for both)
+  const perCountry = new Map();
+  let withCountry = 0;
+  for (const m of movies) {
+    const cs = (site.countries || {})[m.title + "|" + (m.year || "")];
+    if (!cs || !cs.length) continue;
+    withCountry++;
+    cs.forEach(c => perCountry.set(c, (perCountry.get(c) || 0) + 1));
+  }
+  const topC = [...perCountry.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
+  const cMax = topC.length ? topC[0][1] : 1;
+  const countryList = topC.length ? `<figure class="chart wide">
+    <figcaption><span>Countries</span><span>${perCountry.size} countries · ${withCountry} films</span></figcaption>
+    <ol class="hbars">${topC.map(([name, n]) => `<li><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(n / cMax).toFixed(3)}"></i></span><span class="ct">${n}</span><span class="av">${Math.round((n / withCountry) * 100)}%</span></li>`).join("")}</ol>
+  </figure>` : "";
+
+  // your four favourites, as on your Letterboxd profile
+  const favs = (site.favourites || []).slice(0, 4);
+  const top4 = favs.length ? `<figure class="chart wide">
+    <figcaption><span>Top 4</span><span>from Letterboxd</span></figcaption>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" loading="lazy" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}</span></a></li>`; }).join("")}</ol>
   </figure>` : "";
 
   return `<div class="stats">
@@ -524,8 +541,9 @@ function statsPanel(site) {
       ${barChart("Ratings", ratings, { note: `${rated.length} rated` })}
       ${barChart("Release decades", decades)}
       ${barChart("Day of the week", days, { note: `${dated.length} dated` })}
+      ${top4}
+      ${countryList}
       ${dirList}
-      ${bestList}
     </div>
   </div>`;
 }
@@ -666,44 +684,147 @@ function loadSite() {
     site = require(p);
   }
   try { site.repos = JSON.parse(fs.readFileSync(REPOS_JSON, "utf8")).repos || []; } catch (_) { site.repos = []; }
-  try { site.watchlist = JSON.parse(fs.readFileSync(WATCHLIST_JSON, "utf8")).films || []; } catch (_) { site.watchlist = []; }
+  const lbRead = f => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (_) { return {}; } };
+  const wl = lbRead(WATCHLIST_JSON), meta = lbRead(FILM_META_JSON), mf = meta.films || {}, mt = meta.titles || {};
+  site.watchlist = (wl.films || []).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating }));
+  site.favourites = (site.top4 || []).filter(f => f && f.slug).slice(0, 4).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating, poster: fs.existsSync(path.join(ROOT, "assets/posters", f.slug + ".jpg")) ? `assets/posters/${f.slug}.jpg` : "" }));
+  site.countries = {}; // film title|year -> countries, for the stats
+  for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.countries[m.title + "|" + (m.year || "")] = mf[slug].countries || []; }
   return site;
 }
 
 /* Pull your public GitHub repos (not forks) into content/repos.json before building.
    If GitHub can't be reached, the last saved copy is used, so the build never fails because of it. */
 const REPOS_JSON = path.join(ROOT, "content/repos.json");
-/* Your Letterboxd watchlist (public page, newest added first) into content/watchlist.json.
-   If Letterboxd can't be reached, the last saved copy is used. */
+/* Letterboxd, read from your public pages before each build:
+   - content/watchlist.json   your watchlist (your top 4 is the "top4" list in content/site.json)
+   - content/film-meta.json   per film: countries, Letterboxd average rating, poster (a cache, so
+                              only new films are fetched and old ratings refreshed a few at a time)
+   If Letterboxd can't be reached, the saved copies are used, so the build never fails because of it. */
 const WATCHLIST_JSON = path.join(ROOT, "content/watchlist.json");
-async function refreshWatchlist() {
-  let user;
-  try { user = loadSite().letterboxd; } catch (_) {}
+const FILM_META_JSON = path.join(ROOT, "content/film-meta.json");
+const LB = "https://letterboxd.com";
+const LB_HEADERS = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36", Accept: "text/html" };
+const unent = s => String(s).replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n));
+const nameYear = n => { const m = unent(n).match(/^(.*) \((\d{4})\)$/); return m ? { title: m[1], year: +m[2] } : { title: unent(n) }; };
+const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, n, slug]) => ({ ...nameYear(n), slug }));
+const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
+
+async function lbGet(url) {
+  const res = await fetch(url, { headers: LB_HEADERS, redirect: "follow", signal: AbortSignal.timeout(12000) });
+  return res.ok ? { url: res.url, html: await res.text() } : { status: res.status };
+}
+
+/* one film page -> slug, year, countries, average rating, poster url */
+function parseFilm(url, html) {
+  const og = (html.match(/og:title" content="([^"]*)"/) || [])[1] || "";
+  const avg = parseFloat((html.match(/twitter:data2" content="([\d.]+) out of 5"/) || [])[1]);
+  return {
+    slug: (url.match(/\/film\/([^/]+)\//) || [])[1],
+    year: nameYear(og).year,
+    countries: [...new Set([...html.matchAll(/<a href="\/films\/country\/[^"]+"[^>]*>\s*([^<]+?)\s*<\/a>/g)].map(m => unent(m[1])))],
+    rating: Number.isFinite(avg) ? avg : undefined,
+    poster: ((html.match(/"image":"(https:\/\/a\.ltrbxd\.com\/resized\/[^"]+)"/) || [])[1] || "").replace(/\\\//g, "/") || undefined,
+  };
+}
+
+async function refreshLetterboxd() {
+  let site;
+  try { site = loadSite(); } catch (_) { return; }
+  const user = site.letterboxd;
   if (!user || typeof fetch !== "function") return;
+  const read = (f, d) => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (_) { return d; } };
+  const save = (f, data) => { const next = JSON.stringify(data, null, 2) + "\n"; if (!fs.existsSync(f) || fs.readFileSync(f, "utf8") !== next) fs.writeFileSync(f, next); };
+  const saved = read(WATCHLIST_JSON, {});
+  let films = saved.films || [];
+  const favourites = (site.top4 || []).filter(f => f && f.slug).slice(0, 4);
+
+  // watchlist pages + favourites from the profile
   try {
-    const films = [];
+    const list = [];
     for (let page = 1; page <= 40; page++) {
-      const res = await fetch(`https://letterboxd.com/${encodeURIComponent(user)}/watchlist/${page > 1 ? `page/${page}/` : ""}`, {
-        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36", Accept: "text/html" },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (!res.ok) throw new Error("Letterboxd answered " + res.status);
-      const html = await res.text();
-      const found = [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, name, slug]) => {
-        const n = name.replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
-        const m = n.match(/^(.*) \((\d{4})\)$/);
-        return { title: m ? m[1] : n, year: m ? +m[2] : undefined, slug };
-      });
-      films.push(...found);
-      if (!found.length || !html.includes(`/watchlist/page/${page + 1}/`)) break;
+      const r = await lbGet(`${LB}/${encodeURIComponent(user)}/watchlist/${page > 1 ? `page/${page}/` : ""}`);
+      if (!r.html) throw new Error("Letterboxd answered " + r.status);
+      const found = lbItems(r.html);
+      list.push(...found);
+      if (!found.length || !r.html.includes(`/watchlist/page/${page + 1}/`)) break;
     }
-    if (!films.length) throw new Error("no films found");
-    const next = JSON.stringify({ user, films }, null, 2) + "\n";
-    if (!fs.existsSync(WATCHLIST_JSON) || fs.readFileSync(WATCHLIST_JSON, "utf8") !== next) fs.writeFileSync(WATCHLIST_JSON, next);
-    console.log(`watchlist: ${films.length} films from letterboxd.com/${user}`);
+    if (list.length) films = list;
+    save(WATCHLIST_JSON, { user, films });
+    console.log(`letterboxd: ${films.length} on watchlist`);
   } catch (e) {
-    console.warn(`watchlist: using saved copy (${e.message})`);
+    console.warn(`letterboxd: using saved watchlist (${e.message})`);
   }
+
+  // film details: diary films (for countries), watchlist + favourites (for ratings / posters)
+  const meta = read(FILM_META_JSON, { films: {}, titles: {} });
+  meta.films = meta.films || {}; meta.titles = meta.titles || {};
+  const DAY = 864e5, now = Date.now();
+  const age = m => now - new Date(m.fetched || 0);
+  const jobs = [];
+  for (const m of site.movies || []) {
+    const key = filmKey(m.title, m.year), slug = meta.titles[key];
+    const known = slug && meta.films[slug];
+    if (slug === null && age({ fetched: meta.missing && meta.missing[key] }) < 30 * DAY) continue; // not found recently
+    if (!known) jobs.push({ key, title: m.title, year: m.year, tmdb: m.tmdb });
+  }
+  for (const f of films.concat(favourites)) {
+    const known = meta.films[f.slug];
+    if (!known) jobs.push({ slug: f.slug });
+  }
+  // refresh the oldest ratings, a few per build
+  const stale = Object.entries(meta.films).filter(([, m]) => age(m) > 14 * DAY).sort((a, b) => age(b[1]) - age(a[1])).slice(0, 25).map(([slug]) => ({ slug, refresh: true }));
+  const queue = jobs.concat(stale.filter(s => !jobs.some(j => j.slug === s.slug)));
+  if (queue.length) await fetchFilms(queue, meta);
+  save(FILM_META_JSON, meta);
+
+  // favourite posters are kept in assets/posters so the page never loads images from Letterboxd
+  for (const f of favourites) {
+    const m = meta.films[f.slug], file = path.join(ROOT, "assets/posters", `${f.slug}.jpg`);
+    if (!m || !m.poster || fs.existsSync(file)) continue;
+    try {
+      const res = await fetch(m.poster, { headers: LB_HEADERS, signal: AbortSignal.timeout(12000) });
+      if (!res.ok) continue;
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(file, Buffer.from(await res.arrayBuffer()));
+    } catch (_) {}
+  }
+}
+
+async function fetchFilms(queue, meta) {
+  let done = 0, failed = 0;
+  const resolve = async j => {
+    if (j.slug) { const r = await lbGet(`${LB}/film/${j.slug}/`); return r.html ? parseFilm(r.url, r.html) : null; }
+    if (j.tmdb) { const r = await lbGet(`${LB}/tmdb/${j.tmdb}/`); if (r.html) return parseFilm(r.url, r.html); }
+    const base = lbSlug(j.title);
+    for (const s of [base, j.year && `${base}-${j.year}`].filter(Boolean)) {
+      const r = await lbGet(`${LB}/film/${s}/`);
+      if (!r.html) continue;
+      const f = parseFilm(r.url, r.html);
+      if (!j.year || !f.year || Math.abs(f.year - j.year) <= 1) return f;
+    }
+    return null;
+  };
+  const worker = async () => {
+    for (let j; (j = queue.shift());) {
+      try {
+        const f = await resolve(j);
+        if (f && f.slug) {
+          meta.films[f.slug] = { ...meta.films[f.slug], ...Object.fromEntries(Object.entries(f).filter(([k, v]) => k !== "slug" && v !== undefined)), fetched: new Date().toISOString().slice(0, 10) };
+          if (j.key) meta.titles[j.key] = f.slug;
+          done++;
+        } else if (j.key) {
+          meta.titles[j.key] = null;
+          (meta.missing = meta.missing || {})[j.key] = new Date().toISOString().slice(0, 10);
+          failed++;
+        }
+      } catch (_) { failed++; }
+      await new Promise(r => setTimeout(r, 150)); // be gentle
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+  console.log(`letterboxd: film details ${done} updated${failed ? `, ${failed} not found` : ""}`);
 }
 
 async function refreshRepos() {
@@ -844,7 +965,7 @@ function dev() {
 
   async function api(req, res, p, q) {
     const m = req.method;
-    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; delete s.watchlist; return send(res, 200, s); } // repos live in their own file
+    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; delete s.watchlist; delete s.favourites; delete s.countries; return send(res, 200, s); } // repos live in their own file
     if (p === "/api/site" && m === "PUT") {
       const data = await readJSON(req);
       if (!data || typeof data !== "object" || Array.isArray(data) || !data.name) return send(res, 400, { error: "invalid content" });
@@ -955,7 +1076,7 @@ function dev() {
   });
 }
 
-Promise.all([refreshRepos(), refreshWatchlist()]).then(() => {
+Promise.all([refreshRepos(), refreshLetterboxd()]).then(() => {
   build();
   if (process.argv.includes("--dev")) dev();
 });

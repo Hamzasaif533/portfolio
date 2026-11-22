@@ -143,8 +143,10 @@ button { font: inherit; color: inherit; }
 .shelf li.now .t::before { content: "▸ "; font-size: 10px; vertical-align: 2px; }
 /* watchlist: plain rows that open the film on Letterboxd */
 .shelf .list.wl li { display: block; padding: 0; }
-.wl a { display: grid; grid-template-columns: minmax(0, 1fr) 4em; gap: 14px; align-items: baseline; padding: 7px 0; }
-.wl .y { text-align: right; }
+.wl a { display: grid; grid-template-columns: minmax(0, 1fr) 4em 4em; gap: 14px; align-items: baseline; padding: 7px 0; }
+.wl .y, .wl .r { text-align: right; }
+.wl .r i { font-style: normal; font-size: .85em; margin-left: 2px; color: var(--dim); }
+.wl-note { padding: 0 0 10px; font-size: 12px; color: var(--dim); text-align: right; }
 @media (hover: hover) { .wl a:hover .t { color: var(--mute); } }
 
 /* stats: headline tiles + single-series bar charts (one grey, white on hover) */
@@ -159,7 +161,7 @@ button { font: inherit; color: inherit; }
 .chart figcaption span + span { color: var(--dim); text-transform: none; letter-spacing: 0; }
 .bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; border-bottom: 1px solid var(--line); }
 .cb { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
-.cb i { display: block; width: 100%; height: calc(var(--v) * 100%); min-height: 2px; background: #8b8b8b; border-radius: 4px 4px 0 0; transition: background .15s; }
+.cb i { display: block; width: 100%; height: calc(var(--v) * 100%); min-height: 2px; background: #8b8b8b; border-radius: 0; transition: background .15s; }
 .cb.zero i { background: #222; }
 .cb::after { content: attr(data-tip); position: absolute; z-index: 2; bottom: calc(var(--v) * 100% + 8px); left: 50%; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: #1a1a1a; border: 1px solid var(--chip-line); color: var(--fg); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
 .cb:first-child::after, .cb:nth-child(2)::after { left: 0; transform: none; }
@@ -175,8 +177,14 @@ button { font: inherit; color: inherit; }
 .toplist li { grid-template-columns: minmax(0, 1fr) 3em auto; }
 .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hb { height: 6px; }
-.hb i { display: block; height: 100%; width: calc(var(--v) * 100%); background: #8b8b8b; border-radius: 0 4px 4px 0; }
+.hb i { display: block; height: 100%; width: calc(var(--v) * 100%); background: #8b8b8b; }
 .ct, .av { color: var(--mute); font-size: 12px; text-align: right; white-space: nowrap; }
+.top4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.top4 a { display: block; }
+.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 4px; background: #0b0b0b; border: 1px solid var(--chip-line); }
+.top4 .ph { display: grid; place-items: center; padding: 8px; font-size: 11px; color: var(--mute); text-align: center; }
+.cap4 { display: block; margin-top: 6px; font-size: 11px; line-height: 1.4; color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (hover: hover) { .top4 a:hover .cap4 { color: var(--fg); } .top4 a:hover img { border-color: rgba(255, 255, 255, .3); } }
 .empty-note { padding: 18px 0; color: var(--dim); font-size: 13px; }
 .diary-head { display: none; }
 .diary { margin: 0; }
@@ -383,8 +391,8 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .shelf .b { grid-area: b; font-size: 12px; color: var(--mute); opacity: .75; }
   .shelf .y:empty + .b { margin-left: -10px; }
   .shelf .r { grid-area: r; font-size: 12px; }
-  .wl a { grid-template-columns: minmax(0, 1fr) auto; padding: 11px 0; }
-  .wl .t, .wl .y { grid-area: auto; }
+  .wl a { grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; padding: 11px 0; }
+  .wl .t, .wl .y, .wl .r { grid-area: auto; }
   .wl .t { white-space: normal; }
   .tiles-stat { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 28px; }
   .tile-stat { padding: 12px 12px 10px; }

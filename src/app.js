@@ -47,6 +47,42 @@
     rows.forEach(li => list.appendChild(li));
   }));
 
+  /* ---------- stats: view switches + "which films?" lists ---------- */
+  $$(".seg button").forEach(b => b.addEventListener("click", () => {
+    const fig = b.closest("figure");
+    $$(".seg button", fig).forEach(x => x.setAttribute("aria-pressed", x === b));
+    $$(".seg-view", fig).forEach((v, i) => (v.hidden = String(i) !== b.dataset.seg));
+  }));
+  const filmData = (() => { try { return JSON.parse(($("#statfilms") || {}).textContent || "[]"); } catch (_) { return []; } })();
+  const flist = $(".filmlist");
+  if (flist) {
+    flist.addEventListener("click", e => { if (e.target === flist) flist.close(); });
+    $(".fl-close", flist).addEventListener("click", () => flist.close());
+    $$("[data-films]").forEach(el => el.addEventListener("click", () => {
+      const films = el.dataset.films.split(",").filter(Boolean).map(Number).map(i => filmData[i]).filter(Boolean);
+      $(".fl-title", flist).textContent = `${el.dataset.ftitle} · ${films.length} ${films.length === 1 ? "film" : "films"}`;
+      const ul = $(".fl-list", flist);
+      ul.textContent = "";
+      films.forEach(f => {
+        const li = document.createElement("li"), a = document.createElement("a");
+        a.href = "#" + f.id;
+        a.innerHTML = "<span class=t></span><span class=y></span><span class=r></span>";
+        a.children[0].textContent = f.t; a.children[1].textContent = f.y; a.children[2].textContent = f.r;
+        // jump to the film on the Movies tab
+        a.addEventListener("click", e => {
+          e.preventDefault(); flist.close();
+          if (location.hash === a.hash) focusHash(); else location.hash = a.hash;
+          const row = document.getElementById(f.id); // a short highlight so you can see where you landed
+          if (row) { row.classList.add("flash"); setTimeout(() => row.classList.remove("flash"), 1600); }
+        });
+        li.appendChild(a); ul.appendChild(li);
+      });
+      openDialog(flist);
+      const first = $("a", ul);
+      if (first) first.focus({ preventScroll: true });
+    }));
+  }
+
   /* ---------- deep links (#id) land focus on that item ---------- */
   const focusHash = () => {
     if (!location.hash) return;

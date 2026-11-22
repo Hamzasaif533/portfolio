@@ -442,109 +442,189 @@ function watchlistPanel(site) {
   }).join("")}</ul>`;
 }
 
-/* a single-series bar chart: one grey hue, values on hover, a hidden table for screen readers */
-function barChart(title, rows, { note = "", axis = true, unit = "films" } = {}) {
-  const max = Math.max(1, ...rows.map(r => r.v));
-  const total = rows.reduce((n, r) => n + r.v, 0);
-  const tip = r => `${r.tip || r.label}: ${r.v} ${r.v === 1 ? unit.replace(/s$/, "") : unit}`;
-  return `<figure class="chart">
-    <figcaption><span>${esc(title)}</span>${note ? `<span>${esc(note)}</span>` : ""}</figcaption>
-    <div class="bars" aria-hidden="true">${rows.map(r => `<span class="cb${r.v ? "" : " zero"}" style="--v:${(r.v / max).toFixed(3)}" data-tip="${esc(tip(r))}"><i></i></span>`).join("")}</div>
-    ${axis ? `<div class="axis" aria-hidden="true">${rows.map(r => `<span>${esc(r.short ?? r.label)}</span>`).join("")}</div>` : ""}
-    <table class="sr-only"><caption>${esc(title)}${total ? ` (${total} ${unit})` : ""}</caption><tbody>${rows.map(r => `<tr><th scope="row">${esc(r.tip || r.label)}</th><td>${r.v}</td></tr>`).join("")}</tbody></table>
+/* ---------- stats (in the spirit of Letterboxd's Pro stats page) ----------
+   Everything that counts films is a button: clicking it lists those films (from the JSON
+   embedded in the page, "statfilms"), and each film in that list jumps to its row. */
+const fmtN = n => Number(n).toLocaleString("en-US");
+const plural = (n, w) => `${fmtN(n)} ${n === 1 ? w : w + "s"}`;
+const avgOf = list => { const r = list.filter(m => m.rating != null); return r.length ? r.reduce((n, m) => n + Number(m.rating), 0) / r.length : null; };
+// attributes that make an element open the list of these films
+const pick = (ids, title) => ` type="button" data-item data-films="${ids.join(",")}" data-ftitle="${esc(title)}"`;
+
+/* one-hue bar chart; each bar is a button that lists its films */
+function barChart(rows, { unit = "film", value = r => r.ids.length, fmt = v => plural(v, unit), max } = {}) {
+  const top = max || Math.max(1, ...rows.map(value));
+  return `<div class="bars" role="group">${rows.map(r => {
+    const v = value(r), tip = `${r.tip || r.label}: ${fmt(v)}`;
+    return `<button class="cb${v ? "" : " zero"}"${r.ids.length ? pick(r.ids, r.tip || r.label) : ' type="button" disabled'} style="--v:${(v / top).toFixed(3)}" data-tip="${esc(tip)}" aria-label="${esc(tip)}"><i></i></button>`;
+  }).join("")}</div>
+    <div class="axis" aria-hidden="true">${rows.map(r => `<span>${esc(r.short ?? "")}</span>`).join("")}</div>`;
+}
+
+/* a ranked list with thin bars: [name, ids, extra] */
+function rankList(rows, { max, extra = () => "" } = {}) {
+  if (!rows.length) return `<p class="empty-note">Not enough films yet.</p>`;
+  const top = max || Math.max(...rows.map(r => r[1].length));
+  return `<ol class="hbars">${rows.map(([name, ids, x]) => `<li><button${pick(ids, name)}><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(ids.length / top).toFixed(3)}"></i></span><span class="ct">${ids.length}</span><span class="av">${x != null ? esc(x) : extra(ids)}</span></button></li>`).join("")}</ol>`;
+}
+
+/* a figure with Most watched / Highest rated (or other) views */
+function switchable(title, note, views) {
+  return `<figure class="chart wide sw">
+    <figcaption><span>${esc(title)}</span><span class="seg" role="group">${views.map(([name], i) => `<button type="button" data-seg="${i}" aria-pressed="${i === 0}">${esc(name)}</button>`).join("")}</span></figcaption>
+    ${views.map(([, body], i) => `<div class="seg-view"${i ? " hidden" : ""}>${body}</div>`).join("")}
+    ${note ? `<p class="chart-note">${esc(note)}</p>` : ""}
   </figure>`;
 }
 
 function statsPanel(site) {
-  const movies = site.movies || [];
+  const movies = byWatched(site.movies || []);
   if (!movies.length) return `<p class="empty-note">Add some films to see your stats.</p>`;
+  const meta = m => (site.meta || {})[m.title + "|" + (m.year || "")] || {};
+  const ids = list => list.map(m => movies.indexOf(m));
   const dated = movies.filter(m => /^\d{4}-\d{2}-\d{2}$/.test(m.watched || ""));
   const rated = movies.filter(m => m.rating != null);
-  const latest = dated.map(m => m.watched).sort().pop() || new Date().toISOString().slice(0, 10);
-  const thisYear = latest.slice(0, 4);
-  const count = (list, key) => list.reduce((map, m) => { const k = key(m); if (k != null && k !== "") map.set(k, (map.get(k) || 0) + 1); return map; }, new Map());
+  const stars1 = v => (v == null ? "" : `${v.toFixed(1)}★`);
+  const avgStr = list => stars1(avgOf(list));
 
-  // headline numbers
-  const directors = count(movies, m => m.by);
-  const avg = rated.length ? (rated.reduce((n, m) => n + Number(m.rating), 0) / rated.length).toFixed(2) : "–";
-  const tiles = [
-    [movies.length, "films"],
-    [dated.filter(m => m.watched.startsWith(thisYear)).length, `in ${thisYear}`],
-    [avg, "avg rating"],
-    [movies.filter(m => m.liked).length, "liked ♥"],
-    [directors.size, "directors"],
-    [(site.watchlist || []).length, "to watch"],
-  ].map(([n, k]) => `<div class="tile-stat"><b>${esc(n)}</b><span>${esc(k)}</span></div>`).join("");
+  // group films by a key (or several keys per film)
+  const groupBy = (keyFn) => {
+    const map = new Map();
+    for (const m of movies) for (const k of [].concat(keyFn(m) || [])) { if (k == null || k === "") continue; if (!map.has(k)) map.set(k, []); map.get(k).push(m); }
+    return map;
+  };
+  const mostWatched = (map, n = 8, min = 1) => [...map.entries()].filter(([, l]) => l.length >= min).sort((a, b) => b[1].length - a[1].length || (avgOf(b[1]) || 0) - (avgOf(a[1]) || 0) || String(a[0]).localeCompare(String(b[0]))).slice(0, n);
+  const highestRated = (map, n = 8, min = 2) => [...map.entries()].filter(([, l]) => l.filter(m => m.rating != null).length >= min).sort((a, b) => avgOf(b[1]) - avgOf(a[1]) || b[1].length - a[1].length).slice(0, n);
+  const asRows = list => list.map(([k, l]) => [k, ids(l), avgStr(l)]);
 
-  // films per month, the 12 months up to the latest watch
-  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const perMonth = count(dated, m => m.watched.slice(0, 7));
-  let y = +latest.slice(0, 4), mo = +latest.slice(5, 7);
-  const months = [];
-  for (let i = 0; i < 12; i++) {
-    const key = `${y}-${pad2(mo)}`;
-    months.unshift({ label: MONTHS[mo - 1], short: MONTHS[mo - 1][0], tip: `${MONTHS[mo - 1]} ${y}`, v: perMonth.get(key) || 0 });
-    if (--mo === 0) { mo = 12; y--; }
-  }
-
-  // ratings ½ … 5
-  const perRating = count(rated, m => Number(m.rating));
-  const ratings = Array.from({ length: 10 }, (_, i) => (i + 1) / 2).map((r, i) => ({ label: stars(r), short: i === 0 ? "½" : i === 9 ? "★★★★★" : "", v: perRating.get(r) || 0 }));
-
-  // release decades
-  const perDecade = count(movies.filter(m => m.year), m => Math.floor(m.year / 10) * 10);
-  const decs = [...perDecade.keys()].sort();
-  const decades = [];
-  for (let d = decs[0]; d <= decs[decs.length - 1]; d += 10) decades.push({ label: `${d}s`, short: `’${String(d).slice(2)}`, v: perDecade.get(d) || 0 });
-
-  // day of the week you watch
-  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  const perDay = count(dated, m => (new Date(m.watched + "T12:00:00Z").getUTCDay() + 6) % 7);
-  const days = DAYS.map((d, i) => ({ label: d, short: d[0], v: perDay.get(i) || 0 }));
-
-  // most watched directors (and their average rating)
-  const top = [...directors.entries()].filter(([, n]) => n > 1).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
-  const topMax = top.length ? top[0][1] : 1;
-  const dirAvg = name => { const r = rated.filter(m => m.by === name); return r.length ? (r.reduce((n, m) => n + Number(m.rating), 0) / r.length).toFixed(1) + "★" : ""; };
-  const dirList = top.length ? `<figure class="chart wide">
-    <figcaption><span>Most watched directors</span></figcaption>
-    <ol class="hbars">${top.map(([name, n]) => `<li><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(n / topMax).toFixed(3)}"></i></span><span class="ct">${n}</span><span class="av">${dirAvg(name)}</span></li>`).join("")}</ol>
-  </figure>` : "";
-
-  // where the films are from (a film made in two countries counts for both)
-  const perCountry = new Map();
-  let withCountry = 0;
-  for (const m of movies) {
-    const cs = (site.countries || {})[m.title + "|" + (m.year || "")];
-    if (!cs || !cs.length) continue;
-    withCountry++;
-    cs.forEach(c => perCountry.set(c, (perCountry.get(c) || 0) + 1));
-  }
-  const topC = [...perCountry.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
-  const cMax = topC.length ? topC[0][1] : 1;
-  const countryList = topC.length ? `<figure class="chart wide">
-    <figcaption><span>Countries</span><span>${perCountry.size} countries · ${withCountry} films</span></figcaption>
-    <ol class="hbars">${topC.map(([name, n]) => `<li><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(n / cMax).toFixed(3)}"></i></span><span class="ct">${n}</span><span class="av">${Math.round((n / withCountry) * 100)}%</span></li>`).join("")}</ol>
-  </figure>` : "";
-
-  // your four favourites, as on your Letterboxd profile
+  /* ---- Top 4 ---- */
   const favs = (site.favourites || []).slice(0, 4);
-  const top4 = favs.length ? `<figure class="chart wide">
-    <figcaption><span>Top 4</span><span>from Letterboxd</span></figcaption>
-    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" loading="lazy" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}</span></a></li>`; }).join("")}</ol>
-  </figure>` : "";
+  const top4 = favs.length ? `<section class="top4-wrap" aria-label="Top 4">
+    <p class="st-label"><span>Top 4</span><span>from Letterboxd</span></p>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
+  </section>` : "";
 
+  /* ---- headline numbers ---- */
+  const minutes = movies.reduce((n, m) => n + (meta(m).runtime || 0), 0);
+  const directors = groupBy(m => m.by);
+  const countries = groupBy(m => meta(m).countries);
+  // longest streak: consecutive weeks (Mon–Sun) with at least one film
+  const weekNo = d => Math.floor((Date.parse(d + "T00:00:00Z") / 864e5 + 3) / 7);
+  const weeks = [...new Set(dated.map(m => weekNo(m.watched)))].sort((a, b) => a - b);
+  let streak = weeks.length ? 1 : 0, run = 1, runEnd = weeks[0], bestEnd = weeks[0];
+  for (let i = 1; i < weeks.length; i++) { run = weeks[i] === weeks[i - 1] + 1 ? run + 1 : 1; if (run > streak) { streak = run; bestEnd = weeks[i]; } }
+  const streakFilms = dated.filter(m => { const w = weekNo(m.watched); return w > bestEnd - streak && w <= bestEnd; });
+  const byDay = groupBy(m => (dated.includes(m) ? m.watched : null));
+  const multiDays = [...byDay.values()].filter(l => l.length >= 2);
+  const tiles = [
+    [fmtN(movies.length), "Films", ids(movies)],
+    [fmtN(Math.round(minutes / 60)), "Hours", null],
+    [fmtN(directors.size), "Directors", null, "#st-directors"],
+    [fmtN(countries.size), "Countries", null, "#st-gcl"],
+    [`${streak}w`, "Longest streak", ids(streakFilms)],
+    [fmtN(multiDays.length), "2+ film days", ids(multiDays.flat())],
+  ].map(([n, k, list, href]) => list && list.length
+    ? `<button class="tile-stat"${pick(list, k)}><b>${esc(n)}</b><span>${esc(k)}</span></button>`
+    : href ? `<a class="tile-stat" href="${href}" data-item><b>${esc(n)}</b><span>${esc(k)}</span></a>`
+    : `<div class="tile-stat"><b>${esc(n)}</b><span>${esc(k)}</span></div>`).join("");
+
+  /* ---- by year: films / ratings (by release year) and diary (by month) ---- */
+  const years = movies.filter(m => m.year).map(m => +m.year);
+  const y0 = Math.min(...years), y1 = Math.max(...years);
+  const perYear = groupBy(m => (m.year ? +m.year : null));
+  const yearRows = [];
+  for (let y = y0; y <= y1; y++) yearRows.push({ label: String(y), short: y % 10 === 0 || y === y0 || y === y1 ? `’${String(y).slice(2)}` : "", ids: ids(perYear.get(y) || []), list: perYear.get(y) || [] });
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const latest = dated.map(m => m.watched).sort().pop() || new Date().toISOString().slice(0, 10);
+  const perMonth = groupBy(m => (dated.includes(m) ? m.watched.slice(0, 7) : null));
+  const monthRows = [];
+  for (let i = 11, y = +latest.slice(0, 4), mo = +latest.slice(5, 7); i >= 0; i--) {
+    const d = new Date(Date.UTC(y, mo - 1 - i, 1)), key = d.toISOString().slice(0, 7), name = MONTHS[d.getUTCMonth()];
+    monthRows.push({ label: `${name} ${d.getUTCFullYear()}`, short: name[0], ids: ids(perMonth.get(key) || []) });
+  }
+  const byYear = `<div id="st-year">` + switchable("By year", "", [
+    ["Films", barChart(yearRows)],
+    ["Ratings", barChart(yearRows.map(r => ({ ...r, ids: ids(r.list.filter(m => m.rating != null)) })), { value: r => avgOf(r.list) || 0, fmt: v => (v ? `${v.toFixed(2)}★ average` : "no ratings"), max: 5 })],
+    ["Diary", barChart(monthRows)],
+  ]) + `</div>`;
+
+  /* ---- ratings spread ---- */
+  const perRating = groupBy(m => (m.rating != null ? Number(m.rating) : null));
+  const ratingRows = Array.from({ length: 10 }, (_, i) => (i + 1) / 2).map((r, i) => ({ label: stars(r), short: i === 0 ? "½" : i === 9 ? "★★★★★" : "", ids: ids(perRating.get(r) || []) }));
+  const ratings = `<figure class="chart"><figcaption><span>Ratings</span><span>${rated.length} rated · ${avgStr(rated)} average</span></figcaption>${barChart(ratingRows)}</figure>`;
+
+  /* ---- highest rated decades (with a frame from each) ---- */
+  const decadesMap = groupBy(m => (m.year ? Math.floor(m.year / 10) * 10 : null));
+  const bestDecades = highestRated(decadesMap, 3, 2);
+  const decadesBest = bestDecades.length ? `<figure class="chart wide"><figcaption><span>Highest rated decades</span><span>2+ rated films</span></figcaption>
+    <ol class="decades">${bestDecades.map(([d, l]) => {
+      const tops = l.filter(m => m.rating != null).sort((a, b) => b.rating - a.rating).slice(0, 4);
+      return `<li><button${pick(ids(l), `${d}s`)}><span class="dh"><b>${d}s</b><span>${avgStr(l)} · ${plural(l.length, "film")}</span></span><span class="thumbs">${tops.map(m => m.frame ? `<img src="${esc(m.frame)}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${esc(m.title)}</span>`).join("")}</span></button></li>`;
+    }).join("")}</ol></figure>` : "";
+
+  /* ---- genres, countries & languages ---- */
+  const genres = groupBy(m => meta(m).genres), languages = groupBy(m => meta(m).language);
+  const gclCol = (title, map, mode) => `<div class="gcl-col"><p class="col-h">${esc(title)}</p>${rankList(asRows(mode === "rated" ? highestRated(map, 6) : mostWatched(map, 6)))}</div>`;
+  const gcl = `<div id="st-gcl">${switchable("Genres, countries & languages", "", [
+    ["Most watched", `<div class="gcl">${gclCol("Genres", genres)}${gclCol("Countries", countries)}${gclCol("Languages", languages)}</div>`],
+    ["Highest rated", `<div class="gcl">${gclCol("Genres", genres, "rated")}${gclCol("Countries", countries, "rated")}${gclCol("Languages", languages, "rated")}</div>`],
+  ])}</div>`;
+
+  /* ---- themes ---- */
+  const themes = groupBy(m => meta(m).themes);
+  const themeBox = themes.size ? `<div id="st-themes">` + switchable("Themes", "", [
+    ["Most watched", rankList(asRows(mostWatched(themes, 8, 2)))],
+    ["Highest rated", rankList(asRows(highestRated(themes, 8, 2)))],
+  ]) + `</div>` : "";
+
+  /* ---- rated higher / lower than the Letterboxd average ---- */
+  const diffs = rated.filter(m => meta(m).rating).map(m => ({ m, d: m.rating - meta(m).rating }));
+  const diffList = list => list.length ? `<ol class="difflist">${list.map(({ m, d }) => `<li><button${pick(ids([m]), m.title)}><span class="nm">${esc(m.title)}</span><span class="ct">${esc(m.year || "")}</span><span class="av">${stars(m.rating)}</span><span class="df">${d > 0 ? "+" : "−"}${Math.abs(d).toFixed(1)}</span></button></li>`).join("")}</ol>` : `<p class="empty-note">Nothing yet.</p>`;
+  const vsAvg = diffs.length ? switchable("Compared with Letterboxd", "Your rating minus the Letterboxd average", [
+    ["Rated higher", diffList(diffs.filter(x => x.d > 0).sort((a, b) => b.d - a.d).slice(0, 6))],
+    ["Rated lower", diffList(diffs.filter(x => x.d < 0).sort((a, b) => a.d - b.d).slice(0, 6))],
+  ]) : "";
+
+  /* ---- people ---- */
+  const cast = groupBy(m => meta(m).cast);
+  const studios = groupBy(m => meta(m).studios);
+  const castBox = cast.size ? switchable("Cast", "", [
+    ["Most watched", rankList(asRows(mostWatched(cast, 8, 2)))],
+    ["Highest rated", rankList(asRows(highestRated(cast, 8, 2)))],
+  ]) : "";
+  const dirBox = `<div id="st-directors">${switchable("Directors", "", [
+    ["Most watched", rankList(asRows(mostWatched(directors, 8, 2)))],
+    ["Highest rated", rankList(asRows(highestRated(directors, 8, 2)))],
+  ])}</div>`;
+  const studioBox = studios.size ? switchable("Studios", "", [
+    ["Most watched", rankList(asRows(mostWatched(studios, 8, 2)))],
+    ["Highest rated", rankList(asRows(highestRated(studios, 8, 2)))],
+  ]) : "";
+
+  /* ---- when you watch ---- */
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const perDay = groupBy(m => (dated.includes(m) ? (new Date(m.watched + "T12:00:00Z").getUTCDay() + 6) % 7 : null));
+  const days = `<figure class="chart"><figcaption><span>Day of the week</span><span>${dated.length} dated</span></figcaption>${barChart(DAYS.map((d, i) => ({ label: d, tip: `${d}s`, short: d[0], ids: ids(perDay.get(i) || []) })))}</figure>`;
+
+  // the films every button above can list
+  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame || "" }));
   return `<div class="stats">
+    ${top4}
     <div class="tiles-stat">${tiles}</div>
     <div class="charts">
-      ${barChart("Films per month", months, { note: "last 12 months" })}
-      ${barChart("Ratings", ratings, { note: `${rated.length} rated` })}
-      ${barChart("Release decades", decades)}
-      ${barChart("Day of the week", days, { note: `${dated.length} dated` })}
-      ${top4}
-      ${countryList}
-      ${dirList}
+      ${byYear}
+      ${ratings}
+      ${days}
+      ${decadesBest}
+      ${vsAvg}
+      ${gcl}
+      ${themeBox}
+      ${dirBox}
+      ${castBox}
+      ${studioBox}
     </div>
+    <dialog class="filmlist" aria-label="Films"><div class="fl-head"><p class="fl-title"></p><button class="fl-close" type="button" aria-label="Close">×</button></div><ul class="fl-list"></ul></dialog>
+    <script type="application/json" id="statfilms">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
   </div>`;
 }
 
@@ -688,8 +768,8 @@ function loadSite() {
   const wl = lbRead(WATCHLIST_JSON), meta = lbRead(FILM_META_JSON), mf = meta.films || {}, mt = meta.titles || {};
   site.watchlist = (wl.films || []).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating }));
   site.favourites = (site.top4 || []).filter(f => f && f.slug).slice(0, 4).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating, poster: fs.existsSync(path.join(ROOT, "assets/posters", f.slug + ".jpg")) ? `assets/posters/${f.slug}.jpg` : "" }));
-  site.countries = {}; // film title|year -> countries, for the stats
-  for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.countries[m.title + "|" + (m.year || "")] = mf[slug].countries || []; }
+  site.meta = {}; // film title|year -> Letterboxd details (countries, genres, cast…), for the stats
+  for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.meta[m.title + "|" + (m.year || "")] = mf[slug]; }
   return site;
 }
 
@@ -726,8 +806,18 @@ function parseFilm(url, html) {
     countries: [...new Set([...html.matchAll(/<a href="\/films\/country\/[^"]+"[^>]*>\s*([^<]+?)\s*<\/a>/g)].map(m => unent(m[1])))],
     rating: Number.isFinite(avg) ? avg : undefined,
     poster: ((html.match(/"image":"(https:\/\/a\.ltrbxd\.com\/resized\/[^"]+)"/) || [])[1] || "").replace(/\\\//g, "/") || undefined,
+    // for the stats page (FILM_META_V marks entries that have these)
+    runtime: +(((html.match(/([\d,]+)&nbsp;mins/) || [])[1] || "").replace(/,/g, "")) || undefined,
+    genres: links(html, "films/genre"),
+    themes: links(html, "films/(?:theme|mini-theme)"),
+    language: (links(html.slice(html.indexOf("Primary Language")), "films/language")[0]) || links(html, "films/language")[0],
+    cast: [...new Set([...html.matchAll(/href="\/actor\/[^"]+"[^>]*>([^<]+)</g)].map(m => unent(m[1]).trim()))].slice(0, 10),
+    studios: links(html, "studio"),
+    v: FILM_META_V,
   };
 }
+const FILM_META_V = 2;
+const links = (html, kind) => [...new Set([...html.matchAll(new RegExp(`<a href="/${kind}/[^"]+"[^>]*>\\s*([^<]+?)\\s*</a>`, "g"))].map(m => unent(m[1])))];
 
 async function refreshLetterboxd() {
   let site;
@@ -767,7 +857,7 @@ async function refreshLetterboxd() {
     const key = filmKey(m.title, m.year), slug = meta.titles[key];
     const known = slug && meta.films[slug];
     if (slug === null && age({ fetched: meta.missing && meta.missing[key] }) < 30 * DAY) continue; // not found recently
-    if (!known) jobs.push({ key, title: m.title, year: m.year, tmdb: m.tmdb });
+    if (!known || known.v !== FILM_META_V) jobs.push(known ? { key, slug } : { key, title: m.title, year: m.year, tmdb: m.tmdb });
   }
   for (const f of films.concat(favourites)) {
     const known = meta.films[f.slug];
@@ -965,7 +1055,7 @@ function dev() {
 
   async function api(req, res, p, q) {
     const m = req.method;
-    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; delete s.watchlist; delete s.favourites; delete s.countries; return send(res, 200, s); } // repos live in their own file
+    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; delete s.watchlist; delete s.favourites; delete s.meta; return send(res, 200, s); } // repos live in their own file
     if (p === "/api/site" && m === "PUT") {
       const data = await readJSON(req);
       if (!data || typeof data !== "object" || Array.isArray(data) || !data.name) return send(res, 400, { error: "invalid content" });

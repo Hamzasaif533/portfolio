@@ -19,7 +19,38 @@
       ],
       "rating": 3.92,
       "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 107,
+      "genres": [
+        "Romance",
+        "Drama",
+        "Comedy"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Crude humor and satire",
+        "Relationship comedy",
+        "Quirky and endearing relationships",
+        "Gags, jokes, and slapstick humor",
+        "Heartfelt and sentimental family stories",
+        "Laugh-out-loud relationship entanglements",
+        "Erotic relationships and desire"
+      ],
+      "language": "English",
+      "cast": [
+        "Olivia Wilde",
+        "Seth Rogen",
+        "Penélope Cruz",
+        "Edward Norton",
+        "Rachel Thurow",
+        "Mario Valdez"
+      ],
+      "studios": [
+        "Annapurna Pictures",
+        "FilmNation Entertainment",
+        "Permut Presentations"
+      ],
+      "v": 2
     },
     "clayface": {
       "year": 2026,
@@ -28,7 +59,43 @@
       ],
       "rating": 3.71,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/4/6/3/6/1284636-clayface-0-600-0-900-crop.jpg?v=eb305849d5",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 109,
+      "genres": [
+        "Thriller",
+        "Horror",
+        "Science Fiction"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Gory, gruesome, and slasher horror",
+        "Twisted dark psychological thriller",
+        "Graphic violence and brutal revenge",
+        "Extreme gory horror and cannibalism",
+        "Survival horror and zombie carnage"
+      ],
+      "language": "English",
+      "cast": [
+        "Tom Rhys Harries",
+        "Naomi Ackie",
+        "Eddie Marsan",
+        "Max Minghella",
+        "David Dencik",
+        "Francesca Corney",
+        "Ruby Sear",
+        "Wil Coban",
+        "Joshua James",
+        "Jake Curran"
+      ],
+      "studios": [
+        "DC Studios",
+        "Domain Entertainment",
+        "6th & Idaho Motion Picture Company",
+        "Troll Court Entertainment",
+        "The Safran Company"
+      ],
+      "v": 2
     },
     "the-sheep-detectives": {
       "year": 2026,
@@ -38,7 +105,41 @@
       ],
       "rating": 3.77,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/3/1/3/5/1183135-the-sheep-detectives-0-600-0-900-crop.jpg?v=c7b622176e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 109,
+      "genres": [
+        "Mystery",
+        "Crime",
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Thrillers and murder mysteries",
+        "Intriguing and suspenseful murder mysteries",
+        "Quirky and endearing relationships",
+        "Heartfelt and sentimental family stories",
+        "Adorable animals and heartwarming families",
+        "Gags, jokes, and slapstick humor"
+      ],
+      "language": "English",
+      "cast": [
+        "Hugh Jackman",
+        "Nicholas Braun",
+        "Nicholas Galitzine",
+        "Molly Gordon",
+        "Julia Louis-Dreyfus",
+        "Bryan Cranston",
+        "Chris O'Dowd",
+        "Regina Hall",
+        "Patrick Stewart",
+        "Bella Ramsey"
+      ],
+      "studios": [
+        "Working Title Films (GB)",
+        "Three Strange Angels",
+        "Amazon MGM Studios"
+      ],
+      "v": 2
     },
     "the-godfather": {
       "year": 1972,
@@ -47,7 +148,38 @@
       ],
       "rating": 4.51,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/1/8/51818-the-godfather-0-600-0-900-crop.jpg?v=bca8b67402",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 175,
+      "genres": [
+        "Crime",
+        "Drama"
+      ],
+      "themes": [
+        "Crime, drugs and gangsters",
+        "Gritty crime and ruthless gangsters",
+        "Gripping, intense violent crime",
+        "Violent crime and drugs",
+        "Violent action, guns, and crime",
+        "Brutal, violent prison drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Marlon Brando",
+        "Al Pacino",
+        "James Caan",
+        "Robert Duvall",
+        "Richard S. Castellano",
+        "Diane Keaton",
+        "Talia Shire",
+        "Gianni Russo",
+        "Sterling Hayden",
+        "John Marley"
+      ],
+      "studios": [
+        "Paramount Pictures",
+        "Alfran Productions"
+      ],
+      "v": 2
     },
     "marty-supreme": {
       "year": 2025,
@@ -56,7 +188,35 @@
       ],
       "rating": 4.01,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/7/4/9/9/1197499-marty-supreme-0-600-0-900-crop.jpg?v=b14a26bb43",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 150,
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "themes": [
+        "Underdogs and coming of age",
+        "Underdog fighting and boxing stories",
+        "Inspiring sports underdog stories"
+      ],
+      "language": "English",
+      "cast": [
+        "Timothée Chalamet",
+        "Gwyneth Paltrow",
+        "Odessa A'zion",
+        "Kevin O'Leary",
+        "Tyler, The Creator",
+        "Fran Drescher",
+        "Abel Ferrara",
+        "Emory Cohen",
+        "Géza Röhrig",
+        "Koto Kawaguchi"
+      ],
+      "studios": [
+        "A24",
+        "Central Pictures"
+      ],
+      "v": 2
     },
     "obsession-2025": {
       "year": 2025,
@@ -66,7 +226,41 @@
       ],
       "rating": 4.05,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/3/4/4/7/2/1234472-obsession-2025-2-0-600-0-900-crop.jpg?v=cff6fc00b6",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 109,
+      "genres": [
+        "Thriller",
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Terrifying, haunted, and supernatural horror",
+        "Twisted dark psychological thriller",
+        "Creepy, chilling, and terrifying horror",
+        "Gory, gruesome, and slasher horror",
+        "Graphic violence and brutal revenge"
+      ],
+      "language": "English",
+      "cast": [
+        "Michael Johnston",
+        "Inde Navarrette",
+        "Cooper Tomlinson",
+        "Megan Lawless",
+        "Andy Richter",
+        "Haley Fitzgerald",
+        "Darin Toonder",
+        "Anthony Pavone",
+        "Justice",
+        "Anthony Casabianca"
+      ],
+      "studios": [
+        "Tea Shop Productions",
+        "Under the Shell",
+        "Capstone Pictures",
+        "Blumhouse Productions"
+      ],
+      "v": 2
     },
     "i-swear": {
       "year": 2025,
@@ -75,7 +269,38 @@
       ],
       "rating": 4.26,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/7/8/4/2/1197842-i-swear-0-600-0-900-crop.jpg?v=b8f019138e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 121,
+      "genres": [
+        "History",
+        "Drama"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Powerful stories of heartbreak and suffering",
+        "Emotional and heartfelt family dramas",
+        "Quirky and endearing relationships",
+        "Heartfelt and sentimental family stories",
+        "Heartbreaking and moving family drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Robert Aramayo",
+        "Maxine Peake",
+        "Peter Mullan",
+        "Shirley Henderson",
+        "Scott Ellis Watson",
+        "David Carlyle",
+        "Francesco Piacentini-Smith",
+        "Somerled Campbell",
+        "Michael Dylan",
+        "Christina Ashford"
+      ],
+      "studios": [
+        "One Story High",
+        "Tempo Productions"
+      ],
+      "v": 2
     },
     "no-other-choice-2025": {
       "year": 2025,
@@ -85,7 +310,42 @@
       ],
       "rating": 4.08,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/6/5/9/5/2/565952-no-other-choice-2025-0-600-0-900-crop.jpg?v=87ef42b9f5",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 139,
+      "genres": [
+        "Crime",
+        "Comedy",
+        "Thriller"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Intense violence and sexual transgression",
+        "Humanity and the world around us",
+        "Gags, jokes, and slapstick humor",
+        "Funny jokes and crude humor",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Powerful poetic and passionate drama",
+        "Quirky and endearing relationships"
+      ],
+      "language": "Korean",
+      "cast": [
+        "Lee Byung-hun",
+        "Son Ye-jin",
+        "Park Hee-soon",
+        "Lee Sung-min",
+        "Yeom Hye-ran",
+        "Cha Seung-won",
+        "Oh Dal-su",
+        "Kim Woo-seung",
+        "Choi So-yul",
+        "Kim Hae-sook"
+      ],
+      "studios": [
+        "CJ ENM Studios",
+        "Moho Film",
+        "KG Productions"
+      ],
+      "v": 2
     },
     "bugonia": {
       "year": 2025,
@@ -97,7 +357,44 @@
       ],
       "rating": 3.83,
       "poster": "https://a.ltrbxd.com/resized/film-poster/6/2/5/4/0/0/625400-bugonia-0-600-0-900-crop.jpg?v=4c6649150e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 118,
+      "genres": [
+        "Thriller",
+        "Science Fiction",
+        "Comedy"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Monsters, aliens, sci-fi and the apocalypse",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Twisted dark psychological thriller",
+        "Challenging or sexual themes & twists",
+        "Thought-provoking sci-fi action and future technology",
+        "Action-packed space and alien sagas"
+      ],
+      "language": "English",
+      "cast": [
+        "Emma Stone",
+        "Jesse Plemons",
+        "Aidan Delbis",
+        "Stavros Halkias",
+        "Alicia Silverstone",
+        "J. Carmen Galindez Barrera",
+        "Marc T. Lewis",
+        "Vanessa Eng",
+        "Cedric Dumornay",
+        "Momma Cherri"
+      ],
+      "studios": [
+        "Element Pictures",
+        "Square Peg",
+        "Fremantle",
+        "Pith Quest Films",
+        "Fruit Tree",
+        "CJ ENM"
+      ],
+      "v": 2
     },
     "hamnet": {
       "year": 2025,
@@ -107,7 +404,40 @@
       ],
       "rating": 4.2,
       "poster": "https://a.ltrbxd.com/resized/film-poster/7/7/2/2/3/2/772232-hamnet-0-600-0-900-crop.jpg?v=631489314d",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 125,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Heartbreaking and moving family drama",
+        "Powerful stories of heartbreak and suffering",
+        "Emotional and heartfelt family dramas",
+        "Tragic sadness and captivating beauty",
+        "Heartfelt and sentimental family stories"
+      ],
+      "language": "English",
+      "cast": [
+        "Jessie Buckley",
+        "Paul Mescal",
+        "Emily Watson",
+        "Joe Alwyn",
+        "Jacobi Jupe",
+        "Noah Jupe",
+        "Olivia Lynes",
+        "Justine Mitchell",
+        "David Wilmot",
+        "Louisa Harland"
+      ],
+      "studios": [
+        "Hera Pictures",
+        "Neal Street Productions",
+        "Amblin Entertainment",
+        "Book of Shadows"
+      ],
+      "v": 2
     },
     "weapons-2025": {
       "year": 2025,
@@ -116,7 +446,42 @@
       ],
       "rating": 3.57,
       "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/2/1/0/9/972109-weapons-2025-0-600-0-900-crop.jpg?v=8100270337",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 128,
+      "genres": [
+        "Horror",
+        "Mystery"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Twisted dark psychological thriller",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Gory, gruesome, and slasher horror",
+        "Dreamlike, quirky, and surreal storytelling"
+      ],
+      "language": "English",
+      "cast": [
+        "Julia Garner",
+        "Josh Brolin",
+        "Alden Ehrenreich",
+        "Austin Abrams",
+        "Benedict Wong",
+        "Amy Madigan",
+        "Cary Christopher",
+        "Toby Huss",
+        "Whitmer Thomas",
+        "Callie Schuttera"
+      ],
+      "studios": [
+        "Subconscious",
+        "Vertigo Entertainment",
+        "BoulderLight Pictures",
+        "New Line Cinema",
+        "Domain Entertainment"
+      ],
+      "v": 2
     },
     "mission-impossible-the-final-reckoning": {
       "year": 2025,
@@ -125,7 +490,39 @@
       ],
       "rating": 3.47,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/3/4/0/3/503403-mission-impossible-the-final-reckoning-0-600-0-900-crop.jpg?v=00eae3744d",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 170,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Thriller"
+      ],
+      "themes": [
+        "Epic heroes",
+        "High speed and special ops",
+        "Adrenaline-fueled action and fast cars",
+        "Explosive and action-packed heroes vs. villains",
+        "Superheroes in action-packed battles with villains"
+      ],
+      "language": "English",
+      "cast": [
+        "Tom Cruise",
+        "Hayley Atwell",
+        "Ving Rhames",
+        "Simon Pegg",
+        "Esai Morales",
+        "Pom Klementieff",
+        "Henry Czerny",
+        "Holt McCallany",
+        "Janet McTeer",
+        "Nick Offerman"
+      ],
+      "studios": [
+        "Paramount Pictures",
+        "Skydance Media",
+        "TC Productions"
+      ],
+      "v": 2
     },
     "sinners-2025": {
       "year": 2025,
@@ -134,7 +531,41 @@
       ],
       "rating": 4.1,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/6/6/0/0/1116600-sinners-2025-0-600-0-900-crop.jpg?v=5996b7d555",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 138,
+      "genres": [
+        "Thriller",
+        "Action",
+        "Horror"
+      ],
+      "themes": [
+        "Faith and religion",
+        "Humanity and the world around us",
+        "Bloody vampire horror",
+        "Creepy, chilling, and terrifying horror",
+        "Surreal and thought-provoking visions of life and death",
+        "Powerful poetic and passionate drama",
+        "Terrifying, haunted, and supernatural horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Michael B. Jordan",
+        "Hailee Steinfeld",
+        "Miles Caton",
+        "Jack O'Connell",
+        "Wunmi Mosaku",
+        "Jayme Lawson",
+        "Omar Benson Miller",
+        "Delroy Lindo",
+        "Li Jun Li",
+        "Yao"
+      ],
+      "studios": [
+        "Warner Bros. Pictures",
+        "Proximity Media",
+        "Domain Entertainment"
+      ],
+      "v": 2
     },
     "we-live-in-time": {
       "year": 2024,
@@ -143,7 +574,40 @@
       ],
       "rating": 3.68,
       "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/1/7/8/6/991786-we-live-in-time-0-600-0-900-crop.jpg?v=14245ba118",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 108,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Heartfelt and sentimental family stories",
+        "Powerful stories of heartbreak and suffering",
+        "Emotional and heartfelt family dramas",
+        "Heartbreaking and moving family drama",
+        "Captivating relationships and charming romance"
+      ],
+      "language": "English",
+      "cast": [
+        "Andrew Garfield",
+        "Florence Pugh",
+        "Grace Delaney",
+        "Lee Braithwaite",
+        "Aoife Hinds",
+        "Adam James",
+        "Douglas Hodge",
+        "Amy Morgan",
+        "Niamh Cusack",
+        "Lucy Briers"
+      ],
+      "studios": [
+        "Film4 Productions",
+        "SunnyMarch",
+        "Shoebox Films",
+        "StudioCanal"
+      ],
+      "v": 2
     },
     "dune-part-two": {
       "year": 2024,
@@ -152,7 +616,34 @@
       ],
       "rating": 4.38,
       "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/7/4/4/3/617443-dune-part-two-0-600-0-900-crop.jpg?v=cc533700f8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 167,
+      "genres": [
+        "Adventure",
+        "Science Fiction"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Superheroes in action-packed battles with villains",
+        "Fantasy adventure, heroism, and swordplay"
+      ],
+      "language": "English",
+      "cast": [
+        "Timothée Chalamet",
+        "Zendaya",
+        "Rebecca Ferguson",
+        "Javier Bardem",
+        "Josh Brolin",
+        "Austin Butler",
+        "Florence Pugh",
+        "Dave Bautista",
+        "Christopher Walken",
+        "Léa Seydoux"
+      ],
+      "studios": [
+        "Legendary Pictures"
+      ],
+      "v": 2
     },
     "oppenheimer-2023": {
       "year": 2023,
@@ -162,7 +653,42 @@
       ],
       "rating": 4.15,
       "poster": "https://a.ltrbxd.com/resized/film-poster/7/8/4/3/2/8/784328-oppenheimer-0-600-0-900-crop.jpg?v=e3c6e7a32c",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 181,
+      "genres": [
+        "War",
+        "Drama",
+        "History"
+      ],
+      "themes": [
+        "Politics and human rights",
+        "Riveting political and presidential drama",
+        "Intense political and terrorist thrillers",
+        "Powerful poetic and passionate drama",
+        "Racism and the powerful fight for justice",
+        "Historical battles and epic heroism"
+      ],
+      "language": "English",
+      "cast": [
+        "Cillian Murphy",
+        "Emily Blunt",
+        "Matt Damon",
+        "Robert Downey Jr.",
+        "Florence Pugh",
+        "Josh Hartnett",
+        "Casey Affleck",
+        "Rami Malek",
+        "Kenneth Branagh",
+        "Benny Safdie"
+      ],
+      "studios": [
+        "Syncopy",
+        "Universal Pictures",
+        "Atlas Entertainment",
+        "Breakheart Films",
+        "Peters Creek Entertainment"
+      ],
+      "v": 2
     },
     "mission-impossible-dead-reckoning": {
       "year": 2023,
@@ -171,7 +697,41 @@
       ],
       "rating": 3.7,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/3/4/0/2/503402-mission-impossible-dead-reckoning-part-one-0-600-0-900-crop.jpg?v=34b8b35ec9",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 164,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Adventure"
+      ],
+      "themes": [
+        "Epic heroes",
+        "High speed and special ops",
+        "Adrenaline-fueled action and fast cars",
+        "Explosive and action-packed heroes vs. villains",
+        "Superheroes in action-packed battles with villains",
+        "Exciting spy thrillers with tense intrigue",
+        "Intense combat and martial arts"
+      ],
+      "language": "English",
+      "cast": [
+        "Tom Cruise",
+        "Hayley Atwell",
+        "Ving Rhames",
+        "Simon Pegg",
+        "Rebecca Ferguson",
+        "Vanessa Kirby",
+        "Esai Morales",
+        "Pom Klementieff",
+        "Henry Czerny",
+        "Shea Whigham"
+      ],
+      "studios": [
+        "Paramount Pictures",
+        "Skydance Media",
+        "TC Productions"
+      ],
+      "v": 2
     },
     "smile-2022": {
       "year": 2022,
@@ -180,7 +740,40 @@
       ],
       "rating": 2.88,
       "poster": "https://a.ltrbxd.com/resized/film-poster/7/9/3/8/8/3/793883-smile-0-600-0-900-crop.jpg?v=54791d7575",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 115,
+      "genres": [
+        "Horror",
+        "Mystery"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Twisted dark psychological thriller",
+        "Gory, gruesome, and slasher horror",
+        "Sci-fi horror, creatures, and aliens"
+      ],
+      "language": "English",
+      "cast": [
+        "Sosie Bacon",
+        "Kyle Gallner",
+        "Jessie T. Usher",
+        "Robin Weigert",
+        "Caitlin Stasey",
+        "Kal Penn",
+        "Rob Morgan",
+        "Gillian Zinser",
+        "Judy Reyes",
+        "Jack Sochet"
+      ],
+      "studios": [
+        "Paramount Players",
+        "Paramount Pictures",
+        "Temple Hill Entertainment"
+      ],
+      "v": 2
     },
     "the-menu-2022": {
       "year": 2022,
@@ -189,7 +782,39 @@
       ],
       "rating": 3.53,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/2/1/3/2/3/521323-the-menu-0-600-0-900-crop.jpg?v=d00a0d03a8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 107,
+      "genres": [
+        "Comedy",
+        "Horror"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Horror, the undead and monster classics",
+        "Twisted dark psychological thriller",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Funny jokes and crude humor"
+      ],
+      "language": "English",
+      "cast": [
+        "Anya Taylor-Joy",
+        "Ralph Fiennes",
+        "Nicholas Hoult",
+        "Janet McTeer",
+        "Paul Adelstein",
+        "Rob Yang",
+        "Aimee Carrero",
+        "John Leguizamo",
+        "Arturo Castro",
+        "Reed Birney"
+      ],
+      "studios": [
+        "Hyperobject Industries",
+        "Searchlight Pictures",
+        "Gary Sanchez Productions",
+        "TSG Entertainment"
+      ],
+      "v": 2
     },
     "barbarian-2022": {
       "year": 2022,
@@ -198,7 +823,43 @@
       ],
       "rating": 3.43,
       "poster": "https://a.ltrbxd.com/resized/film-poster/8/1/9/6/4/8/819648-barbarian-0-600-0-900-crop.jpg?v=75b067327a",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 103,
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Mystery"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Terrifying, haunted, and supernatural horror",
+        "Twisted dark psychological thriller",
+        "Creepy, chilling, and terrifying horror",
+        "Gory, gruesome, and slasher horror",
+        "Sci-fi horror, creatures, and aliens"
+      ],
+      "language": "English",
+      "cast": [
+        "Georgina Campbell",
+        "Justin Long",
+        "Bill Skarsgård",
+        "Richard Brake",
+        "Matthew Patrick Davis",
+        "Jaymes Butler",
+        "Kurt Braunohler",
+        "Sophie Sörensen",
+        "Rachel Fowler",
+        "JR Esposito"
+      ],
+      "studios": [
+        "BoulderLight Pictures",
+        "Vertigo Entertainment",
+        "Regency Enterprises",
+        "Hammerstone Studios",
+        "Almost Never Films"
+      ],
+      "v": 2
     },
     "fall-2022": {
       "year": 2022,
@@ -208,7 +869,34 @@
       ],
       "rating": 2.6,
       "poster": "https://a.ltrbxd.com/resized/film-poster/8/8/7/6/2/1/887621-fall-0-600-0-900-crop.jpg?v=6bf31e9474",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 107,
+      "genres": [
+        "Thriller"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Twisted dark psychological thriller"
+      ],
+      "language": "English",
+      "cast": [
+        "Grace Caroline Currey",
+        "Virginia Gardner",
+        "Mason Gooding",
+        "Jeffrey Dean Morgan",
+        "Jasper Cole",
+        "Darrell Dennis",
+        "Bamm Ericsen",
+        "Julia Pace Mitchell",
+        "Evie Mann",
+        "Joseph Mann"
+      ],
+      "studios": [
+        "Tea Shop Productions",
+        "Capstone Pictures",
+        "Eagle Films"
+      ],
+      "v": 2
     },
     "everything-everywhere-all-at-once": {
       "year": 2022,
@@ -217,7 +905,44 @@
       ],
       "rating": 4.23,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/4/4/7/4/474474-everything-everywhere-all-at-once-0-600-0-900-crop.jpg?v=281f1a041e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 140,
+      "genres": [
+        "Science Fiction",
+        "Adventure",
+        "Comedy",
+        "Action"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Humanity and the world around us",
+        "Heartbreaking and moving family drama",
+        "Emotional and heartfelt family dramas",
+        "Powerful stories of heartbreak and suffering",
+        "Heartfelt and sentimental family stories",
+        "Dreamlike, quirky, and surreal storytelling"
+      ],
+      "language": "English",
+      "cast": [
+        "Michelle Yeoh",
+        "Stephanie Hsu",
+        "Ke Huy Quan",
+        "James Hong",
+        "Jamie Lee Curtis",
+        "Tallie Medel",
+        "Jenny Slate",
+        "Harry Shum Jr.",
+        "Biff Wiff",
+        "Sunita Mani"
+      ],
+      "studios": [
+        "IAC Films",
+        "AGBO",
+        "Ley Line Entertainment",
+        "Year of the Rat",
+        "A24"
+      ],
+      "v": 2
     },
     "the-batman": {
       "year": 2022,
@@ -226,7 +951,39 @@
       ],
       "rating": 4.06,
       "poster": "https://a.ltrbxd.com/resized/film-poster/3/4/8/9/1/4/348914-the-batman-0-600-0-900-crop.jpg?v=ec12a8b7ce",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 177,
+      "genres": [
+        "Crime",
+        "Mystery",
+        "Thriller"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Gritty crime and ruthless gangsters",
+        "Violent action, guns, and crime",
+        "Intriguing and suspenseful murder mysteries"
+      ],
+      "language": "English",
+      "cast": [
+        "Robert Pattinson",
+        "Zoë Kravitz",
+        "Jeffrey Wright",
+        "Colin Farrell",
+        "Paul Dano",
+        "John Turturro",
+        "Andy Serkis",
+        "Peter Sarsgaard",
+        "Barry Keoghan",
+        "Jayme Lawson"
+      ],
+      "studios": [
+        "6th & Idaho Motion Picture Company",
+        "Dylan Clark Productions",
+        "DC Films",
+        "Warner Bros. Pictures"
+      ],
+      "v": 2
     },
     "the-conjuring-last-rites": {
       "year": 2025,
@@ -235,7 +992,37 @@
       ],
       "rating": 2.8,
       "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/6/0/6/5/936065-the-conjuring-last-rites-0-600-0-900-crop.jpg?v=597eedcd06",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 136,
+      "genres": [
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Twisted dark psychological thriller"
+      ],
+      "language": "English",
+      "cast": [
+        "Patrick Wilson",
+        "Vera Farmiga",
+        "Mia Tomlinson",
+        "Ben Hardy",
+        "Rebecca Calder",
+        "Tilly Walker",
+        "Elliot Cowan",
+        "Shannon Kook",
+        "Steve Coulter",
+        "Kíla Lord Cassidy"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "Domain Entertainment",
+        "The Safran Company",
+        "Atomic Monster"
+      ],
+      "v": 2
     },
     "the-queens-gambit": {
       "year": 2020,
@@ -244,7 +1031,27 @@
       ],
       "rating": 4.25,
       "poster": "https://a.ltrbxd.com/resized/film-poster/6/6/8/0/7/7/668077-the-queen-s-gambit-0-600-0-900-crop.jpg?v=13d0025c03",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 393,
+      "genres": [
+        "Drama"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Inspiring sports underdog stories",
+        "Engaging, intense crime and casino drama",
+        "Emotional teen coming-of-age stories"
+      ],
+      "language": "English",
+      "cast": [
+        "Anya Taylor-Joy",
+        "Chloe Pirrie"
+      ],
+      "studios": [
+        "Flitcraft",
+        "Wonderful Films"
+      ],
+      "v": 2
     },
     "uncharted-2022": {
       "year": 2022,
@@ -253,7 +1060,39 @@
       ],
       "rating": 2.73,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/4/3/2/8/264328-uncharted-0-600-0-900-crop.jpg?v=988669139a",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 116,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Mystery"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Superheroes in action-packed battles with villains",
+        "Adrenaline-fueled action and fast cars",
+        "Explosive and action-packed heroes vs. villains"
+      ],
+      "language": "English",
+      "cast": [
+        "Tom Holland",
+        "Mark Wahlberg",
+        "Sophia Ali",
+        "Tati Gabrielle",
+        "Antonio Banderas",
+        "Steven Waddington",
+        "Rudy Pankow",
+        "Tiernan Jones",
+        "Pingi Moli",
+        "Jesús Evita"
+      ],
+      "studios": [
+        "Columbia Pictures",
+        "Atlas Entertainment",
+        "PlayStation Productions",
+        "Arad Productions"
+      ],
+      "v": 2
     },
     "dune-2021": {
       "year": 2021,
@@ -262,7 +1101,33 @@
       ],
       "rating": 3.9,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/nx/8b/vs/gc/cDbNAY0KM84cxXhmj8f0dLWza3t-0-600-0-900-crop.jpg?v=49eed12751",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 155,
+      "genres": [
+        "Science Fiction",
+        "Adventure"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Thought-provoking sci-fi action and future technology"
+      ],
+      "language": "English",
+      "cast": [
+        "Timothée Chalamet",
+        "Rebecca Ferguson",
+        "Oscar Isaac",
+        "Jason Momoa",
+        "Stellan Skarsgård",
+        "Stephen McKinley Henderson",
+        "Josh Brolin",
+        "Javier Bardem",
+        "Sharon Duncan-Brewster",
+        "Chang Chen"
+      ],
+      "studios": [
+        "Legendary Pictures"
+      ],
+      "v": 2
     },
     "the-platform": {
       "year": 2019,
@@ -271,7 +1136,41 @@
       ],
       "rating": 3.23,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/4/5/9/8/5/545985-the-platform-0-600-0-900-crop.jpg?v=b3d868a021",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 95,
+      "genres": [
+        "Thriller",
+        "Drama",
+        "Science Fiction"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Twisted dark psychological thriller",
+        "Graphic violence and brutal revenge",
+        "Challenging or sexual themes & twists",
+        "Extreme gory horror and cannibalism",
+        "Gory, gruesome, and slasher horror"
+      ],
+      "language": "Spanish",
+      "cast": [
+        "Ivan Massagué",
+        "Antonia San Juan",
+        "Zorion Eguileor",
+        "Emilio Buale",
+        "Alexandra Masangkay",
+        "Zihara Llana",
+        "Mario Pardo",
+        "Algis Arlauskas",
+        "Txubio Fernández de Jáuregui",
+        "Eric Goode"
+      ],
+      "studios": [
+        "Basque Films",
+        "Mr. Miyagi",
+        "EiTB",
+        "TVE"
+      ],
+      "v": 2
     },
     "joker-2019": {
       "year": 2019,
@@ -281,7 +1180,43 @@
       ],
       "rating": 3.85,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/0/6/7/7/5/406775-joker-0-600-0-900-crop.jpg?v=e4ea7f98cc",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 122,
+      "genres": [
+        "Drama",
+        "Thriller",
+        "Crime"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Humanity and the world around us",
+        "Challenging or sexual themes & twists",
+        "Gripping, intense violent crime",
+        "Violent crime and drugs",
+        "Twisted dark psychological thriller",
+        "Powerful poetic and passionate drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Joaquin Phoenix",
+        "Robert De Niro",
+        "Zazie Beetz",
+        "Frances Conroy",
+        "Brett Cullen",
+        "Shea Whigham",
+        "Bill Camp",
+        "Glenn Fleshler",
+        "Leigh Gill",
+        "Josh Pais"
+      ],
+      "studios": [
+        "Warner Bros. Pictures",
+        "Joint Effort",
+        "Village Roadshow Pictures",
+        "Bron Studios",
+        "DC Films"
+      ],
+      "v": 2
     },
     "ready-or-not-2019": {
       "year": 2019,
@@ -290,7 +1225,42 @@
       ],
       "rating": 3.5,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/5/9/6/9/495969-ready-or-not-0-600-0-900-crop.jpg?v=13279f6ca8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 96,
+      "genres": [
+        "Horror",
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Horror, the undead and monster classics",
+        "Gory, gruesome, and slasher horror",
+        "Spooky, scary comedy",
+        "Gags, jokes, and slapstick humor",
+        "Funny jokes and crude humor",
+        "Twisted dark psychological thriller"
+      ],
+      "language": "English",
+      "cast": [
+        "Samara Weaving",
+        "Adam Brody",
+        "Mark O'Brien",
+        "Henry Czerny",
+        "Andie MacDowell",
+        "Melanie Scrofano",
+        "Kristian Bruun",
+        "Elyse Levesque",
+        "Nicky Guadagni",
+        "John Ralston"
+      ],
+      "studios": [
+        "Mythology Entertainment",
+        "Vinson Films",
+        "Fox Searchlight Pictures",
+        "Radio Silence",
+        "TSG Entertainment"
+      ],
+      "v": 2
     },
     "midsommar": {
       "year": 2019,
@@ -300,7 +1270,41 @@
       ],
       "rating": 3.73,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/9/5/6/4/459564-midsommar-0-600-0-900-crop.jpg?v=ed7b8ded1f",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 147,
+      "genres": [
+        "Mystery",
+        "Drama",
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Intense violence and sexual transgression",
+        "Humanity and the world around us",
+        "Twisted dark psychological thriller",
+        "Terrifying, haunted, and supernatural horror",
+        "Gory, gruesome, and slasher horror",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Surreal and thought-provoking visions of life and death"
+      ],
+      "language": "English",
+      "cast": [
+        "Florence Pugh",
+        "Jack Reynor",
+        "William Jackson Harper",
+        "Will Poulter",
+        "Vilhelm Blomgren",
+        "Isabelle Grill",
+        "Gunnel Fred",
+        "Ellora Torchia",
+        "Archie Madekwe",
+        "Henrik Norlén"
+      ],
+      "studios": [
+        "B-Reel Films",
+        "Square Peg"
+      ],
+      "v": 2
     },
     "parasite-2019": {
       "year": 2019,
@@ -309,7 +1313,36 @@
       ],
       "rating": 4.51,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/6/4/0/6/426406-parasite-0-600-0-900-crop.jpg?v=8f5653f710",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 133,
+      "genres": [
+        "Thriller",
+        "Comedy",
+        "Drama"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Twisted dark psychological thriller",
+        "Gripping, intense violent crime",
+        "Heartbreaking and moving family drama"
+      ],
+      "language": "Korean",
+      "cast": [
+        "Song Kang-ho",
+        "Lee Sun-kyun",
+        "Cho Yeo-jeong",
+        "Choi Woo-shik",
+        "Park So-dam",
+        "Lee Jung-eun",
+        "Jang Hye-jin",
+        "Park Myung-hoon",
+        "Jung Zi-so",
+        "Jung Hyeon-jun"
+      ],
+      "studios": [
+        "Barunson E&A"
+      ],
+      "v": 2
     },
     "avengers-infinity-war": {
       "year": 2018,
@@ -318,7 +1351,35 @@
       ],
       "rating": 4.1,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/6/6/6/1/226661-avengers-infinity-war-0-600-0-900-crop.jpg?v=8b35f60c0c",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 149,
+      "genres": [
+        "Action",
+        "Science Fiction",
+        "Adventure"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Superheroes in action-packed battles with villains",
+        "Fantasy adventure, heroism, and swordplay"
+      ],
+      "language": "English",
+      "cast": [
+        "Robert Downey Jr.",
+        "Chris Evans",
+        "Chris Hemsworth",
+        "Josh Brolin",
+        "Mark Ruffalo",
+        "Scarlett Johansson",
+        "Don Cheadle",
+        "Benedict Cumberbatch",
+        "Tom Holland",
+        "Chadwick Boseman"
+      ],
+      "studios": [
+        "Marvel Studios"
+      ],
+      "v": 2
     },
     "black-panther": {
       "year": 2018,
@@ -327,7 +1388,35 @@
       ],
       "rating": 3.72,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/0/9/3/8/3/209383-black-panther-0-600-0-900-crop.jpg?v=d6e7e2c7a4",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 135,
+      "genres": [
+        "Adventure",
+        "Science Fiction",
+        "Action"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Superheroes in action-packed battles with villains",
+        "Fantasy adventure, heroism, and swordplay"
+      ],
+      "language": "English",
+      "cast": [
+        "Chadwick Boseman",
+        "Michael B. Jordan",
+        "Lupita Nyong'o",
+        "Danai Gurira",
+        "Martin Freeman",
+        "Daniel Kaluuya",
+        "Letitia Wright",
+        "Winston Duke",
+        "Sterling K. Brown",
+        "Angela Bassett"
+      ],
+      "studios": [
+        "Marvel Studios"
+      ],
+      "v": 2
     },
     "the-nun-2018": {
       "year": 2018,
@@ -336,7 +1425,37 @@
       ],
       "rating": 2.38,
       "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/1/8/4/2/371842-the-nun-0-600-0-900-crop.jpg?v=f5b4ea0e76",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 96,
+      "genres": [
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Twisted dark psychological thriller",
+        "Gothic and eerie haunting horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Taissa Farmiga",
+        "Demián Bichir",
+        "Bonnie Aarons",
+        "Jonas Bloquet",
+        "Ingrid Bisu",
+        "Patrick Wilson",
+        "Vera Farmiga",
+        "Lili Taylor",
+        "Charlotte Hope",
+        "Sandra Teles"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "Atomic Monster",
+        "The Safran Company"
+      ],
+      "v": 2
     },
     "blade-runner-2049": {
       "year": 2017,
@@ -347,7 +1466,40 @@
       ],
       "rating": 4.1,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/5/4/3/9/265439-blade-runner-2049-0-600-0-900-crop.jpg?v=86735e0bb8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 164,
+      "genres": [
+        "Science Fiction",
+        "Drama"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Thought-provoking sci-fi action and future technology",
+        "Surreal and thought-provoking visions of life and death",
+        "Powerful poetic and passionate drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Ryan Gosling",
+        "Harrison Ford",
+        "Ana de Armas",
+        "Dave Bautista",
+        "Robin Wright",
+        "Sylvia Hoeks",
+        "Mackenzie Davis",
+        "Jared Leto",
+        "Carla Juri",
+        "Hiam Abbass"
+      ],
+      "studios": [
+        "Alcon Entertainment",
+        "Columbia Pictures",
+        "Scott Free Productions",
+        "Bud Yorkin Productions",
+        "Torridon Films",
+        "16:14 Entertainment"
+      ],
+      "v": 2
     },
     "get-out-2017": {
       "year": 2017,
@@ -356,7 +1508,41 @@
       ],
       "rating": 4.13,
       "poster": "https://a.ltrbxd.com/resized/film-poster/3/5/3/1/1/7/353117-get-out-0-600-0-900-crop.jpg?v=136acec030",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 104,
+      "genres": [
+        "Horror",
+        "Mystery",
+        "Thriller"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Horror, the undead and monster classics",
+        "Twisted dark psychological thriller",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Gory, gruesome, and slasher horror",
+        "Suspenseful crime thrillers"
+      ],
+      "language": "English",
+      "cast": [
+        "Daniel Kaluuya",
+        "Allison Williams",
+        "Catherine Keener",
+        "Bradley Whitford",
+        "Caleb Landry Jones",
+        "Marcus Henderson",
+        "Betty Gabriel",
+        "LaKeith Stanfield",
+        "Stephen Root",
+        "Lil Rel Howery"
+      ],
+      "studios": [
+        "Monkeypaw Productions",
+        "Blumhouse Productions",
+        "QC Entertainment"
+      ],
+      "v": 2
     },
     "la-la-land": {
       "year": 2016,
@@ -365,7 +1551,42 @@
       ],
       "rating": 4.13,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/4/0/3/4/4/240344-la-la-land-0-600-0-900-crop.jpg?v=053670ff84",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 129,
+      "genres": [
+        "Drama",
+        "Comedy",
+        "Romance"
+      ],
+      "themes": [
+        "Song and dance",
+        "Moving relationship stories",
+        "Dazzling vocal performances and musicals",
+        "Dance rhythms and catchy tunes",
+        "Captivating relationships and charming romance",
+        "Emotional life of renowned artists",
+        "Passion and romance"
+      ],
+      "language": "English",
+      "cast": [
+        "Ryan Gosling",
+        "Emma Stone",
+        "John Legend",
+        "Rosemarie DeWitt",
+        "Finn Wittrock",
+        "Callie Hernandez",
+        "Sonoya Mizuno",
+        "Jessica Rothe",
+        "Tom Everett Scott",
+        "Josh Pence"
+      ],
+      "studios": [
+        "Summit Entertainment",
+        "Gilbert Films",
+        "Impostor Pictures",
+        "Marc Platt Productions"
+      ],
+      "v": 2
     },
     "split-2016": {
       "year": 2016,
@@ -374,7 +1595,38 @@
       ],
       "rating": 3.55,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/5e/pw/vs/km/8CHJcVc5IGXS1sC5DyjeMwTDEQH-0-600-0-900-crop.jpg?v=ab64d75800",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 117,
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Horror, the undead and monster classics",
+        "Twisted dark psychological thriller",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Suspenseful crime thrillers"
+      ],
+      "language": "English",
+      "cast": [
+        "James McAvoy",
+        "Anya Taylor-Joy",
+        "Haley Lu Richardson",
+        "Jessica Sula",
+        "Betty Buckley",
+        "Izzie Coffey",
+        "Brad William Henke",
+        "Sebastian Arcelus",
+        "Neal Huff",
+        "Ukee Washington"
+      ],
+      "studios": [
+        "Blinding Edge Pictures",
+        "Blumhouse Productions"
+      ],
+      "v": 2
     },
     "arrival-2016": {
       "year": 2016,
@@ -383,7 +1635,41 @@
       ],
       "rating": 4.14,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/3u/dy/qd/qd/4Iu5f2nv7huqvuYkmZvSPOtbFjs-0-600-0-900-crop.jpg?v=0fc28fdf2c",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 116,
+      "genres": [
+        "Mystery",
+        "Science Fiction",
+        "Drama"
+      ],
+      "themes": [
+        "Monsters, aliens, sci-fi and the apocalypse",
+        "Humanity and the world around us",
+        "Thought-provoking sci-fi action and future technology",
+        "Humanity's odyssey: earth and beyond",
+        "Surreal and thought-provoking visions of life and death",
+        "Powerful stories of heartbreak and suffering",
+        "Imaginative space odysseys and alien encounters"
+      ],
+      "language": "English",
+      "cast": [
+        "Amy Adams",
+        "Jeremy Renner",
+        "Forest Whitaker",
+        "Michael Stuhlbarg",
+        "Mark O'Brien",
+        "Tzi Ma",
+        "Abigail Pniowsky",
+        "Julia Scarlett Dan",
+        "Jadyn Malone",
+        "Frank Schorpion"
+      ],
+      "studios": [
+        "FilmNation Entertainment",
+        "Lava Bear Films",
+        "21 Laps Entertainment"
+      ],
+      "v": 2
     },
     "the-conjuring-2": {
       "year": 2016,
@@ -392,7 +1678,37 @@
       ],
       "rating": 3.49,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/8/3/2/5/5/183255-the-conjuring-2-0-600-0-900-crop.jpg?v=d3a6df245b",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 134,
+      "genres": [
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Twisted dark psychological thriller"
+      ],
+      "language": "English",
+      "cast": [
+        "Vera Farmiga",
+        "Patrick Wilson",
+        "Madison Wolfe",
+        "Frances O'Connor",
+        "Lauren Esposito",
+        "Benjamin Haigh",
+        "Patrick McAuley",
+        "Sterling Jerins",
+        "Bonnie Aarons",
+        "Simon McBurney"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "The Safran Company",
+        "Atomic Monster",
+        "RatPac-Dune Entertainment"
+      ],
+      "v": 2
     },
     "the-martian": {
       "year": 2015,
@@ -401,7 +1717,38 @@
       ],
       "rating": 3.83,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/1/1/5/1/1/211511-the-martian-0-600-0-900-crop.jpg?v=71ca0c832e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 141,
+      "genres": [
+        "Drama",
+        "Science Fiction",
+        "Adventure"
+      ],
+      "themes": [
+        "Monsters, aliens, sci-fi and the apocalypse",
+        "Imaginative space odysseys and alien encounters",
+        "Action-packed space and alien sagas"
+      ],
+      "language": "English",
+      "cast": [
+        "Matt Damon",
+        "Jessica Chastain",
+        "Kristen Wiig",
+        "Jeff Daniels",
+        "Michael Peña",
+        "Sean Bean",
+        "Kate Mara",
+        "Sebastian Stan",
+        "Aksel Hennie",
+        "Chiwetel Ejiofor"
+      ],
+      "studios": [
+        "Genre Films",
+        "TSG Entertainment",
+        "20th Century Fox",
+        "Scott Free Productions"
+      ],
+      "v": 2
     },
     "war-dogs-2016": {
       "year": 2016,
@@ -410,7 +1757,41 @@
       ],
       "rating": 3.54,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/7b/d2/2z/ef/aqhAqttDq7zgsTaBHtCD8wmTk6k-0-600-0-900-crop.jpg?v=b1d4ca3acb",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 114,
+      "genres": [
+        "Drama",
+        "Comedy",
+        "Crime"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Gritty crime and ruthless gangsters",
+        "Intense political and terrorist thrillers",
+        "Gags, jokes, and slapstick humor",
+        "Funny jokes and crude humor",
+        "Amusing jokes and witty satire"
+      ],
+      "language": "English",
+      "cast": [
+        "Miles Teller",
+        "Jonah Hill",
+        "Ana de Armas",
+        "Bradley Cooper",
+        "Kevin Pollak",
+        "Patrick St. Esprit",
+        "Shaun Toub",
+        "JB Blanc",
+        "Gabriel Spahiu",
+        "Julian Sergi"
+      ],
+      "studios": [
+        "The Mark Gordon Company",
+        "Joint Effort",
+        "Warner Bros. Pictures",
+        "RatPac-Dune Entertainment"
+      ],
+      "v": 2
     },
     "me-before-you": {
       "year": 2016,
@@ -419,7 +1800,39 @@
       ],
       "rating": 3.61,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/3/3/9/3/223393-me-before-you-0-600-0-900-crop.jpg?v=710c5c01aa",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 110,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Heartfelt and sentimental family stories",
+        "Powerful stories of heartbreak and suffering",
+        "Emotional and heartfelt family dramas",
+        "Quirky and endearing relationships",
+        "Captivating relationships and charming romance"
+      ],
+      "language": "English",
+      "cast": [
+        "Emilia Clarke",
+        "Sam Claflin",
+        "Janet McTeer",
+        "Charles Dance",
+        "Brendan Coyle",
+        "Jenna Coleman",
+        "Matthew Lewis",
+        "Samantha Spiro",
+        "Stephen Peacocke",
+        "Vanessa Kirby"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "Sunswept Entertainment",
+        "Metro-Goldwyn-Mayer"
+      ],
+      "v": 2
     },
     "kingsman-the-secret-service": {
       "year": 2014,
@@ -429,7 +1842,43 @@
       ],
       "rating": 3.78,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/2/0/0/148200-kingsman-the-secret-service-0-600-0-900-crop.jpg?v=cd49b739cf",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 129,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Crime"
+      ],
+      "themes": [
+        "High speed and special ops",
+        "Epic heroes",
+        "Crude humor and satire",
+        "Action comedy and silly heroics",
+        "Explosive and action-packed heroes vs. villains",
+        "Superheroes in action-packed battles with villains",
+        "Gags, jokes, and slapstick humor",
+        "Intense combat and martial arts"
+      ],
+      "language": "English",
+      "cast": [
+        "Taron Egerton",
+        "Colin Firth",
+        "Samuel L. Jackson",
+        "Mark Strong",
+        "Sophie Cookson",
+        "Sofia Boutella",
+        "Michael Caine",
+        "Edward Holcroft",
+        "Hanna Alström",
+        "Samantha Womack"
+      ],
+      "studios": [
+        "20th Century Fox",
+        "Marv",
+        "Cloudy Productions",
+        "TSG Entertainment"
+      ],
+      "v": 2
     },
     "interstellar": {
       "year": 2014,
@@ -439,7 +1888,41 @@
       ],
       "rating": 4.46,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/6/2/1/117621-interstellar-0-600-0-900-crop.jpg?v=7ad89e6666",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 169,
+      "genres": [
+        "Science Fiction",
+        "Drama",
+        "Adventure"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Humanity and the world around us",
+        "Imaginative space odysseys and alien encounters",
+        "Surreal and thought-provoking visions of life and death",
+        "Action-packed space and alien sagas",
+        "Humanity's odyssey: earth and beyond",
+        "Emotional and heartfelt family dramas"
+      ],
+      "language": "English",
+      "cast": [
+        "Matthew McConaughey",
+        "Anne Hathaway",
+        "Michael Caine",
+        "Jessica Chastain",
+        "Casey Affleck",
+        "Wes Bentley",
+        "Topher Grace",
+        "Mackenzie Foy",
+        "Ellen Burstyn",
+        "John Lithgow"
+      ],
+      "studios": [
+        "Legendary Pictures",
+        "Syncopy",
+        "Lynda Obst Productions"
+      ],
+      "v": 2
     },
     "the-lobster": {
       "year": 2015,
@@ -452,7 +1935,52 @@
       ],
       "rating": 3.73,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/7/8/1/2/3/178123-the-lobster-0-600-0-900-crop.jpg?v=1de42bb7a6",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 119,
+      "genres": [
+        "Romance",
+        "Drama",
+        "Comedy"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Moving relationship stories",
+        "Relationship comedy",
+        "Crude humor and satire",
+        "Intense violence and sexual transgression",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Surreal and thought-provoking visions of life and death",
+        "Quirky and endearing relationships",
+        "Challenging or sexual themes & twists",
+        "Powerful poetic and passionate drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Colin Farrell",
+        "Rachel Weisz",
+        "Olivia Colman",
+        "Léa Seydoux",
+        "Michael Smiley",
+        "Ariane Labed",
+        "John C. Reilly",
+        "Ben Whishaw",
+        "Angeliki Papoulia",
+        "Jessica Barden"
+      ],
+      "studios": [
+        "Scarlet Films",
+        "Haut et Court",
+        "Eurimages",
+        "Lemming Film",
+        "Element Pictures",
+        "Nederlands Fonds voor de Film",
+        "Greek Film Centre",
+        "Faliro House Productions",
+        "Limp",
+        "Film4 Productions",
+        "Protagonist Pictures"
+      ],
+      "v": 2
     },
     "gone-girl": {
       "year": 2014,
@@ -461,7 +1989,41 @@
       ],
       "rating": 4.07,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/9/8/5/7/149857-gone-girl-0-600-0-900-crop.jpg?v=dfe3c8018b",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 149,
+      "genres": [
+        "Drama",
+        "Mystery",
+        "Thriller"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Thrillers and murder mysteries",
+        "Twisted dark psychological thriller",
+        "Suspenseful crime thrillers",
+        "Noir and dark crime dramas",
+        "Gripping, intense violent crime",
+        "Intriguing and suspenseful murder mysteries"
+      ],
+      "language": "English",
+      "cast": [
+        "Ben Affleck",
+        "Rosamund Pike",
+        "Neil Patrick Harris",
+        "Tyler Perry",
+        "Carrie Coon",
+        "Kim Dickens",
+        "Patrick Fugit",
+        "David Clennon",
+        "Lisa Banes",
+        "Missi Pyle"
+      ],
+      "studios": [
+        "20th Century Fox",
+        "Regency Enterprises",
+        "TSG Entertainment"
+      ],
+      "v": 2
     },
     "edge-of-tomorrow": {
       "year": 2014,
@@ -470,7 +2032,42 @@
       ],
       "rating": 3.78,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/5/1/8/3/105183-edge-of-tomorrow-0-600-0-900-crop.jpg?v=114551fc99",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 114,
+      "genres": [
+        "Science Fiction",
+        "Action"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Monsters, aliens, sci-fi and the apocalypse",
+        "Action-packed space and alien sagas",
+        "Thought-provoking sci-fi action and future technology",
+        "Explosive and action-packed heroes vs. villains",
+        "Superheroes in action-packed battles with villains",
+        "Bravery in War"
+      ],
+      "language": "English",
+      "cast": [
+        "Tom Cruise",
+        "Emily Blunt",
+        "Brendan Gleeson",
+        "Bill Paxton",
+        "Jonas Armstrong",
+        "Tony Way",
+        "Kick Gurry",
+        "Franz Drameh",
+        "Dragomir Mrsic",
+        "Charlotte Riley"
+      ],
+      "studios": [
+        "Village Roadshow Pictures",
+        "VIZ Media",
+        "3 Arts Entertainment",
+        "Warner Bros. Pictures",
+        "RatPac-Dune Entertainment"
+      ],
+      "v": 2
     },
     "her": {
       "year": 2013,
@@ -479,7 +2076,39 @@
       ],
       "rating": 3.95,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/au/nb/i6/lq/fsoTLnUXEUTNuVCBxAJMY0HPPd-0-600-0-900-crop.jpg?v=16789732be",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 126,
+      "genres": [
+        "Science Fiction",
+        "Romance",
+        "Drama"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Humanity and the world around us",
+        "Captivating relationships and charming romance",
+        "Powerful stories of heartbreak and suffering",
+        "Surreal and thought-provoking visions of life and death",
+        "Heartfelt and sentimental family stories",
+        "Emotional teen coming-of-age stories"
+      ],
+      "language": "English",
+      "cast": [
+        "Joaquin Phoenix",
+        "Scarlett Johansson",
+        "Lynn Adrianna",
+        "Lisa Renee Pitts",
+        "Gabe Gomez",
+        "Chris Pratt",
+        "Artt Butler",
+        "May Lindstrom",
+        "Rooney Mara",
+        "Bill Hader"
+      ],
+      "studios": [
+        "Annapurna Pictures"
+      ],
+      "v": 2
     },
     "prisoners": {
       "year": 2013,
@@ -488,7 +2117,41 @@
       ],
       "rating": 4.35,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/iw/eg/4g/nm/3w79tTsv6tmlT8Jww6snyPrgVok-0-600-0-900-crop.jpg?v=778c7ae8b8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 153,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Thrillers and murder mysteries",
+        "Twisted dark psychological thriller",
+        "Suspenseful crime thrillers",
+        "Noir and dark crime dramas",
+        "Intriguing and suspenseful murder mysteries",
+        "Gripping, intense violent crime"
+      ],
+      "language": "English",
+      "cast": [
+        "Hugh Jackman",
+        "Jake Gyllenhaal",
+        "Viola Davis",
+        "Maria Bello",
+        "Terrence Howard",
+        "Melissa Leo",
+        "Paul Dano",
+        "Dylan Minnette",
+        "Zoë Soul",
+        "Erin Gerasimovich"
+      ],
+      "studios": [
+        "Alcon Entertainment",
+        "8:38 Productions",
+        "Madhouse Entertainment"
+      ],
+      "v": 2
     },
     "the-imitation-game": {
       "year": 2014,
@@ -498,7 +2161,41 @@
       ],
       "rating": 3.85,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/6/9/5/4/146954-the-imitation-game-0-600-0-900-crop.jpg?v=818ff18071",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 113,
+      "genres": [
+        "Drama",
+        "War",
+        "Thriller",
+        "History"
+      ],
+      "themes": [
+        "War and historical adventure",
+        "Powerful stories of heartbreak and suffering",
+        "Nazis and World War II",
+        "Heartbreaking and moving family drama",
+        "Powerful poetic and passionate drama",
+        "Emotional LGBTQ relationships"
+      ],
+      "language": "English",
+      "cast": [
+        "Benedict Cumberbatch",
+        "Keira Knightley",
+        "Matthew Goode",
+        "Rory Kinnear",
+        "Allen Leech",
+        "Matthew Beard",
+        "Charles Dance",
+        "Mark Strong",
+        "James Northcote",
+        "Tom Goodman-Hill"
+      ],
+      "studios": [
+        "Bristol Automotive",
+        "Black Bear Pictures",
+        "FilmNation Entertainment"
+      ],
+      "v": 2
     },
     "the-conjuring": {
       "year": 2013,
@@ -507,7 +2204,37 @@
       ],
       "rating": 3.64,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/6/2/6/2/106262-the-conjuring-0-600-0-900-crop.jpg?v=8cbb976912",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 112,
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror",
+        "Twisted dark psychological thriller"
+      ],
+      "language": "English",
+      "cast": [
+        "Vera Farmiga",
+        "Patrick Wilson",
+        "Lili Taylor",
+        "Ron Livingston",
+        "Hayley McFarland",
+        "Sterling Jerins",
+        "Shanley Caswell",
+        "Mackenzie Foy",
+        "Joey King",
+        "Kyla Deaver"
+      ],
+      "studios": [
+        "Evergreen Media Group",
+        "The Safran Company",
+        "New Line Cinema"
+      ],
+      "v": 2
     },
     "now-you-see-me": {
       "year": 2013,
@@ -516,7 +2243,34 @@
       ],
       "rating": 3.49,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/10/vk/qc/6e/1NybAlflbmRXMIr9WoYxtlt1b6m-0-600-0-900-crop.jpg?v=ecf9142ef2",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 116,
+      "genres": [
+        "Thriller",
+        "Crime"
+      ],
+      "themes": [
+        "High speed and special ops",
+        "Heists and thrilling action"
+      ],
+      "language": "English",
+      "cast": [
+        "Jesse Eisenberg",
+        "Woody Harrelson",
+        "Isla Fisher",
+        "Dave Franco",
+        "Mark Ruffalo",
+        "Mélanie Laurent",
+        "Morgan Freeman",
+        "Michael Caine",
+        "Michael Kelly",
+        "Common"
+      ],
+      "studios": [
+        "Summit Entertainment",
+        "K/O Paper Products"
+      ],
+      "v": 2
     },
     "the-hangover-part-iii": {
       "year": 2013,
@@ -525,7 +2279,39 @@
       ],
       "rating": 2.82,
       "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/9/5/3/87953-the-hangover-part-iii-0-600-0-900-crop.jpg?v=f0e2a6655e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 100,
+      "genres": [
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Funny jokes and crude humor",
+        "Gags, jokes, and slapstick humor",
+        "Action comedy and silly heroics",
+        "Amusing jokes and witty satire",
+        "Spooky, scary comedy"
+      ],
+      "language": "English",
+      "cast": [
+        "Bradley Cooper",
+        "Ed Helms",
+        "Zach Galifianakis",
+        "Justin Bartha",
+        "Ken Jeong",
+        "John Goodman",
+        "Melissa McCarthy",
+        "Jeffrey Tambor",
+        "Heather Graham",
+        "Mike Epps"
+      ],
+      "studios": [
+        "Green Hat Films",
+        "Legendary Pictures",
+        "BenderSpink",
+        "Warner Bros. Pictures"
+      ],
+      "v": 2
     },
     "gravity-2013": {
       "year": 2013,
@@ -535,7 +2321,34 @@
       ],
       "rating": 3.52,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/4c/kn/9m/6a/221dfc20f8690b357b6b9ad66c13b5be-0-600-0-900-crop.jpg?v=9a0ce1ad93",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 91,
+      "genres": [
+        "Thriller",
+        "Science Fiction",
+        "Drama"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Imaginative space odysseys and alien encounters",
+        "Dangerous technology and the apocalypse"
+      ],
+      "language": "English",
+      "cast": [
+        "Sandra Bullock",
+        "George Clooney",
+        "Ed Harris",
+        "Orto Ignatiussen",
+        "Phaldut Sharma",
+        "Amy Warren",
+        "Basher Savage"
+      ],
+      "studios": [
+        "Esperanto Filmoj",
+        "Warner Bros. Pictures",
+        "Heyday Films"
+      ],
+      "v": 2
     },
     "life-of-pi": {
       "year": 2012,
@@ -546,7 +2359,44 @@
       ],
       "rating": 3.77,
       "poster": "https://a.ltrbxd.com/resized/film-poster/7/4/3/4/8/74348-life-of-pi-0-600-0-900-crop.jpg?v=5b5f120090",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 127,
+      "genres": [
+        "Drama",
+        "Adventure"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Faith and religion",
+        "Moving relationship stories",
+        "Surreal and thought-provoking visions of life and death",
+        "Humanity's odyssey: earth and beyond",
+        "Heartbreaking and moving family drama",
+        "Powerful poetic and passionate drama",
+        "Religious faith, sin, and forgiveness"
+      ],
+      "language": "English",
+      "cast": [
+        "Suraj Sharma",
+        "Irrfan Khan",
+        "Ayush Tandon",
+        "Gautam Belur",
+        "Adil Hussain",
+        "Tabu",
+        "Ayaan Khan",
+        "Mohd Abbas Khaleeli",
+        "Vibish Sivakumar",
+        "Rafe Spall"
+      ],
+      "studios": [
+        "Fox 2000 Pictures",
+        "Dune Entertainment",
+        "Ingenious Media",
+        "Haishang Films",
+        "Netter Productions",
+        "Big Screen Productions"
+      ],
+      "v": 2
     },
     "hugo": {
       "year": 2011,
@@ -555,7 +2405,38 @@
       ],
       "rating": 3.51,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/kp/9v/8u/7j/rSmmVKeW3nsP86V2S6R7ePs4CFw-0-600-0-900-crop.jpg?v=2e7a1b811a",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 126,
+      "genres": [
+        "Adventure",
+        "Family",
+        "Drama"
+      ],
+      "themes": [
+        "Fairy-tale fantasy and enchanted magic",
+        "Adorable animals and heartwarming families",
+        "Emotional and captivating fantasy storytelling",
+        "Heartfelt and sentimental family stories",
+        "Emotional and heartfelt family dramas"
+      ],
+      "language": "English",
+      "cast": [
+        "Asa Butterfield",
+        "Ben Kingsley",
+        "Chloë Grace Moretz",
+        "Sacha Baron Cohen",
+        "Ray Winstone",
+        "Emily Mortimer",
+        "Christopher Lee",
+        "Helen McCrory",
+        "Michael Stuhlbarg",
+        "Frances de la Tour"
+      ],
+      "studios": [
+        "GK Films",
+        "Infinitum Nihil"
+      ],
+      "v": 2
     },
     "21-jump-street": {
       "year": 2012,
@@ -564,7 +2445,43 @@
       ],
       "rating": 3.65,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/7/9/279-21-jump-street-0-600-0-900-crop.jpg?v=94d6b03998",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 109,
+      "genres": [
+        "Crime",
+        "Action",
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Gags, jokes, and slapstick humor",
+        "Funny jokes and crude humor",
+        "Teen school antics and laughter",
+        "Action comedy and silly heroics",
+        "Laugh-out-loud relationship entanglements"
+      ],
+      "language": "English",
+      "cast": [
+        "Jonah Hill",
+        "Channing Tatum",
+        "Brie Larson",
+        "Dave Franco",
+        "Rob Riggle",
+        "DeRay Davis",
+        "Ice Cube",
+        "Dax Flame",
+        "Chris Parnell",
+        "Ellie Kemper"
+      ],
+      "studios": [
+        "Columbia Pictures",
+        "Relativity Media",
+        "Original Film",
+        "Metro-Goldwyn-Mayer",
+        "Stephen J. Cannell Productions",
+        "SJC Studios"
+      ],
+      "v": 2
     },
     "the-hunt-2012": {
       "year": 2012,
@@ -574,7 +2491,39 @@
       ],
       "rating": 4.29,
       "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/0/5/1/84051-the-hunt-0-600-0-900-crop.jpg?v=f1c08cc1a2",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 116,
+      "genres": [
+        "Drama"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Moving relationship stories",
+        "Powerful stories of heartbreak and suffering",
+        "Gripping, intense violent crime",
+        "Emotional teen coming-of-age stories",
+        "Heartbreaking and moving family drama",
+        "Racism and the powerful fight for justice"
+      ],
+      "language": "Danish",
+      "cast": [
+        "Mads Mikkelsen",
+        "Thomas Bo Larsen",
+        "Annika",
+        "Lasse Fogelstrøm",
+        "Susse Wold",
+        "Anne Louise Hassing",
+        "Lars Ranthe",
+        "Alexandra Rapaport",
+        "Sebastian Bull Sarning",
+        "Steen Ordell Guldbrandsen"
+      ],
+      "studios": [
+        "Zentropa International Sweden",
+        "Zentropa Entertainments",
+        "Film i Väst"
+      ],
+      "v": 2
     },
     "rise-of-the-planet-of-the-apes": {
       "year": 2011,
@@ -584,7 +2533,40 @@
       ],
       "rating": 3.7,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/4/8/4948-rise-of-the-planet-of-the-apes-0-600-0-900-crop.jpg?v=2185768098",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 105,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Science Fiction",
+        "Drama"
+      ],
+      "themes": [
+        "Monsters, aliens, sci-fi and the apocalypse",
+        "Thought-provoking sci-fi action and future technology",
+        "Humanity's odyssey: earth and beyond"
+      ],
+      "language": "English",
+      "cast": [
+        "Andy Serkis",
+        "James Franco",
+        "Freida Pinto",
+        "John Lithgow",
+        "Brian Cox",
+        "Tom Felton",
+        "Tyler Labine",
+        "Karin Konoval",
+        "Terry Notary",
+        "Christopher Gordon"
+      ],
+      "studios": [
+        "Dune Entertainment",
+        "Chernin Entertainment",
+        "Ingenious Media",
+        "Big Screen Productions",
+        "20th Century Fox"
+      ],
+      "v": 2
     },
     "the-hangover-part-ii": {
       "year": 2011,
@@ -593,7 +2575,38 @@
       ],
       "rating": 3.21,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/14/sk/45/1c/hFUsdnUoQDQ02EVlKTyhDTdehEr-0-600-0-900-crop.jpg?v=b607a95894",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 102,
+      "genres": [
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Funny jokes and crude humor",
+        "Gags, jokes, and slapstick humor",
+        "Laugh-out-loud relationship entanglements",
+        "Action comedy and silly heroics",
+        "Teen school antics and laughter"
+      ],
+      "language": "English",
+      "cast": [
+        "Bradley Cooper",
+        "Ed Helms",
+        "Zach Galifianakis",
+        "Justin Bartha",
+        "Mason Lee",
+        "Ken Jeong",
+        "Paul Giamatti",
+        "Jeffrey Tambor",
+        "Jamie Chung",
+        "Sasha Barrese"
+      ],
+      "studios": [
+        "Legendary Pictures",
+        "Green Hat Films",
+        "Warner Bros. Pictures"
+      ],
+      "v": 2
     },
     "the-social-network": {
       "year": 2010,
@@ -602,7 +2615,36 @@
       ],
       "rating": 3.92,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/nw/cm/pa/ai/sGQv3ZMZBDBnl3z42Q0mEQ5uiDe-0-600-0-900-crop.jpg?v=54ee59f7cd",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 121,
+      "genres": [
+        "Drama"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Riveting political and presidential drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Jesse Eisenberg",
+        "Andrew Garfield",
+        "Armie Hammer",
+        "Justin Timberlake",
+        "Rooney Mara",
+        "Max Minghella",
+        "Brenda Song",
+        "Josh Pence",
+        "Rashida Jones",
+        "John Getz"
+      ],
+      "studios": [
+        "Columbia Pictures",
+        "Relativity Media",
+        "Scott Rudin Productions",
+        "Michael De Luca Productions",
+        "Trigger Street Productions"
+      ],
+      "v": 2
     },
     "drive-2011": {
       "year": 2011,
@@ -611,7 +2653,44 @@
       ],
       "rating": 3.91,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/6d/6l/r3/e9/nu7XIa67cXc2t7frXCE5voXUJcN.jpg-0-600-0-900-crop.jpg?v=58a476ae28",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 100,
+      "genres": [
+        "Thriller",
+        "Drama",
+        "Crime"
+      ],
+      "themes": [
+        "Crime, drugs and gangsters",
+        "High speed and special ops",
+        "Gritty crime and ruthless gangsters",
+        "Heists and thrilling action",
+        "Violent action, guns, and crime",
+        "Adrenaline-fueled action and fast cars",
+        "Brutal, violent prison drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Ryan Gosling",
+        "Carey Mulligan",
+        "Bryan Cranston",
+        "Albert Brooks",
+        "Oscar Isaac",
+        "Christina Hendricks",
+        "Ron Perlman",
+        "Kaden Leos",
+        "Jeff Wolfe",
+        "James Biberi"
+      ],
+      "studios": [
+        "FilmDistrict",
+        "Bold Films",
+        "Marc Platt Productions",
+        "OddLot Entertainment",
+        "Motel Movies",
+        "Newbridge Film Capital"
+      ],
+      "v": 2
     },
     "127-hours": {
       "year": 2010,
@@ -622,7 +2701,43 @@
       ],
       "rating": 3.48,
       "poster": "https://a.ltrbxd.com/resized/film-poster/2/1/0/5/0/21050-127-hours-0-600-0-900-crop.jpg?v=00379b4446",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 94,
+      "genres": [
+        "Adventure",
+        "Thriller",
+        "Drama"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Powerful stories of heartbreak and suffering"
+      ],
+      "language": "English",
+      "cast": [
+        "James Franco",
+        "Kate Mara",
+        "Amber Tamblyn",
+        "Clémence Poésy",
+        "Lizzy Caplan",
+        "Kate Burton",
+        "Treat Williams",
+        "Sean Bott",
+        "Fenton Quinn",
+        "John Lawrence"
+      ],
+      "studios": [
+        "Fox Searchlight Pictures",
+        "Pathé",
+        "Everest Entertainment",
+        "Cloud Eight Films",
+        "Decibel Films",
+        "DSP",
+        "Film4 Productions",
+        "Dune Entertainment",
+        "Big Screen Productions",
+        "Down Productions"
+      ],
+      "v": 2
     },
     "inception": {
       "year": 2010,
@@ -632,7 +2747,38 @@
       ],
       "rating": 4.24,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/sv/95/s9/4j/inception-0-600-0-900-crop.jpg?v=30d7224316",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 148,
+      "genres": [
+        "Action",
+        "Science Fiction",
+        "Crime"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Thought-provoking sci-fi action and future technology",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Surreal and thought-provoking visions of life and death"
+      ],
+      "language": "English",
+      "cast": [
+        "Leonardo DiCaprio",
+        "Joseph Gordon-Levitt",
+        "Ken Watanabe",
+        "Tom Hardy",
+        "Elliot Page",
+        "Dileep Rao",
+        "Cillian Murphy",
+        "Tom Berenger",
+        "Marion Cotillard",
+        "Pete Postlethwaite"
+      ],
+      "studios": [
+        "Warner Bros. Pictures",
+        "Legendary Pictures",
+        "Syncopy"
+      ],
+      "v": 2
     },
     "zombieland": {
       "year": 2009,
@@ -641,7 +2787,39 @@
       ],
       "rating": 3.52,
       "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/3/5/2/39352-zombieland-0-600-0-900-crop.jpg?v=f8bb88fc79",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 88,
+      "genres": [
+        "Comedy",
+        "Horror"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Survival horror and zombie carnage",
+        "Gags, jokes, and slapstick humor",
+        "Amusing jokes and witty satire",
+        "Spooky, scary comedy",
+        "Funny jokes and crude humor"
+      ],
+      "language": "English",
+      "cast": [
+        "Jesse Eisenberg",
+        "Woody Harrelson",
+        "Emma Stone",
+        "Abigail Breslin",
+        "Amber Heard",
+        "Bill Murray",
+        "Derek Graf",
+        "Elle Alexander",
+        "Melanie Booth",
+        "Chris Burns"
+      ],
+      "studios": [
+        "Columbia Pictures",
+        "Relativity Media",
+        "Pariah"
+      ],
+      "v": 2
     },
     "the-hangover": {
       "year": 2009,
@@ -650,7 +2828,38 @@
       ],
       "rating": 3.77,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/0/1/0/0/40100-the-hangover-0-600-0-900-crop.jpg?v=6464871bf5",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 100,
+      "genres": [
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Gags, jokes, and slapstick humor",
+        "Funny jokes and crude humor",
+        "Amusing jokes and witty satire",
+        "Spooky, scary comedy",
+        "Action comedy and silly heroics"
+      ],
+      "language": "English",
+      "cast": [
+        "Bradley Cooper",
+        "Ed Helms",
+        "Zach Galifianakis",
+        "Justin Bartha",
+        "Heather Graham",
+        "Sasha Barrese",
+        "Jeffrey Tambor",
+        "Ken Jeong",
+        "Rachael Harris",
+        "Mike Tyson"
+      ],
+      "studios": [
+        "Legendary Pictures",
+        "Green Hat Films",
+        "Warner Bros. Pictures"
+      ],
+      "v": 2
     },
     "coraline": {
       "year": 2009,
@@ -659,7 +2868,40 @@
       ],
       "rating": 4.2,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/7/7/9/42779-coraline-0-600-0-900-crop.jpg?v=b792483e2a",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 100,
+      "genres": [
+        "Animation",
+        "Horror",
+        "Fantasy",
+        "Family"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Fairy-tale fantasy and enchanted magic",
+        "Creepy, chilling, and terrifying horror",
+        "Terrifying, haunted, and supernatural horror",
+        "Twisted dark psychological thriller",
+        "Gothic and eerie haunting horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Dakota Fanning",
+        "Teri Hatcher",
+        "Jennifer Saunders",
+        "Dawn French",
+        "Keith David",
+        "John Hodgman",
+        "Robert Bailey Jr.",
+        "Ian McShane",
+        "Aankha Neal",
+        "George Selick"
+      ],
+      "studios": [
+        "Laika",
+        "Pandemonium"
+      ],
+      "v": 2
     },
     "500-days-of-summer": {
       "year": 2009,
@@ -668,7 +2910,40 @@
       ],
       "rating": 3.65,
       "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/3/5/0/39350--500-days-of-summer-0-600-0-900-crop.jpg?v=05995ae0b3",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 95,
+      "genres": [
+        "Romance",
+        "Comedy",
+        "Drama"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Heartfelt and sentimental family stories",
+        "Emotional teen coming-of-age stories",
+        "Captivating relationships and charming romance",
+        "Quirky and endearing relationships",
+        "Powerful stories of heartbreak and suffering"
+      ],
+      "language": "English",
+      "cast": [
+        "Joseph Gordon-Levitt",
+        "Zooey Deschanel",
+        "Geoffrey Arend",
+        "Chloë Grace Moretz",
+        "Matthew Gray Gubler",
+        "Clark Gregg",
+        "Patricia Belcher",
+        "Rachel Boston",
+        "Minka Kelly",
+        "Charles Walker"
+      ],
+      "studios": [
+        "Fox Searchlight Pictures",
+        "Watermark Pictures",
+        "Dune Entertainment III"
+      ],
+      "v": 2
     },
     "the-dark-knight": {
       "year": 2008,
@@ -678,7 +2953,41 @@
       ],
       "rating": 4.5,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/78/y5/zg/ej/oefdD26aey8GPdx7Rm45PNncJdU-0-600-0-900-crop.jpg?v=2d0ce4be25",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 152,
+      "genres": [
+        "Thriller",
+        "Action",
+        "Crime"
+      ],
+      "themes": [
+        "Epic heroes",
+        "High speed and special ops",
+        "Crime, drugs and gangsters",
+        "Superheroes in action-packed battles with villains",
+        "Brutal, violent prison drama",
+        "Gritty crime and ruthless gangsters"
+      ],
+      "language": "English",
+      "cast": [
+        "Christian Bale",
+        "Heath Ledger",
+        "Aaron Eckhart",
+        "Michael Caine",
+        "Maggie Gyllenhaal",
+        "Gary Oldman",
+        "Morgan Freeman",
+        "Monique Gabriela Curnen",
+        "Ron Dean",
+        "Cillian Murphy"
+      ],
+      "studios": [
+        "Warner Bros. Pictures",
+        "Legendary Pictures",
+        "Syncopy",
+        "DC"
+      ],
+      "v": 2
     },
     "i-am-legend": {
       "year": 2007,
@@ -688,7 +2997,43 @@
       ],
       "rating": 3.49,
       "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/2/9/6/48296-i-am-legend-0-600-0-900-crop.jpg?v=5ad5d3b4e2",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 101,
+      "genres": [
+        "Drama",
+        "Thriller",
+        "Science Fiction"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Sci-fi horror, creatures, and aliens",
+        "Survival horror and zombie carnage",
+        "Chilling experiments and classic monster horror",
+        "Terrifying, haunted, and supernatural horror",
+        "Creepy, chilling, and terrifying horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Will Smith",
+        "Alice Braga",
+        "Charlie Tahan",
+        "Dash Mihok",
+        "Salli Richardson-Whitfield",
+        "Willow Smith",
+        "Emma Thompson",
+        "Darrell Foster",
+        "Joanna Numata",
+        "Samuel Glen"
+      ],
+      "studios": [
+        "Village Roadshow Pictures",
+        "Weed Road Pictures",
+        "Overbrook Entertainment",
+        "Warner Bros. Pictures",
+        "Heyday Films",
+        "Original Film"
+      ],
+      "v": 2
     },
     "the-incredible-hulk": {
       "year": 2008,
@@ -697,7 +3042,36 @@
       ],
       "rating": 2.59,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/8/2/7/50827-the-incredible-hulk-0-600-0-900-crop.jpg?v=f03c15122c",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 114,
+      "genres": [
+        "Science Fiction",
+        "Action",
+        "Adventure"
+      ],
+      "themes": [
+        "Epic heroes",
+        "Superheroes in action-packed battles with villains"
+      ],
+      "language": "English",
+      "cast": [
+        "Edward Norton",
+        "Liv Tyler",
+        "Tim Roth",
+        "William Hurt",
+        "Tim Blake Nelson",
+        "Ty Burrell",
+        "Christina Cabot",
+        "Peter Mensah",
+        "Lou Ferrigno",
+        "Paul Soles"
+      ],
+      "studios": [
+        "Marvel Studios",
+        "Valhalla Motion Pictures",
+        "Marvel Entertainment"
+      ],
+      "v": 2
     },
     "zodiac": {
       "year": 2007,
@@ -706,7 +3080,41 @@
       ],
       "rating": 4.03,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/58/tf/z6/gw/qKQIjErYaN149hZRP5Vgf8RoC7S-0-600-0-900-crop.jpg?v=72ee5db942",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 157,
+      "genres": [
+        "Crime",
+        "Mystery",
+        "Thriller"
+      ],
+      "themes": [
+        "Thrillers and murder mysteries",
+        "Intense violence and sexual transgression",
+        "Suspenseful crime thrillers",
+        "Intriguing and suspenseful murder mysteries",
+        "Twisted dark psychological thriller",
+        "Gripping, intense violent crime",
+        "Noir and dark crime dramas"
+      ],
+      "language": "English",
+      "cast": [
+        "Jake Gyllenhaal",
+        "Mark Ruffalo",
+        "Anthony Edwards",
+        "Robert Downey Jr.",
+        "Chloë Sevigny",
+        "Elias Koteas",
+        "John Carroll Lynch",
+        "Brian Cox",
+        "Dermot Mulroney",
+        "Charles Fleischer"
+      ],
+      "studios": [
+        "Paramount Pictures",
+        "Warner Bros. Pictures",
+        "Phoenix Pictures"
+      ],
+      "v": 2
     },
     "casino-royale-2006": {
       "year": 2006,
@@ -716,7 +3124,42 @@
       ],
       "rating": 4.04,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/qb/if/j8/jr/zlWBxz2pTA9p45kUTrI8AQiKrHm-0-600-0-900-crop.jpg?v=c06add9fe8",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 144,
+      "genres": [
+        "Thriller",
+        "Action",
+        "Adventure"
+      ],
+      "themes": [
+        "High speed and special ops",
+        "Epic heroes",
+        "Explosive and action-packed heroes vs. villains",
+        "Exciting spy thrillers with tense intrigue",
+        "Adrenaline-fueled action and fast cars",
+        "Intense combat and martial arts",
+        "Violent action, guns, and crime"
+      ],
+      "language": "English",
+      "cast": [
+        "Daniel Craig",
+        "Eva Green",
+        "Mads Mikkelsen",
+        "Judi Dench",
+        "Jeffrey Wright",
+        "Giancarlo Giannini",
+        "Caterina Murino",
+        "Simon Abkarian",
+        "Isaach de Bankolé",
+        "Jesper Christensen"
+      ],
+      "studios": [
+        "Metro-Goldwyn-Mayer",
+        "Columbia Pictures",
+        "EON Productions",
+        "Casino Royale Productions"
+      ],
+      "v": 2
     },
     "charlie-and-the-chocolate-factory": {
       "year": 2005,
@@ -726,7 +3169,42 @@
       ],
       "rating": 3.38,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/9/3/2/51932-charlie-and-the-chocolate-factory-0-600-0-900-crop.jpg?v=cf68e10228",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 115,
+      "genres": [
+        "Comedy",
+        "Adventure",
+        "Fantasy",
+        "Family"
+      ],
+      "themes": [
+        "Song and dance",
+        "Fairy-tale fantasy and enchanted magic",
+        "Catchy songs and hilarious musical comedy",
+        "Dazzling vocal performances and musicals",
+        "Dreamlike, quirky, and surreal storytelling"
+      ],
+      "language": "English",
+      "cast": [
+        "Johnny Depp",
+        "Freddie Highmore",
+        "David Kelly",
+        "Helena Bonham Carter",
+        "Noah Taylor",
+        "Missi Pyle",
+        "James Fox",
+        "Deep Roy",
+        "Christopher Lee",
+        "Adam Godley"
+      ],
+      "studios": [
+        "Warner Bros. Pictures",
+        "Village Roadshow Pictures",
+        "The Zanuck Company",
+        "Plan B Entertainment",
+        "Theobald Film Productions"
+      ],
+      "v": 2
     },
     "memories-of-murder": {
       "year": 2003,
@@ -735,7 +3213,42 @@
       ],
       "rating": 4.42,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/84/xt/e8/mw/gawnVe9cFowdoDLo9Pok12NTw39-0-600-0-900-crop.jpg?v=7cad204593",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 131,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Thrillers and murder mysteries",
+        "Humanity and the world around us",
+        "Suspenseful crime thrillers",
+        "Gripping, intense violent crime",
+        "Intriguing and suspenseful murder mysteries",
+        "Twisted dark psychological thriller",
+        "Violent crime and drugs"
+      ],
+      "language": "Korean",
+      "cast": [
+        "Song Kang-ho",
+        "Kim Sang-kyung",
+        "Kim Roi-ha",
+        "Song Jae-ho",
+        "Byun Hee-bong",
+        "Go Seo-hee",
+        "Ryu Tae-ho",
+        "Park No-shik",
+        "Park Hae-il",
+        "Jeon Mi-seon"
+      ],
+      "studios": [
+        "CJ Entertainment",
+        "Muhan Investment",
+        "Sidus"
+      ],
+      "v": 2
     },
     "fight-club": {
       "year": 1999,
@@ -745,7 +3258,40 @@
       ],
       "rating": 4.27,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/6/8/51568-fight-club-0-600-0-900-crop.jpg?v=768b32dfa4",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 139,
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Challenging or sexual themes & twists",
+        "Twisted dark psychological thriller",
+        "Surreal and thought-provoking visions of life and death"
+      ],
+      "language": "English",
+      "cast": [
+        "Edward Norton",
+        "Brad Pitt",
+        "Helena Bonham Carter",
+        "Meat Loaf",
+        "Jared Leto",
+        "Zach Grenier",
+        "Holt McCallany",
+        "Eion Bailey",
+        "Richmond Arquette",
+        "David Andrews"
+      ],
+      "studios": [
+        "Fox 2000 Pictures",
+        "Regency Enterprises",
+        "Linson Entertainment",
+        "20th Century Fox",
+        "Taurus Film"
+      ],
+      "v": 2
     },
     "rush-hour": {
       "year": 1998,
@@ -755,7 +3301,42 @@
       ],
       "rating": 3.69,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/5/1/7/50517-rush-hour-0-600-0-900-crop.jpg?v=43dae7f97d",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 97,
+      "genres": [
+        "Crime",
+        "Action",
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Epic heroes",
+        "Gags, jokes, and slapstick humor",
+        "Action comedy and silly heroics",
+        "Adrenaline-fueled action and fast cars",
+        "Funny jokes and crude humor",
+        "Laugh-out-loud relationship entanglements"
+      ],
+      "language": "English",
+      "cast": [
+        "Jackie Chan",
+        "Chris Tucker",
+        "Tom Wilkinson",
+        "Philip Baker Hall",
+        "Elizabeth Peña",
+        "Chris Penn",
+        "Mark Rolston",
+        "Tzi Ma",
+        "Rex Linn",
+        "Ken Leung"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "Arthur Sarkissian Productions",
+        "Roger Birnbaum Productions",
+        "Salon Films"
+      ],
+      "v": 2
     },
     "titanic-1997": {
       "year": 1997,
@@ -764,7 +3345,40 @@
       ],
       "rating": 3.84,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/2/4/51524-titanic-0-600-0-900-crop.jpg?v=7517ea94ce",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 194,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Disastrous voyages and heroic survival",
+        "Passion and romance",
+        "Tragic sadness and captivating beauty",
+        "Heartfelt and sentimental family stories",
+        "Powerful stories of heartbreak and suffering"
+      ],
+      "language": "English",
+      "cast": [
+        "Leonardo DiCaprio",
+        "Kate Winslet",
+        "Billy Zane",
+        "Kathy Bates",
+        "Frances Fisher",
+        "Gloria Stuart",
+        "Bill Paxton",
+        "Bernard Hill",
+        "David Warner",
+        "Victor Garber"
+      ],
+      "studios": [
+        "Paramount Pictures",
+        "20th Century Fox",
+        "Lightstorm Entertainment",
+        "Baja Studios"
+      ],
+      "v": 2
     },
     "se7en": {
       "year": 1995,
@@ -773,7 +3387,41 @@
       ],
       "rating": 4.39,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/4/5/51345-se7en-0-600-0-900-crop.jpg?v=76a14ef6b4",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 127,
+      "genres": [
+        "Mystery",
+        "Crime",
+        "Thriller"
+      ],
+      "themes": [
+        "Thrillers and murder mysteries",
+        "Intense violence and sexual transgression",
+        "Suspenseful crime thrillers",
+        "Twisted dark psychological thriller",
+        "Intriguing and suspenseful murder mysteries",
+        "Noir and dark crime dramas",
+        "Gripping, intense violent crime"
+      ],
+      "language": "English",
+      "cast": [
+        "Morgan Freeman",
+        "Brad Pitt",
+        "Gwyneth Paltrow",
+        "Kevin Spacey",
+        "John Cassini",
+        "R. Lee Ermey",
+        "John C. McGinley",
+        "Peter Crombie",
+        "Reg E. Cathey",
+        "Daniel Zacapa"
+      ],
+      "studios": [
+        "New Line Cinema",
+        "Juno Pix",
+        "Cecchi Gori Pictures"
+      ],
+      "v": 2
     },
     "a-bronx-tale": {
       "year": 1993,
@@ -782,7 +3430,39 @@
       ],
       "rating": 4.17,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/3/2/50932-a-bronx-tale-0-600-0-900-crop.jpg?v=70eaa993de",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 121,
+      "genres": [
+        "Drama",
+        "Crime"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Emotional and heartfelt family dramas",
+        "Heartbreaking and moving family drama",
+        "Heartfelt and sentimental family stories",
+        "Powerful stories of heartbreak and suffering",
+        "Enduring stories of family and marital drama"
+      ],
+      "language": "English",
+      "cast": [
+        "Robert De Niro",
+        "Chazz Palminteri",
+        "Lillo Brancato",
+        "Francis Capra",
+        "Taral Hicks",
+        "Kathrine Narducci",
+        "Clem Caserta",
+        "Alfred Sauchelli, Jr.",
+        "Frank Pietrangolare",
+        "Joe Pesci"
+      ],
+      "studios": [
+        "Price Entertainment",
+        "Penta Entertainment",
+        "Tribeca Productions"
+      ],
+      "v": 2
     },
     "home-alone": {
       "year": 1990,
@@ -791,7 +3471,38 @@
       ],
       "rating": 3.87,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/e6/mn/oi/ky/8IWPBT1rkAaI8Kpk5V3WfQRklJ7-0-600-0-900-crop.jpg?v=cb22d36a0e",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 103,
+      "genres": [
+        "Family",
+        "Comedy"
+      ],
+      "themes": [
+        "Crude humor and satire",
+        "Holiday joy and heartwarming Christmas",
+        "Kids' animated fun and adventure",
+        "Quirky and endearing relationships",
+        "Gags, jokes, and slapstick humor",
+        "Amusing jokes and witty satire"
+      ],
+      "language": "English",
+      "cast": [
+        "Macaulay Culkin",
+        "Joe Pesci",
+        "Daniel Stern",
+        "John Heard",
+        "Roberts Blossom",
+        "Catherine O'Hara",
+        "Angela Goethals",
+        "Devin Ratray",
+        "Gerry Bamman",
+        "Hillary Wolf"
+      ],
+      "studios": [
+        "Hughes Entertainment",
+        "20th Century Fox"
+      ],
+      "v": 2
     },
     "jaws": {
       "year": 1975,
@@ -800,7 +3511,39 @@
       ],
       "rating": 3.91,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/4/2/51542-jaws-0-600-0-900-crop.jpg?v=03299455f6",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 124,
+      "genres": [
+        "Adventure",
+        "Thriller",
+        "Horror"
+      ],
+      "themes": [
+        "Horror, the undead and monster classics",
+        "Sci-fi horror, creatures, and aliens",
+        "Gory, gruesome, and slasher horror",
+        "Creepy, chilling, and terrifying horror",
+        "Sci-fi monster and dinosaur adventures",
+        "Terrifying, haunted, and supernatural horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Roy Scheider",
+        "Robert Shaw",
+        "Richard Dreyfuss",
+        "Lorraine Gary",
+        "Murray Hamilton",
+        "Carl Gottlieb",
+        "Jeffrey Kramer",
+        "Susan Backlinie",
+        "Jonathan Filley",
+        "Ted Grossman"
+      ],
+      "studios": [
+        "The Zanuck/Brown Company",
+        "Universal Pictures"
+      ],
+      "v": 2
     },
     "blue-velvet": {
       "year": 1986,
@@ -809,7 +3552,38 @@
       ],
       "rating": 4.06,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/5/9/51359-blue-velvet-0-600-0-900-crop.jpg?v=b0ee3c20f6",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 120,
+      "genres": [
+        "Crime",
+        "Mystery",
+        "Thriller"
+      ],
+      "themes": [
+        "Intense violence and sexual transgression",
+        "Twisted dark psychological thriller",
+        "Dreamlike, quirky, and surreal storytelling",
+        "Challenging or sexual themes & twists",
+        "Terrifying, haunted, and supernatural horror",
+        "Gothic and eerie haunting horror"
+      ],
+      "language": "English",
+      "cast": [
+        "Isabella Rossellini",
+        "Kyle MacLachlan",
+        "Dennis Hopper",
+        "Laura Dern",
+        "Hope Lange",
+        "Dean Stockwell",
+        "George Dickerson",
+        "Priscilla Pointer",
+        "Frances Bay",
+        "Jack Harvey"
+      ],
+      "studios": [
+        "DEG"
+      ],
+      "v": 2
     },
     "12-angry-men": {
       "year": 1957,
@@ -818,7 +3592,34 @@
       ],
       "rating": 4.63,
       "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/7/0/0/51700-12-angry-men-0-600-0-900-crop.jpg?v=b8aaf291a9",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 97,
+      "genres": [
+        "Drama"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Racism and the powerful fight for justice",
+        "Intense political and terrorist thrillers",
+        "Gripping, intense violent crime"
+      ],
+      "language": "English",
+      "cast": [
+        "Martin Balsam",
+        "John Fiedler",
+        "Lee J. Cobb",
+        "E.G. Marshall",
+        "Jack Klugman",
+        "Edward Binns",
+        "Jack Warden",
+        "Henry Fonda",
+        "Joseph Sweeney",
+        "Ed Begley"
+      ],
+      "studios": [
+        "Orion-Nova Productions"
+      ],
+      "v": 2
     },
     "the-dancing-pig": {
       "year": 1907,
@@ -827,7 +3628,20 @@
       ],
       "rating": 3.07,
       "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/2/2/6/108226-the-dancing-pig-0-600-0-900-crop.jpg?v=dc798d58f7",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-22",
+      "runtime": 4,
+      "genres": [
+        "Comedy"
+      ],
+      "themes": [],
+      "language": "No spoken language",
+      "cast": [
+        "Odéo"
+      ],
+      "studios": [
+        "Pathé Frères"
+      ],
+      "v": 2
     },
     "amadeus": {
       "year": 1984,

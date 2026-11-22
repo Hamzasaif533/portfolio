@@ -649,20 +649,25 @@ function shelfPage(site) {
   const sortBar = `<div class="sort" role="group" aria-label="Sort movies"><span>sort</span>${[["recent", "recent"], ["year", "year"], ["score", "score"], ["liked", "♥"]]
     .map(([k, t]) => `<button type="button" data-item data-sort="${k}" aria-pressed="${k === "recent"}" data-arrow="↓">${t}</button>`).join("")}</div>`;
   const frames = movies.filter(m => m.frame).length;
+  // tabs: Movies (with Movies / Frames / Watchlist inside), Games, Books, Stats
+  const tabs = (cls, label, list) => `<div class="${cls}" role="tablist" aria-label="${label}">${list.map(([id, t, n], i) =>
+      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>
+    ${list.map(([id, , , body], i) => `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`).join("")}`;
+  const MOVIE_TABS = [
+    ["films", "Movies", movies.length, sortBar + list(movies, "film")],
+    ["diary", "Frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
+    ["watchlist", "Watchlist", (site.watchlist || []).length, watchlistPanel(site)],
+  ];
   const TABS_ = [
-    ["movies", "Movies", movies.length, sortBar + list(movies, "film")],
-    ["diary", "Movie frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
+    ["movies", "Movies", movies.length, tabs("sub-tabs", "Movies", MOVIE_TABS)],
     ["games", "Games", games.length, list(games, "game")],
     ["books", "Books", books.length, list(books, "book")],
-    ["watchlist", "Watchlist", (site.watchlist || []).length, watchlistPanel(site)],
     ["stats", "Stats", null, statsPanel(site)],
   ];
   const rated = movies.filter(m => m.rating != null);
   const avg = rated.length ? (rated.reduce((n, m) => n + Number(m.rating), 0) / rated.length).toFixed(1) : "";
   return `<main class="shelf" id="main">${pageHead("Shelf", `${movies.length} films${avg ? ` · avg ${avg}★` : ""} · ${movies.filter(m => m.liked).length} ♥`)}
-    <div class="shelf-tabs" role="tablist" aria-label="Shelf">${TABS_.map(([id, t, n], i) =>
-      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>
-    ${TABS_.map(([id, , , body], i) => `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`).join("")}
+    ${tabs("shelf-tabs", "Shelf", TABS_)}
   </main>`;
 }
 
@@ -1204,7 +1209,7 @@ function dev() {
 }
 
 /* Covers for games and books, found before each build and kept in assets/posters/<game|book>/.
-   Games: Steam's portrait art, else the box art on Wikipedia, else Steam's wide header.
+   Games: Steam's portrait art, else the Microsoft Store poster, else the box art on Wikipedia, else Steam's wide header.
    Books: Open Library. Anything nothing was found for is retried after 30 days (content/covers.json).
    A cover you choose in the editor (the item's "poster") always wins. */
 const COVERS_JSON = path.join(ROOT, "content/covers.json");
@@ -1213,13 +1218,25 @@ const coverNorm = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0
 async function getJSON(u) { const r = await fetch(u, { headers: COVER_UA, signal: AbortSignal.timeout(12000) }); if (!r.ok) throw new Error(r.status); return r.json(); }
 async function getImage(u) { const r = await fetch(u, { headers: COVER_UA, signal: AbortSignal.timeout(15000) }); return r.ok && /^image\//.test(r.headers.get("content-type") || "") ? Buffer.from(await r.arrayBuffer()) : null; }
 async function gameCover(g) {
-  let id = null;
-  try {
+  let id = g.steam || null; // saved by the editor's game search
+  if (!id) try {
     const r = await getJSON(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(g.title)}&cc=us&l=en`);
     const hit = (r.items || []).find(i => coverNorm(i.name) === coverNorm(g.title));
     if (hit) id = hit.id;
   } catch (_) {}
   if (id) for (const f of ["library_600x900_2x.jpg", "library_600x900.jpg"]) { const b = await getImage(`https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/${f}`).catch(() => null); if (b) return b; }
+  try { // Microsoft Store posters (Minecraft, Xbox and PC games)
+    const MS = "https://displaycatalog.mp.microsoft.com/v7.0";
+    const r = await getJSON(`${MS}/productFamilies/autosuggest?market=US&languages=en-US&productFamilyNames=Games&query=${encodeURIComponent(g.title)}`);
+    const base = t => coverNorm(String(t).split(/:| - /)[0].replace(/\b(for (windows( 10)?|pc|xbox.*)|(deluxe|standard|ultimate|gold|complete) edition)\b/gi, ""));
+    const hit = (r.Results || []).flatMap(f => f.Products || []).find(p => base(p.Title) === coverNorm(g.title));
+    if (hit) {
+      const d = await getJSON(`${MS}/products?bigIds=${hit.ProductId}&market=US&languages=en-US`);
+      const img = ((((d.Products || [])[0] || {}).LocalizedProperties || [])[0] || {}).Images || [];
+      const poster = img.find(i => i.ImagePurpose === "Poster");
+      if (poster) { const b = await getImage("https:" + poster.Uri.replace(/^https?:/, "")); if (b) return b; }
+    }
+  } catch (_) {}
   try {
     const r = await getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&gsrlimit=1&gsrsearch=${encodeURIComponent(`${g.title} ${g.year || ""} video game`)}&prop=pageimages&piprop=original&pilicense=any`);
     const p = Object.values((r.query || {}).pages || {})[0];
@@ -1234,6 +1251,7 @@ async function gameCover(g) {
 }
 async function bookCover(b) {
   try {
+    if (b.olCover) { const img = await getImage(`https://covers.openlibrary.org/b/id/${b.olCover}-L.jpg`); if (img) return img; } // saved by the editor's book search
     const author = String(b.by || "").split(/&| and /)[0].trim();
     const r = await getJSON(`https://openlibrary.org/search.json?title=${encodeURIComponent(b.title)}${author ? `&author=${encodeURIComponent(author)}` : ""}&limit=5&fields=cover_i`);
     const d = (r.docs || []).find(d => d.cover_i);

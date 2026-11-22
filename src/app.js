@@ -14,13 +14,24 @@
   $$("dialog:not(.viewer)").forEach(dl => dl.addEventListener("click", e => { if (e.target === dl) dl.close(); })); // click outside closes
 
   /* ---------- shelf: tabs, sorting ---------- */
+  // a tab's pictures all load as soon as it's opened (not one by one as you scroll)
+  const loadPanel = panel => panel && $$('img[loading="lazy"]', panel).forEach(img => { if (img.closest("[role=tabpanel]") === panel) img.loading = "eager"; });
   function openTab(id, push) {
     const tab = document.getElementById("tab-" + id);
     if (!tab) return;
-    $$("[role=tab]").forEach(t => t.setAttribute("aria-selected", t === tab));
-    $$("[role=tabpanel]").forEach(p => (p.hidden = p.id !== id));
+    const row = tab.closest("[role=tablist]"); // tabs can be nested (Movies has its own row), so only touch this row
+    $$("[role=tab]", row).forEach(t => {
+      t.setAttribute("aria-selected", t === tab);
+      const p = document.getElementById(t.getAttribute("aria-controls"));
+      if (p) p.hidden = t !== tab;
+    });
+    const outer = row.parentElement.closest("[role=tabpanel]");
+    if (outer) openTab(outer.id); // opening Watchlist also opens Movies
+    const panel = document.getElementById(id);
+    loadPanel(panel);
+    const inner = panel && $("[role=tablist]", panel); // and opening Movies loads its open inner tab
+    if (inner) loadPanel(document.getElementById(($("[aria-selected=true]", inner) || {}).getAttribute?.("aria-controls")));
     // on phones the tab row scrolls sideways: keep the chosen tab in view
-    const row = tab.parentElement;
     if (row.scrollWidth > row.clientWidth) row.scrollTo({ left: row.scrollLeft + tab.getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - tab.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
     if (push) history.replaceState(null, "", "#" + id);
   }
@@ -97,6 +108,7 @@
   };
   focusHash();
   addEventListener("hashchange", focusHash);
+  $$("[role=tabpanel]").filter(p => !p.closest("[hidden]")).forEach(loadPanel); // the tabs open on arrival
 
   /* ---------- moving between items: arrows / WASD go in that direction on screen ---------- */
   const visibleItems = () => $$("[data-item]").filter(el => { const r = el.getBoundingClientRect(); return el.offsetParent !== null && r.width > 0 && r.height > 0; });
@@ -307,7 +319,7 @@
     if (viewer && viewer.open && dy > 90 && dy > Math.abs(dx) * 1.5 && Date.now() - st < 600) { viewer.close(); return; } // swipe down closes
     if (Date.now() - st > 600 || Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
     if (viewer && viewer.open) { show(cur + (dx < 0 ? 1 : -1)); return; }
-    if ($("dialog[open]") || e.target.closest("pre, .gallery, .shelf-tabs, .sort, .tabs")) return;
+    if ($("dialog[open]") || e.target.closest("pre, .gallery, .shelf-tabs, .sub-tabs, .sort, .tabs")) return;
     location.href = dx < 0 ? d.next : d.prev;
   }, { passive: true });
 

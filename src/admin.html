@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org; base-uri 'none'; form-action 'none'">
 <title>Editor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -571,6 +571,99 @@ function movieFinder(items, onAdd) {
   return wrap;
 }
 
+/* ---------- add a game or book by searching: no key needed ----------
+   Games: Wikidata (title, first release year, developer, Steam id for the cover).
+   Books: Open Library (title, first published year, author, cover). */
+const getJSON = async url => { const r = await fetch(url); if (!r.ok) throw new Error(`Search failed (${r.status})`); return r.json(); };
+const SHELF_SEARCH = {
+  games: {
+    noun: "game", placeholder: "Type a game title…",
+    async search(q) {
+      const WD = "https://www.wikidata.org/w/api.php?format=json&origin=*";
+      const s = await getJSON(`${WD}&action=wbsearchentities&type=item&language=en&uselang=en&limit=20&search=${encodeURIComponent(q)}`);
+      const hits = (s.search || []).filter(x => /video game/i.test(x.description || "")).slice(0, 8);
+      if (!hits.length) return [];
+      const e = (await getJSON(`${WD}&action=wbgetentities&props=claims|labels&languages=en&ids=${hits.map(x => x.id).join("|")}`)).entities || {};
+      const val = (c, p) => ((c[p] || []).map(x => x.mainsnak && x.mainsnak.datavalue && x.mainsnak.datavalue.value).filter(Boolean));
+      const devIds = [...new Set(hits.flatMap(x => val((e[x.id] || {}).claims || {}, "P178").map(v => v.id)))].slice(0, 50);
+      const devs = devIds.length ? (await getJSON(`${WD}&action=wbgetentities&props=labels&languages=en&ids=${devIds.join("|")}`)).entities || {} : {};
+      return hits.map(x => {
+        const c = (e[x.id] || {}).claims || {};
+        const years = val(c, "P577").map(v => Number(String(v.time).slice(1, 5))).filter(Boolean);
+        const steam = val(c, "P1733")[0];
+        return {
+          title: x.label, year: years.length ? Math.min(...years) : "", key: x.id,
+          by: val(c, "P178").map(v => ((devs[v.id] || {}).labels || {}).en).filter(Boolean).map(l => l.value).slice(0, 2).join(" & "),
+          img: steam ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam}/library_600x900.jpg` : "",
+          extra: steam ? { steam: Number(steam) || steam } : {},
+        };
+      });
+    },
+  },
+  books: {
+    noun: "book", placeholder: "Type a book title or author…",
+    async search(q) {
+      const r = await getJSON(`https://openlibrary.org/search.json?limit=8&fields=key,title,author_name,first_publish_year,cover_i&q=${encodeURIComponent(q)}`);
+      return (r.docs || []).map(d => ({
+        title: d.title, year: d.first_publish_year || "", key: d.key, by: (d.author_name || []).slice(0, 2).join(" & "),
+        img: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg` : "",
+        extra: d.cover_i ? { olCover: d.cover_i } : {},
+      }));
+    },
+  },
+};
+function shelfFinder(id, items, onAdd) {
+  const src = SHELF_SEARCH[id];
+  const wrap = h("section", { class: "finder", hidden: true });
+  const hide = () => { wrap.hidden = true; };
+  function show() {
+    wrap.hidden = false; wrap.textContent = "";
+    const q = h("input", { type: "search", placeholder: src.placeholder, autocomplete: "off", spellcheck: "false", "aria-label": `Search ${src.noun}s` });
+    const list = h("ul", { class: "found" });
+    wrap.append(h("div", { class: "inline" }, q, h("button", { class: "btn small", onclick: hide }, "Close")), list);
+    let results = [], sel = 0, timer = 0, seq = 0;
+    const same = (m, r) => m.title === r.title && String(m.year || "") === String(r.year || "");
+    const mark = i => { const rows = [...list.children]; if (!rows.length) return; sel = (i + rows.length) % rows.length; rows.forEach((li, k) => li.classList.toggle("sel", k === sel)); rows[sel].scrollIntoView({ block: "nearest" }); };
+    function render() {
+      list.textContent = "";
+      results.forEach((r, i) => list.append(h("li", { class: i === sel ? "sel" : "" }, h("button", { type: "button", onclick: () => pick(r) },
+        h("span", { class: "poster", style: r.img ? `background-image:url("${r.img}")` : "" }),
+        h("span", { class: "meta" }, h("b", { dir: "auto" }, r.title), h("small", {}, [r.year || "no date", r.by].filter(Boolean).join(" · ")), items.some(m => same(m, r)) ? h("small", { class: "have" }, " · already in your list") : null)))));
+    }
+    async function run() {
+      const raw = q.value.trim(), mine = ++seq;
+      if (raw.length < 2) { results = []; render(); return; }
+      list.textContent = ""; list.append(h("li", { class: "none" }, "Searching…"));
+      try {
+        const r = await src.search(raw);
+        if (mine !== seq) return;
+        results = r; sel = 0; render();
+        if (!results.length) list.append(h("li", { class: "none" }, `No ${src.noun}s found.`));
+      } catch (e) { if (mine === seq) { list.textContent = ""; toast(e.message, true); } }
+    }
+    function pick(r) {
+      const dupe = items.findIndex(m => same(m, r));
+      if (dupe >= 0) { toast("Already in your list"); hide(); onAdd(dupe); return; }
+      const it = { title: r.title, ...r.extra };
+      if (r.year) it.year = Number(r.year);
+      if (r.by) it.by = r.by;
+      items.unshift(it); markDirty(); hide();
+      toast(`Added “${r.title}”. Set your rating below, then Save. Its cover appears after the next build.`);
+      onAdd(0);
+    }
+    q.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 300); });
+    q.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown") { e.preventDefault(); mark(sel + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); mark(sel - 1); }
+      else if (e.key === "Enter") { e.preventDefault(); clearTimeout(timer); if (results[sel]) pick(results[sel]); else run(); }
+      else if (e.key === "Escape") hide();
+    });
+    q.focus();
+  }
+  wrap.open = show;
+  return wrap;
+}
+
 /* ---------- import real watch dates from a Letterboxd export (.zip, or diary.csv / watched.csv) ---------- */
 function parseCSV(text) {
   const rows = [];
@@ -689,9 +782,10 @@ function viewList(id) {
   const search = h("input", { type: "search", placeholder: `Search ${def.label.toLowerCase()}…`, oninput: () => draw() });
   const box = h("div", { class: "items" });
   const manual = () => { items.unshift({}); markDirty(); draw(0); };
-  const finder = id === "movies" ? movieFinder(items, i => { draw(i); const el = $(".item.open"); if (el) el.scrollIntoView({ block: "center" }); }) : null;
+  const added = i => { draw(i); const el = $(".item.open"); if (el) el.scrollIntoView({ block: "center" }); };
+  const finder = id === "movies" ? movieFinder(items, added) : SHELF_SEARCH[id] ? shelfFinder(id, items, added) : null;
   const note = h("p", { class: "status", hidden: true, style: "margin:0 0 12px;line-height:1.7" });
-  const importIn = finder ? h("input", { type: "file", accept: ".zip,.csv", hidden: true, onchange: async e => {
+  const importIn = id === "movies" ? h("input", { type: "file", accept: ".zip,.csv", hidden: true, onchange: async e => {
     const f = e.target.files[0]; e.target.value = "";
     if (!f) return;
     try {
@@ -703,7 +797,9 @@ function viewList(id) {
     } catch (err) { toast(err.message, true); }
   } }) : null;
   main.append(header(`${def.label} (${items.length})`), h("div", { class: "tools" }, search,
-    ...(finder
+    ...(SHELF_SEARCH[id]
+      ? [h("button", { class: "btn primary", onclick: () => finder.open() }, `+ Find ${SHELF_SEARCH[id].noun}`), h("button", { class: "btn", onclick: manual }, "+ Manual")]
+      : id === "movies"
       ? [h("button", { class: "btn primary", onclick: () => finder.open() }, "+ Find movie"), h("button", { class: "btn", onclick: manual }, "+ Manual"),
          h("button", { class: "btn", title: "Add your newest Letterboxd films and fill in dates, ratings and ♥", onclick: async e => {
            const b = e.currentTarget;

@@ -431,6 +431,105 @@ function filmDiary(movies = []) {
   </section>${credit}`;
 }
 
+/* ---------- shelf: watchlist + stats ---------- */
+function watchlistPanel(site) {
+  const wl = site.watchlist || [];
+  if (!wl.length) return `<p class="empty-note">Your Letterboxd watchlist shows here after the next build.</p>`;
+  return `<ul class="list wl">${wl.map(f => {
+    const url = `https://letterboxd.com/film/${f.slug}/`;
+    return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item><span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span></a></li>`;
+  }).join("")}</ul>`;
+}
+
+/* a single-series bar chart: one grey hue, values on hover, a hidden table for screen readers */
+function barChart(title, rows, { note = "", axis = true, unit = "films" } = {}) {
+  const max = Math.max(1, ...rows.map(r => r.v));
+  const total = rows.reduce((n, r) => n + r.v, 0);
+  const tip = r => `${r.tip || r.label}: ${r.v} ${r.v === 1 ? unit.replace(/s$/, "") : unit}`;
+  return `<figure class="chart">
+    <figcaption><span>${esc(title)}</span>${note ? `<span>${esc(note)}</span>` : ""}</figcaption>
+    <div class="bars" aria-hidden="true">${rows.map(r => `<span class="cb${r.v ? "" : " zero"}" style="--v:${(r.v / max).toFixed(3)}" data-tip="${esc(tip(r))}"><i></i></span>`).join("")}</div>
+    ${axis ? `<div class="axis" aria-hidden="true">${rows.map(r => `<span>${esc(r.short ?? r.label)}</span>`).join("")}</div>` : ""}
+    <table class="sr-only"><caption>${esc(title)}${total ? ` (${total} ${unit})` : ""}</caption><tbody>${rows.map(r => `<tr><th scope="row">${esc(r.tip || r.label)}</th><td>${r.v}</td></tr>`).join("")}</tbody></table>
+  </figure>`;
+}
+
+function statsPanel(site) {
+  const movies = site.movies || [];
+  if (!movies.length) return `<p class="empty-note">Add some films to see your stats.</p>`;
+  const dated = movies.filter(m => /^\d{4}-\d{2}-\d{2}$/.test(m.watched || ""));
+  const rated = movies.filter(m => m.rating != null);
+  const latest = dated.map(m => m.watched).sort().pop() || new Date().toISOString().slice(0, 10);
+  const thisYear = latest.slice(0, 4);
+  const count = (list, key) => list.reduce((map, m) => { const k = key(m); if (k != null && k !== "") map.set(k, (map.get(k) || 0) + 1); return map; }, new Map());
+
+  // headline numbers
+  const directors = count(movies, m => m.by);
+  const avg = rated.length ? (rated.reduce((n, m) => n + Number(m.rating), 0) / rated.length).toFixed(2) : "–";
+  const tiles = [
+    [movies.length, "films"],
+    [dated.filter(m => m.watched.startsWith(thisYear)).length, `in ${thisYear}`],
+    [avg, "avg rating"],
+    [movies.filter(m => m.liked).length, "liked ♥"],
+    [directors.size, "directors"],
+    [(site.watchlist || []).length, "to watch"],
+  ].map(([n, k]) => `<div class="tile-stat"><b>${esc(n)}</b><span>${esc(k)}</span></div>`).join("");
+
+  // films per month, the 12 months up to the latest watch
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const perMonth = count(dated, m => m.watched.slice(0, 7));
+  let y = +latest.slice(0, 4), mo = +latest.slice(5, 7);
+  const months = [];
+  for (let i = 0; i < 12; i++) {
+    const key = `${y}-${pad2(mo)}`;
+    months.unshift({ label: MONTHS[mo - 1], short: MONTHS[mo - 1][0], tip: `${MONTHS[mo - 1]} ${y}`, v: perMonth.get(key) || 0 });
+    if (--mo === 0) { mo = 12; y--; }
+  }
+
+  // ratings ½ … 5
+  const perRating = count(rated, m => Number(m.rating));
+  const ratings = Array.from({ length: 10 }, (_, i) => (i + 1) / 2).map((r, i) => ({ label: stars(r), short: i === 0 ? "½" : i === 9 ? "★★★★★" : "", v: perRating.get(r) || 0 }));
+
+  // release decades
+  const perDecade = count(movies.filter(m => m.year), m => Math.floor(m.year / 10) * 10);
+  const decs = [...perDecade.keys()].sort();
+  const decades = [];
+  for (let d = decs[0]; d <= decs[decs.length - 1]; d += 10) decades.push({ label: `${d}s`, short: `’${String(d).slice(2)}`, v: perDecade.get(d) || 0 });
+
+  // day of the week you watch
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const perDay = count(dated, m => (new Date(m.watched + "T12:00:00Z").getUTCDay() + 6) % 7);
+  const days = DAYS.map((d, i) => ({ label: d, short: d[0], v: perDay.get(i) || 0 }));
+
+  // most watched directors (and their average rating)
+  const top = [...directors.entries()].filter(([, n]) => n > 1).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
+  const topMax = top.length ? top[0][1] : 1;
+  const dirAvg = name => { const r = rated.filter(m => m.by === name); return r.length ? (r.reduce((n, m) => n + Number(m.rating), 0) / r.length).toFixed(1) + "★" : ""; };
+  const dirList = top.length ? `<figure class="chart wide">
+    <figcaption><span>Most watched directors</span></figcaption>
+    <ol class="hbars">${top.map(([name, n]) => `<li><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(n / topMax).toFixed(3)}"></i></span><span class="ct">${n}</span><span class="av">${dirAvg(name)}</span></li>`).join("")}</ol>
+  </figure>` : "";
+
+  // highest rated, liked first
+  const best = rated.slice().sort((a, b) => b.rating - a.rating || (b.liked ? 1 : 0) - (a.liked ? 1 : 0) || String(b.watched || "").localeCompare(String(a.watched || ""))).slice(0, 5);
+  const bestList = best.length ? `<figure class="chart wide">
+    <figcaption><span>Highest rated</span></figcaption>
+    <ol class="toplist">${best.map(m => `<li><span class="nm">${esc(m.title)}</span><span class="ct">${esc(m.year || "")}</span><span class="av">${ratingText(m)}</span></li>`).join("")}</ol>
+  </figure>` : "";
+
+  return `<div class="stats">
+    <div class="tiles-stat">${tiles}</div>
+    <div class="charts">
+      ${barChart("Films per month", months, { note: "last 12 months" })}
+      ${barChart("Ratings", ratings, { note: `${rated.length} rated` })}
+      ${barChart("Release decades", decades)}
+      ${barChart("Day of the week", days, { note: `${dated.length} dated` })}
+      ${dirList}
+      ${bestList}
+    </div>
+  </div>`;
+}
+
 function shelfPage(site) {
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // a film with a frame opens it full screen when its row is clicked (or Enter / Space)
@@ -450,15 +549,17 @@ function shelfPage(site) {
   const frames = movies.filter(m => m.frame).length;
   const TABS_ = [
     ["movies", "Movies", movies.length, sortBar + list(movies)],
-    ["books", "Books", books.length, list(books)],
+    ["diary", "Movie frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
     ["games", "Games", games.length, list(games)],
-    ["diary", "Film diary", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie in content/site.js to start your film diary.</p>`],
+    ["books", "Books", books.length, list(books)],
+    ["watchlist", "Watchlist", (site.watchlist || []).length, watchlistPanel(site)],
+    ["stats", "Stats", null, statsPanel(site)],
   ];
   const rated = movies.filter(m => m.rating != null);
   const avg = rated.length ? (rated.reduce((n, m) => n + Number(m.rating), 0) / rated.length).toFixed(1) : "";
   return `<main class="shelf" id="main">${pageHead("Shelf", `${movies.length} films${avg ? ` · avg ${avg}★` : ""} · ${movies.filter(m => m.liked).length} ♥`)}
     <div class="shelf-tabs" role="tablist" aria-label="Shelf">${TABS_.map(([id, t, n], i) =>
-      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}<span>${pad2(n)}</span></button>`).join("")}</div>
+      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>
     ${TABS_.map(([id, , , body], i) => `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`).join("")}
   </main>`;
 }
@@ -565,12 +666,46 @@ function loadSite() {
     site = require(p);
   }
   try { site.repos = JSON.parse(fs.readFileSync(REPOS_JSON, "utf8")).repos || []; } catch (_) { site.repos = []; }
+  try { site.watchlist = JSON.parse(fs.readFileSync(WATCHLIST_JSON, "utf8")).films || []; } catch (_) { site.watchlist = []; }
   return site;
 }
 
 /* Pull your public GitHub repos (not forks) into content/repos.json before building.
    If GitHub can't be reached, the last saved copy is used, so the build never fails because of it. */
 const REPOS_JSON = path.join(ROOT, "content/repos.json");
+/* Your Letterboxd watchlist (public page, newest added first) into content/watchlist.json.
+   If Letterboxd can't be reached, the last saved copy is used. */
+const WATCHLIST_JSON = path.join(ROOT, "content/watchlist.json");
+async function refreshWatchlist() {
+  let user;
+  try { user = loadSite().letterboxd; } catch (_) {}
+  if (!user || typeof fetch !== "function") return;
+  try {
+    const films = [];
+    for (let page = 1; page <= 40; page++) {
+      const res = await fetch(`https://letterboxd.com/${encodeURIComponent(user)}/watchlist/${page > 1 ? `page/${page}/` : ""}`, {
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36", Accept: "text/html" },
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok) throw new Error("Letterboxd answered " + res.status);
+      const html = await res.text();
+      const found = [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, name, slug]) => {
+        const n = name.replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+        const m = n.match(/^(.*) \((\d{4})\)$/);
+        return { title: m ? m[1] : n, year: m ? +m[2] : undefined, slug };
+      });
+      films.push(...found);
+      if (!found.length || !html.includes(`/watchlist/page/${page + 1}/`)) break;
+    }
+    if (!films.length) throw new Error("no films found");
+    const next = JSON.stringify({ user, films }, null, 2) + "\n";
+    if (!fs.existsSync(WATCHLIST_JSON) || fs.readFileSync(WATCHLIST_JSON, "utf8") !== next) fs.writeFileSync(WATCHLIST_JSON, next);
+    console.log(`watchlist: ${films.length} films from letterboxd.com/${user}`);
+  } catch (e) {
+    console.warn(`watchlist: using saved copy (${e.message})`);
+  }
+}
+
 async function refreshRepos() {
   let user;
   try { user = loadSite().github; } catch (_) {}
@@ -709,7 +844,7 @@ function dev() {
 
   async function api(req, res, p, q) {
     const m = req.method;
-    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; return send(res, 200, s); } // repos live in their own file
+    if (p === "/api/site" && m === "GET") { const s = loadSite(); delete s.repos; delete s.watchlist; return send(res, 200, s); } // repos live in their own file
     if (p === "/api/site" && m === "PUT") {
       const data = await readJSON(req);
       if (!data || typeof data !== "object" || Array.isArray(data) || !data.name) return send(res, 400, { error: "invalid content" });
@@ -820,7 +955,7 @@ function dev() {
   });
 }
 
-refreshRepos().then(() => {
+Promise.all([refreshRepos(), refreshWatchlist()]).then(() => {
   build();
   if (process.argv.includes("--dev")) dev();
 });

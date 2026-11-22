@@ -1,0 +1,260 @@
+{
+  "user": "ham7a533",
+  "films": [
+    {
+      "title": "Amadeus",
+      "year": 1984,
+      "slug": "amadeus"
+    },
+    {
+      "title": "Perfect Blue",
+      "year": 1997,
+      "slug": "perfect-blue"
+    },
+    {
+      "title": "It's a Wonderful Life",
+      "year": 1946,
+      "slug": "its-a-wonderful-life"
+    },
+    {
+      "title": "La Haine",
+      "year": 1995,
+      "slug": "la-haine"
+    },
+    {
+      "title": "Yi Yi",
+      "year": 2000,
+      "slug": "yi-yi"
+    },
+    {
+      "title": "The Godfather Part II",
+      "year": 1974,
+      "slug": "the-godfather-part-ii"
+    },
+    {
+      "title": "There Will Be Blood",
+      "year": 2007,
+      "slug": "there-will-be-blood"
+    },
+    {
+      "title": "Look Back",
+      "year": 2024,
+      "slug": "look-back-2024"
+    },
+    {
+      "title": "Law Abiding Citizen",
+      "year": 2009,
+      "slug": "law-abiding-citizen"
+    },
+    {
+      "title": "The Voice of Hind Rajab",
+      "year": 2025,
+      "slug": "the-voice-of-hind-rajab"
+    },
+    {
+      "title": "Dead Poets Society",
+      "year": 1989,
+      "slug": "dead-poets-society"
+    },
+    {
+      "title": "Chronicle",
+      "year": 2012,
+      "slug": "chronicle"
+    },
+    {
+      "title": "Anna",
+      "year": 2019,
+      "slug": "anna-2019"
+    },
+    {
+      "title": "Eternal Sunshine of the Spotless Mind",
+      "year": 2004,
+      "slug": "eternal-sunshine-of-the-spotless-mind"
+    },
+    {
+      "title": "Fantastic Mr. Fox",
+      "year": 2009,
+      "slug": "fantastic-mr-fox"
+    },
+    {
+      "title": "Detachment",
+      "year": 2011,
+      "slug": "detachment"
+    },
+    {
+      "title": "The Gorge",
+      "year": 2025,
+      "slug": "the-gorge-2025"
+    },
+    {
+      "title": "Ocean's Eleven",
+      "year": 2001,
+      "slug": "oceans-eleven-2001"
+    },
+    {
+      "title": "Casino",
+      "year": 1995,
+      "slug": "casino"
+    },
+    {
+      "title": "Companion",
+      "year": 2025,
+      "slug": "companion-2025"
+    },
+    {
+      "title": "No Country for Old Men",
+      "year": 2007,
+      "slug": "no-country-for-old-men"
+    },
+    {
+      "title": "The Good Nurse",
+      "year": 2022,
+      "slug": "the-good-nurse"
+    },
+    {
+      "title": "DAHMER - Monster: The Jeffrey Dahmer Story",
+      "year": 2022,
+      "slug": "dahmer-monster-the-jeffrey-dahmer-story"
+    },
+    {
+      "title": "Old",
+      "year": 2021,
+      "slug": "old-2021"
+    },
+    {
+      "title": "The Brutalist",
+      "year": 2024,
+      "slug": "the-brutalist"
+    },
+    {
+      "title": "Spirited Away",
+      "year": 2001,
+      "slug": "spirited-away"
+    },
+    {
+      "title": "Don't Look Up",
+      "year": 2021,
+      "slug": "dont-look-up-2021"
+    },
+    {
+      "title": "Good Will Hunting",
+      "year": 1997,
+      "slug": "good-will-hunting"
+    },
+    {
+      "title": "Whiplash",
+      "year": 2014,
+      "slug": "whiplash-2014"
+    },
+    {
+      "title": "The Banshees of Inisherin",
+      "year": 2022,
+      "slug": "the-banshees-of-inisherin"
+    },
+    {
+      "title": "Us",
+      "year": 2019,
+      "slug": "us-2019"
+    },
+    {
+      "title": "1917",
+      "year": 2019,
+      "slug": "1917"
+    },
+    {
+      "title": "Shutter Island",
+      "year": 2010,
+      "slug": "shutter-island"
+    },
+    {
+      "title": "Amélie",
+      "year": 2001,
+      "slug": "amelie"
+    },
+    {
+      "title": "The Shining",
+      "year": 1980,
+      "slug": "the-shining"
+    },
+    {
+      "title": "Yes Man",
+      "year": 2008,
+      "slug": "yes-man"
+    },
+    {
+      "title": "Kill Bill: Vol. 1",
+      "year": 2003,
+      "slug": "kill-bill-vol-1"
+    },
+    {
+      "title": "Glass",
+      "year": 2019,
+      "slug": "glass-2019"
+    },
+    {
+      "title": "The Green Mile",
+      "year": 1999,
+      "slug": "the-green-mile"
+    },
+    {
+      "title": "The Revenant",
+      "year": 2015,
+      "slug": "the-revenant-2015"
+    },
+    {
+      "title": "Last Night in Soho",
+      "year": 2021,
+      "slug": "last-night-in-soho"
+    },
+    {
+      "title": "The Whale",
+      "year": 2022,
+      "slug": "the-whale-2022"
+    },
+    {
+      "title": "Tenet",
+      "year": 2020,
+      "slug": "tenet"
+    },
+    {
+      "title": "It",
+      "year": 2017,
+      "slug": "it-2017"
+    },
+    {
+      "title": "Dunkirk",
+      "year": 2017,
+      "slug": "dunkirk-2017"
+    },
+    {
+      "title": "Top Gun: Maverick",
+      "year": 2022,
+      "slug": "top-gun-maverick"
+    },
+    {
+      "title": "The Shawshank Redemption",
+      "year": 1994,
+      "slug": "the-shawshank-redemption"
+    },
+    {
+      "title": "Django Unchained",
+      "year": 2012,
+      "slug": "django-unchained"
+    },
+    {
+      "title": "Baby Driver",
+      "year": 2017,
+      "slug": "baby-driver"
+    },
+    {
+      "title": "The Truman Show",
+      "year": 1998,
+      "slug": "the-truman-show"
+    },
+    {
+      "title": "The Wolf of Wall Street",
+      "year": 2013,
+      "slug": "the-wolf-of-wall-street"
+    }
+  ]
+}

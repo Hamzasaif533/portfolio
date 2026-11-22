@@ -141,6 +141,42 @@ button { font: inherit; color: inherit; }
 .shelf .n { grid-column: 1 / -1; margin-top: -2px; font-size: 12px; color: var(--dim); }
 .shelf .list li[data-view] { cursor: zoom-in; }
 .shelf li.now .t::before { content: "▸ "; font-size: 10px; vertical-align: 2px; }
+/* watchlist: plain rows that open the film on Letterboxd */
+.shelf .list.wl li { display: block; padding: 0; }
+.wl a { display: grid; grid-template-columns: minmax(0, 1fr) 4em; gap: 14px; align-items: baseline; padding: 7px 0; }
+.wl .y { text-align: right; }
+@media (hover: hover) { .wl a:hover .t { color: var(--mute); } }
+
+/* stats: headline tiles + single-series bar charts (one grey, white on hover) */
+.stats { padding-top: 6px; }
+.tiles-stat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 36px; }
+.tile-stat { background: var(--bg); padding: 16px 16px 14px; }
+.tile-stat b { display: block; font-size: 24px; font-weight: 400; line-height: 1.3; }
+.tile-stat span { font-size: 11px; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.chart { margin: 0; min-width: 0; }
+.chart figcaption { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 14px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
+.chart figcaption span + span { color: var(--dim); text-transform: none; letter-spacing: 0; }
+.bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; border-bottom: 1px solid var(--line); }
+.cb { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.cb i { display: block; width: 100%; height: calc(var(--v) * 100%); min-height: 2px; background: #8b8b8b; border-radius: 4px 4px 0 0; transition: background .15s; }
+.cb.zero i { background: #222; }
+.cb::after { content: attr(data-tip); position: absolute; z-index: 2; bottom: calc(var(--v) * 100% + 8px); left: 50%; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: #1a1a1a; border: 1px solid var(--chip-line); color: var(--fg); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
+.cb:first-child::after, .cb:nth-child(2)::after { left: 0; transform: none; }
+.cb:last-child::after, .cb:nth-last-child(2)::after { left: auto; right: 0; transform: none; }
+.cb:hover i, .cb:active i { background: var(--fg); }
+.cb:hover::after, .cb:active::after { opacity: 1; }
+.axis { display: flex; gap: 2px; margin-top: 6px; }
+.axis span { flex: 1; text-align: center; font-size: 10px; color: var(--dim); white-space: nowrap; }
+.axis span:last-child:not(:only-child) { text-align: right; }
+.axis span:first-child { text-align: left; }
+.hbars li, .toplist li { display: grid; gap: 12px; align-items: center; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #0f0f0f; }
+.hbars li { grid-template-columns: minmax(0, 11em) minmax(0, 1fr) 2em 3em; }
+.toplist li { grid-template-columns: minmax(0, 1fr) 3em auto; }
+.nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hb { height: 6px; }
+.hb i { display: block; height: 100%; width: calc(var(--v) * 100%); background: #8b8b8b; border-radius: 0 4px 4px 0; }
+.ct, .av { color: var(--mute); font-size: 12px; text-align: right; white-space: nowrap; }
 .empty-note { padding: 18px 0; color: var(--dim); font-size: 13px; }
 .diary-head { display: none; }
 .diary { margin: 0; }
@@ -347,6 +383,16 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .shelf .b { grid-area: b; font-size: 12px; color: var(--mute); opacity: .75; }
   .shelf .y:empty + .b { margin-left: -10px; }
   .shelf .r { grid-area: r; font-size: 12px; }
+  .wl a { grid-template-columns: minmax(0, 1fr) auto; padding: 11px 0; }
+  .wl .t, .wl .y { grid-area: auto; }
+  .wl .t { white-space: normal; }
+  .tiles-stat { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 28px; }
+  .tile-stat { padding: 12px 12px 10px; }
+  .tile-stat b { font-size: 20px; }
+  .tile-stat span { font-size: 10px; }
+  .charts { grid-template-columns: 1fr; gap: 34px; }
+  .bars { height: 100px; }
+  .hbars li { grid-template-columns: minmax(0, 9em) minmax(0, 1fr) 1.6em 2.8em; gap: 10px; }
   .page-head { flex-wrap: wrap; row-gap: 2px; }
   .page-head p { width: 100%; }
   .shelf-tabs { gap: 14px; }

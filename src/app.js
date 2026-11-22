@@ -19,6 +19,9 @@
     if (!tab) return;
     $$("[role=tab]").forEach(t => t.setAttribute("aria-selected", t === tab));
     $$("[role=tabpanel]").forEach(p => (p.hidden = p.id !== id));
+    // on phones the tab row scrolls sideways: keep the chosen tab in view
+    const row = tab.parentElement;
+    if (row.scrollWidth > row.clientWidth) row.scrollTo({ left: row.scrollLeft + tab.getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - tab.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
     if (push) history.replaceState(null, "", "#" + id);
   }
   // a link to something inside a hidden tab shows that tab first

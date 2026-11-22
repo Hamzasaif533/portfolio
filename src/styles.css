@@ -477,3 +477,6 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
 /* while a popup is open (film list, search, viewer, shortcuts) the page behind it stays still */
 html:has(dialog[open]) { overflow: hidden; }
 .fl-list, .pal-list { overscroll-behavior: contain; }
+/* Top 4 posters in black and white to match the site; colour comes back on hover */
+.top4 img { filter: grayscale(1) contrast(1.08); transition: filter .4s, border-color .2s; }
+@media (hover: hover) { .top4 a:hover img, .top4 a:focus-visible img { filter: none; } }

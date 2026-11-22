@@ -632,19 +632,24 @@ function shelfPage(site) {
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // rows are plain (frames open from the Movie frames tab only)
   const frameView = () => "";
-  const row = (it, i) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
-      <span class="t">${esc(it.title)}</span>
+  // movies get a small poster: the one you chose in the editor, else Letterboxd's (black and white until hovered)
+  const thumb = it => {
+    const own = localFile(it.poster), p = own ? it.poster : localFile(smallPoster(it)) ? smallPoster(it) : "";
+    return `<span class="p" aria-hidden="true">${p ? `<img${own ? "" : ` class="mono"`} src="${esc(p)}" alt="" width="24" height="36" loading="lazy" decoding="async">` : ""}</span>`;
+  };
+  const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
+      ${posters ? thumb(it) : ""}<span class="t">${esc(it.title)}</span>
       <span class="y">${esc(it.year || "")}</span>
       <span class="b">${esc(it.by || "")}</span>
       <span class="r"${it.rating != null ? ` aria-label="${it.rating} out of 5${it.liked ? ", liked" : ""}"` : ""}>${ratingText(it)}</span>
       ${it.note ? `<span class="n" dir="auto">${esc(it.note)}</span>` : ""}
     </li>`;
-  const list = items => `<ul class="list">${items.map(row).join("")}</ul>`;
+  const list = (items, posters) => `<ul class="list${posters ? " pl" : ""}">${items.map((it, i) => row(it, i, posters)).join("")}</ul>`;
   const sortBar = `<div class="sort" role="group" aria-label="Sort movies"><span>sort</span>${[["recent", "recent"], ["year", "year"], ["score", "score"], ["liked", "♥"]]
     .map(([k, t]) => `<button type="button" data-item data-sort="${k}" aria-pressed="${k === "recent"}" data-arrow="↓">${t}</button>`).join("")}</div>`;
   const frames = movies.filter(m => m.frame).length;
   const TABS_ = [
-    ["movies", "Movies", movies.length, sortBar + list(movies)],
+    ["movies", "Movies", movies.length, sortBar + list(movies, true)],
     ["diary", "Movie frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
     ["games", "Games", games.length, list(games)],
     ["books", "Books", books.length, list(books)],
@@ -766,9 +771,11 @@ function loadSite() {
   const wl = lbRead(WATCHLIST_JSON), meta = lbRead(FILM_META_JSON), mf = meta.films || {}, mt = meta.titles || {};
   site.watchlist = (wl.films || []).map(f => ({ ...f, lbRating: (mf[f.slug] || {}).rating }));
   site.favourites = topFour(site, mt).map(f => {
-    const own = f.poster && !/^https?:/i.test(f.poster) && fs.existsSync(path.join(ROOT, f.poster)); // a poster you chose in the editor
+    // a poster you chose for the Top 4, else the one you chose for that movie, else Letterboxd's
+    const mv = (site.movies || []).find(m => filmKey(m.title, m.year) === filmKey(f.title, f.year)) || {};
+    const own = localFile(f.poster) ? f.poster : localFile(mv.poster) ? mv.poster : "";
     const lb = `assets/posters/${f.slug}.jpg`;
-    return { ...f, lbRating: (mf[f.slug] || {}).rating, own: !!own, poster: own ? f.poster : fs.existsSync(path.join(ROOT, lb)) ? lb : "" };
+    return { ...f, lbRating: (mf[f.slug] || {}).rating, own: !!own, poster: own || (fs.existsSync(path.join(ROOT, lb)) ? lb : "") };
   });
   site.meta = {}; // film title|year -> Letterboxd details (countries, genres, cast…), for the stats
   for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.meta[m.title + "|" + (m.year || "")] = mf[slug]; }
@@ -792,6 +799,8 @@ const nameYear = n => { const m = unent(n).match(/^(.*) \((\d{4})\)$/); return m
 const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, n, slug]) => ({ ...nameYear(n), slug }));
 const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
+const smallPoster = m => `assets/posters/sm/${[slug(m.title), m.year].filter(Boolean).join("-")}.jpg`;
+const localFile = p => p && !/^(https?:)?\/\//i.test(p) && fs.existsSync(path.join(ROOT, p)); // a file in this repo
 // your top 4 from content/site.json; films picked in the editor have no Letterboxd slug yet, so find it
 const topFour = (site, titles = {}) => (site.top4 || []).filter(f => f && (f.slug || f.title)).slice(0, 4)
   .map(f => ({ ...f, slug: f.slug || titles[filmKey(f.title, f.year)] || lbSlug(f.title) }));
@@ -885,6 +894,25 @@ async function refreshLetterboxd() {
       fs.writeFileSync(file, Buffer.from(await res.arrayBuffer()));
     } catch (_) {}
   }
+
+  // small posters for every movie on the shelf (about 6 KB each), named after the film so the editor can find them
+  const smallJobs = (site.movies || []).map(mv => {
+    const m = meta.films[meta.titles[filmKey(mv.title, mv.year)]], file = path.join(ROOT, smallPoster(mv));
+    return m && m.poster && !fs.existsSync(file) ? { url: m.poster.replace(/-0-\d+-0-\d+-crop/, "-0-140-0-210-crop"), file } : null;
+  }).filter(Boolean);
+  let got = 0;
+  const grab = async () => {
+    for (let j; (j = smallJobs.shift());) {
+      try {
+        const res = await fetch(j.url, { headers: LB_HEADERS, signal: AbortSignal.timeout(12000) });
+        if (!res.ok) continue;
+        fs.mkdirSync(path.dirname(j.file), { recursive: true });
+        fs.writeFileSync(j.file, Buffer.from(await res.arrayBuffer())); got++;
+      } catch (_) {}
+    }
+  };
+  await Promise.all(Array.from({ length: 6 }, grab));
+  if (got) console.log(`letterboxd: ${got} new small posters`);
 }
 
 async function fetchFilms(queue, meta) {

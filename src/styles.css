@@ -480,3 +480,15 @@ html:has(dialog[open]) { overflow: hidden; }
 /* official Top 4 posters in black and white to match the site; colour comes back on hover. Posters you pick in the editor show as they are */
 .top4 img.mono { filter: grayscale(1) contrast(1.08); transition: filter .4s, border-color .2s; }
 @media (hover: hover) { .top4 a:hover img.mono, .top4 a:focus-visible img.mono { filter: none; } }
+/* small posters on the Movies list: present but quiet */
+.shelf .list.pl li { grid-template-columns: 24px minmax(0, 1fr) 4em minmax(0, 15em) 6em; align-items: center; padding: 5px 0; }
+.shelf .list.pl .n { grid-column: 2 / -1; }
+.shelf .p { width: 24px; height: 36px; border-radius: 2px; overflow: hidden; background: #0d0d0d; }
+.shelf .p img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: filter .3s, opacity .3s; }
+.shelf .p img.mono { filter: grayscale(1) contrast(1.05); }
+@media (hover: hover) { .shelf .list.pl li:hover .p img { filter: none; opacity: 1; } }
+@media (max-width: 700px) {
+  .shelf .list.pl li { grid-template-columns: 30px auto minmax(0, 1fr) auto; grid-template-areas: "p t t t" "p y b r"; gap: 3px 10px; align-items: center; padding: 9px 0; }
+  .shelf .list.pl .p { grid-area: p; width: 30px; height: 45px; align-self: center; }
+  .shelf .list.pl .n { grid-column: 2 / -1; }
+}

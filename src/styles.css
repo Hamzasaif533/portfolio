@@ -120,21 +120,6 @@ button { font: inherit; color: inherit; }
   .tile-cap b { display: block; font-weight: 500; color: var(--fg); }
 }
 
-/* ---------- code: GitHub repos ---------- */
-.code-page .page-head, .repos, .gh-all { max-width: 1120px; margin-inline: auto; }
-.code-page .page-head { padding: 0 22px 18px; }
-.repos { padding: 0 22px; border-top: 1px solid var(--line); }
-.repos li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 14px; border-bottom: 1px solid var(--line); }
-.rp { flex: 1 1 100%; display: grid; grid-template-columns: minmax(0, 1fr) 8em 6em 3.5em; gap: 4px 14px; align-items: baseline; padding: 14px 0; }
-.rp .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rp .l, .rp .u, .rp .s { color: var(--mute); font-size: 13px; white-space: nowrap; }
-.rp .s { text-align: right; }
-.rp .d { grid-column: 1 / -1; font-size: 13px; line-height: 1.6; color: var(--dim); }
-.live { margin: -6px 0 14px; font-size: 12px; color: var(--mute); text-decoration: underline; text-decoration-color: var(--dim); text-underline-offset: 3px; }
-@media (hover: hover) { .rp:hover .t, .live:hover, .gh-all:hover { color: var(--fg); } }
-.gh-all { display: block; padding: 16px 22px 40px; font-size: 12px; color: var(--dim); }
-.code-page .masonry { margin-top: 10px; }
-
 /* ---------- shelf: tabs, lists, sorting (no hover effects) ---------- */
 .shelf { max-width: 1120px; margin: 0 auto; padding: 84px 28px calc(var(--bar-h) + 60px); }
 .shelf-tabs { display: flex; gap: 22px; margin: 14px 0 0; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
@@ -255,7 +240,10 @@ button.tile { display: block; width: 100%; padding: 0; border: 0; font: inherit;
 .vw-fig { flex: 1; min-height: 0; display: grid; place-items: center; margin: 0; }
 .vw-fig img { max-width: 86%; max-height: 86%; width: auto; height: auto; object-fit: contain; border-radius: 14px; }
 @media (max-width: 700px) { .vw-fig img { max-width: 100%; max-height: 90%; } }
-.vw-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; max-width: 900px; width: 100%; margin: 0 auto; padding: 18px 0 26px; }
+.vw-bar { flex: none; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; max-width: 900px; width: 100%; height: calc(124px + env(safe-area-inset-bottom)); margin: 0 auto; padding: 18px 0 env(safe-area-inset-bottom); overflow: hidden; }
+.vw-text { min-width: 0; }
+.vw-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vw-meta, .vw-note { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .vw-title { font-size: 16px; }
 .vw-meta { font-size: 13px; color: var(--mute); }
 .vw-note { font-size: 13px; color: var(--dim); margin-top: 4px; }
@@ -294,8 +282,8 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .today a { padding: 7px 0; }
   .shelf .list li { padding: 11px 0; }
   .vw-close, .vw-nav { width: 46px; height: 46px; }
-  .shelf .list li, .today a, .rp, .post-list li a, .tile, .chip, .tabs a, .shelf-tabs button, .sort button { transition: opacity .12s; }
-  .shelf .list li:active, .today a:active, .rp:active, .post-list li a:active, .tile:active, .chip:active, .tabs a:active, .shelf-tabs button:active, .sort button:active { opacity: .55; }
+  .shelf .list li, .today a, .post-list li a, .tile, .chip, .tabs a, .shelf-tabs button, .sort button { transition: opacity .12s; }
+  .shelf .list li:active, .today a:active, .post-list li a:active, .tile:active, .chip:active, .tabs a:active, .shelf-tabs button:active, .sort button:active { opacity: .55; }
 }
 
 /* ---------- iPad portrait & small laptops ---------- */
@@ -332,12 +320,6 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .tabs .mk { display: none; }
   .tabs a[aria-current]::after { content: ""; position: absolute; left: 50%; bottom: 7px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--fg); }
   .bar { border-top: 1px solid #0d0d0d; padding-bottom: var(--safe-b); }
-  .rp { grid-template-columns: minmax(0, 1fr) auto; padding: 14px 0 12px; }
-  .rp .u { display: none; }
-  .rp .s { grid-row: 1; grid-column: 2; }
-  .rp .l { grid-column: 1 / -1; order: 3; }
-  .repos, .code-page .page-head { padding-inline: 16px; }
-  .gh-all { padding-inline: 16px; }
   .home { width: calc(100% - 48px); }
   .today { font-size: 15px; }
   .today a { grid-template-columns: 6.2em minmax(0, 1fr) 22px auto; gap: 8px; }
@@ -347,9 +329,10 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .tile.frame { border-radius: 10px; }
   .viewer { padding: 60px 12px 0; }
   .vw-nav { display: none; }
+  .vw-bar { height: calc(150px + env(safe-area-inset-bottom)); padding-top: 14px; gap: 14px; }
+  .vw-meta, .vw-note { font-size: 12px; }
   .gallery.g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid-page { padding: 72px 8px calc(var(--bar-h) + 40px); }
-  .code-page { padding-inline: 0; }
   .shelf { padding: 72px 24px calc(var(--bar-h) + 40px); }
   .shelf .list li { grid-template-columns: minmax(0, 1fr) 2.8em auto; gap: 10px; }
   .shelf .r { font-size: 13px; }

@@ -794,8 +794,9 @@
       "by": "Capcom"
     },
     {
-      "title": "The Last of Us",
-      "by": "Naughty Dog"
+      "title": "The Last of Us Remastered",
+      "by": "Naughty Dog",
+      "year": 2014
     },
     {
       "title": "Horizon Zero Dawn",
@@ -803,7 +804,9 @@
       "by": "Guerrilla Games"
     },
     {
-      "title": "How to Fish"
+      "title": "How to Fish",
+      "year": 2026,
+      "by": "Dazed Games"
     },
     {
       "title": "Call of Duty: Infinite Warfare",
@@ -898,41 +901,51 @@
       "rating": 4
     }
   ],
-  "projects": [],
+  "projects": [
+    {
+      "name": "portfolio",
+      "description": "This website. A zero-dependency static builder with keyboard navigation, a film diary and an editor that saves to GitHub."
+    },
+    {
+      "name": "groundx",
+      "description": "Every world has a twin on Earth. A bilingual (English / Arabic) atlas pairing Moon and Mars landing sites with similar places on Earth, with real elevation data and 3D terrain."
+    }
+  ],
   "designs": [
     {
-      "title": "Blue Hour",
-      "image": "assets/designs/art-1.svg",
-      "width": 1200,
-      "height": 1500,
-      "tools": "Photoshop",
-      "year": 2026,
-      "note": "Poster study in cold light."
+      "title": "Pastel",
+      "image": "assets/designs/ps-01.webp",
+      "tools": "Photoshop"
     },
     {
-      "title": "Soft Machine",
-      "image": "assets/designs/art-2.svg",
-      "width": 1200,
-      "height": 1500,
-      "tools": "Photoshop",
-      "year": 2026,
-      "note": "Photo manipulation, 40+ layers."
+      "title": "Flower Boutique",
+      "image": "assets/designs/ps-02.webp",
+      "tools": "Photoshop"
     },
     {
-      "title": "Signal",
-      "image": "assets/designs/art-3.svg",
-      "width": 1200,
-      "height": 900,
-      "tools": "Photoshop · Blender",
-      "year": 2025
+      "title": "Retro",
+      "image": "assets/designs/ps-03.webp",
+      "tools": "Photoshop"
     },
     {
-      "title": "Pastel Static",
-      "image": "assets/designs/art-4.svg",
-      "width": 1200,
-      "height": 900,
-      "tools": "Photoshop",
-      "year": 2025
+      "title": "SU-57",
+      "image": "assets/designs/ps-04.webp",
+      "tools": "Photoshop"
+    },
+    {
+      "title": "Streetlight",
+      "image": "assets/designs/ps-05.webp",
+      "tools": "Photoshop"
+    },
+    {
+      "title": "Chasing Perfection",
+      "image": "assets/designs/ps-06.webp",
+      "tools": "Photoshop"
+    },
+    {
+      "title": "Glitched Perception",
+      "image": "assets/designs/ps-07.webp",
+      "tools": "Photoshop"
     }
   ]
 }

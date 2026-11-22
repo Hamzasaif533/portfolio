@@ -357,28 +357,38 @@ const pageHead = (title, note) => `<header class="page-head"><h1>${esc(title)}</
 const viewAttrs = (group, src, title, meta, note) =>
   ` data-view="${group}" data-src="${esc(src)}" data-title="${esc(title)}" data-meta="${esc(meta || "")}" data-desc="${esc(note || "")}"`;
 
-/* GitHub repos, newest push first (fetched at build time into content/repos.json) */
-const ago = iso => {
-  const days = Math.floor((Date.now() - new Date(iso)) / 864e5);
-  return days < 1 ? "today" : days < 30 ? `${days}d ago` : days < 365 ? `${Math.floor(days / 30)}mo ago` : `${Math.floor(days / 365)}y ago`;
-};
-function repoList(repos) {
-  if (!repos.length) return "";
-  return `<ul class="repos">${repos.map(r => `<li id="r-${slug(r.name)}">
-    <a class="rp" href="${esc(r.url)}"${linkAttrs(r.url)} data-item>
-      <span class="t">${esc(r.name)}</span>
-      <span class="l">${esc(r.language || "")}</span>
-      <span class="u">${esc(ago(r.pushed))}</span>
-      <span class="s">${r.stars ? `★ ${r.stars}` : ""}</span>
-      ${r.description ? `<span class="d" dir="auto">${esc(r.description)}</span>` : ""}
-    </a>${r.homepage ? `<a class="live" href="${esc(r.homepage)}"${linkAttrs(r.homepage)} data-item>${esc(prettyUrl(r.homepage))} ↗</a>` : ""}
-  </li>`).join("")}</ul>`;
+/* Code page: one picture tile per GitHub repo (hover shows the details, click opens GitHub).
+   Picture: drop assets/code/<repo-name>.mp4 / .webm / .webp / .jpg / .png to use your own (video loops);
+   otherwise GitHub's preview card for the repo is used. Projects added in the editor come after the repos. */
+const CODE_MEDIA = ["mp4", "webm", "webp", "jpg", "jpeg", "png", "gif", "svg"];
+function repoMedia(site, r) {
+  for (const ext of CODE_MEDIA) {
+    const rel = `assets/code/${r.name}.${ext}`;
+    if (fs.existsSync(path.join(ROOT, rel))) return { image: rel };
+  }
+  return { image: `https://opengraph.githubassets.com/1/${site.github}/${r.name}`, width: 1200, height: 600 };
 }
 
 function codePage(site) {
-  const repos = site.repos || [];
-  const tiles = (site.projects || []).map((p, i) => {
-    const link = p.live || p.repo || "";
+  const repos = (site.repos || []).map(r => ({
+    name: r.name,
+    description: r.description,
+    tags: [r.language, r.stars ? `★ ${r.stars}` : ""].filter(Boolean),
+    status: r.pushed ? `updated ${r.pushed.slice(0, 10).replace(/-/g, ".")}` : "",
+    repo: r.url,
+    ...repoMedia(site, r),
+  }));
+  // a project in the editor with the same name as a repo fills in / overrides that repo's details
+  const own = new Map((site.projects || []).map(p => [String(p.name).toLowerCase(), p]));
+  const merged = repos.map(r => {
+    const p = own.get(r.name.toLowerCase());
+    if (!p) return r;
+    own.delete(r.name.toLowerCase());
+    return { ...r, ...Object.fromEntries(Object.entries(p).filter(([, v]) => v !== "" && v != null && !(Array.isArray(v) && !v.length))) };
+  });
+  const all = merged.concat([...own.values()]);
+  const tiles = all.map((p, i) => {
+    const link = p.repo || p.live || "";
     const meta = [p.tags && p.tags.join(" · "), p.status || p.year].filter(Boolean).join(" / ");
     const tag = link ? "a" : "div";
     return `<${tag} class="tile" id="p-${slug(p.name)}" data-item${link ? ` href="${esc(link)}"${linkAttrs(link)}` : ' tabindex="-1"'} data-title="${esc(p.name)}" data-desc="${esc(p.description)}" data-meta="${esc([meta, prettyUrl(link)].filter(Boolean).join("\n"))}">
@@ -386,11 +396,7 @@ function codePage(site) {
       <span class="tile-cap"><b>${esc(p.name)}</b>${esc(p.description)}</span>
     </${tag}>`;
   }).join("");
-  const gh = site.github ? `github.com/${site.github}` : "";
-  const note = [repos.length && `${repos.length} repos`, tiles && `${(site.projects || []).length} projects`].filter(Boolean).join(" · ");
-  return `<main class="grid-page code-page" id="main">${pageHead("Code", note)}
-    ${repoList(repos)}${gh && repos.length ? `<a class="gh-all" href="https://${gh}"${linkAttrs("https://" + gh)} data-item>${esc(gh)} ↗</a>` : ""}
-    ${tiles ? `<div class="masonry">${tiles}</div>` : ""}</main><div class="fade" aria-hidden="true"></div><div class="cap" aria-hidden="true"></div>`;
+  return `<main class="grid-page" id="main">${pageHead("Code", `${all.length} projects`)}<div class="masonry">${tiles}</div></main><div class="fade" aria-hidden="true"></div><div class="cap" aria-hidden="true"></div>`;
 }
 
 function designPage(site) {
@@ -514,7 +520,7 @@ function searchIndex(site, posts) {
   TABS.forEach(([t, h]) => out.push({ t, k: "page", u: h }));
   posts.forEach(p => out.push({ t: p.title, k: "post", u: `writing/${p.slug}.html`, d: p.summary }));
   (site.projects || []).forEach(p => out.push({ t: p.name, k: "code", u: `code.html#p-${slug(p.name)}`, d: (p.tags || []).join(" ") }));
-  (site.repos || []).forEach(r => out.push({ t: r.name, k: "code", u: `code.html#r-${slug(r.name)}`, d: [r.description, r.language].join(" ") }));
+  (site.repos || []).forEach(r => out.push({ t: r.name, k: "code", u: `code.html#p-${slug(r.name)}`, d: [r.description, r.language].join(" ") }));
   (site.designs || []).forEach((d, i) => out.push({ t: d.title, k: "design", u: `design.html#d-${i + 1}`, d: d.tools }));
   (site.movies || []).filter(m => m.frame).forEach(m => out.push({ t: m.title, k: "frame", u: `shelf.html#f-${slug(m.title)}`, d: m.by }));
   [["movie", site.movies], ["game", site.games], ["book", site.books]].forEach(([k, list]) =>

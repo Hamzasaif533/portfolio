@@ -112,8 +112,7 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .poster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 14px 10px; }
 .pg-cell { display: grid; gap: 6px; padding: 0; border: 0; background: none; color: var(--mute); font: inherit; font-size: 11px; text-align: start; cursor: pointer; min-width: 0; }
 .pg-cell img, .pg-cell .ph { display: grid; place-items: center; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 6px; border: 2px solid transparent; background: #0b0b0b; color: var(--dim); font-size: 10px; text-align: center; padding: 4px; }
-.pg-cell img { padding: 0; filter: grayscale(1); transition: filter .2s; }
-.pg-cell.own img, .pg-cell:hover img, .pg-cell:focus-visible img { filter: none; }
+.pg-cell img { padding: 0; }
 .pg-cell.own img { border-color: var(--fg); }
 .pg-cell span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pg-cell:hover span:last-child { color: var(--fg); }
@@ -955,7 +954,7 @@ async function shrinkPoster(blob, w) {
     return await new Promise(r => c.toBlob(b => r(b || blob), "image/jpeg", .86));
   } catch (_) { return blob; }
 }
-const smallPoster = m => `assets/posters/sm/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // made by the build from Letterboxd
+const smallPoster = m => `assets/posters/film/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // made by the build from Letterboxd
 const filmKeyOf = m => `${m.title}|${m.year || ""}`;
 
 /* One poster chooser: current poster, TMDB posters, upload, back to Letterboxd.
@@ -1056,7 +1055,7 @@ function viewPosters() {
     box.append(row);
   }
 
-  // All movies: a grid of small posters; tapping one opens its chooser
+  // All movies: a grid of posters; tapping one opens its chooser
   const dlg = h("dialog", { class: "poster-dlg", onclick: e => { if (e.target === dlg) dlg.close(); } });
   main.append(dlg);
   const cell = m => {

@@ -501,7 +501,7 @@ function statsPanel(site) {
   const favs = (site.favourites || []).slice(0, 4);
   const top4 = favs.length ? `<section class="top4-wrap" aria-label="Top 4">
     <p class="st-label"><span>Top 4</span><span>from Letterboxd</span></p>
-    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img${f.own ? "" : ` class="mono"`} src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
   </section>` : "";
 
   /* ---- headline numbers ---- */
@@ -632,10 +632,10 @@ function shelfPage(site) {
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // rows are plain (frames open from the Movie frames tab only)
   const frameView = () => "";
-  // movies get a small poster: the one you chose in the editor, else Letterboxd's (black and white until hovered)
+  // every movie is a poster card: the poster you chose in the editor, else Letterboxd's
   const thumb = it => {
     const own = localFile(it.poster), p = own ? it.poster : localFile(smallPoster(it)) ? smallPoster(it) : "";
-    return `<span class="p" aria-hidden="true">${p ? `<img${own ? "" : ` class="mono"`} src="${esc(p)}" alt="" width="24" height="36" loading="lazy" decoding="async">` : ""}</span>`;
+    return `<span class="p" aria-hidden="true">${p ? `<img src="${esc(p)}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(it.title)}</span>`}</span>`;
   };
   const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
       ${posters ? thumb(it) : ""}<span class="t">${esc(it.title)}</span>
@@ -799,7 +799,7 @@ const nameYear = n => { const m = unent(n).match(/^(.*) \((\d{4})\)$/); return m
 const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-item-slug="([^"]+)"/g)].map(([, n, slug]) => ({ ...nameYear(n), slug }));
 const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
-const smallPoster = m => `assets/posters/sm/${[slug(m.title), m.year].filter(Boolean).join("-")}.jpg`;
+const smallPoster = m => `assets/posters/film/${[slug(m.title), m.year].filter(Boolean).join("-")}.jpg`;
 const localFile = p => p && !/^(https?:)?\/\//i.test(p) && fs.existsSync(path.join(ROOT, p)); // a file in this repo
 // your top 4 from content/site.json; films picked in the editor have no Letterboxd slug yet, so find it
 const topFour = (site, titles = {}) => (site.top4 || []).filter(f => f && (f.slug || f.title)).slice(0, 4)
@@ -895,10 +895,10 @@ async function refreshLetterboxd() {
     } catch (_) {}
   }
 
-  // small posters for every movie on the shelf (about 6 KB each), named after the film so the editor can find them
+  // a poster for every movie on the shelf, named after the film so the editor can find them
   const smallJobs = (site.movies || []).map(mv => {
     const m = meta.films[meta.titles[filmKey(mv.title, mv.year)]], file = path.join(ROOT, smallPoster(mv));
-    return m && m.poster && !fs.existsSync(file) ? { url: m.poster.replace(/-0-\d+-0-\d+-crop/, "-0-140-0-210-crop"), file } : null;
+    return m && m.poster && !fs.existsSync(file) ? { url: m.poster.replace(/-0-\d+-0-\d+-crop/, "-0-460-0-690-crop"), file } : null;
   }).filter(Boolean);
   let got = 0;
   const grab = async () => {
@@ -912,7 +912,7 @@ async function refreshLetterboxd() {
     }
   };
   await Promise.all(Array.from({ length: 6 }, grab));
-  if (got) console.log(`letterboxd: ${got} new small posters`);
+  if (got) console.log(`letterboxd: ${got} new posters`);
 }
 
 async function fetchFilms(queue, meta) {

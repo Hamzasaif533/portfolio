@@ -157,7 +157,7 @@ button { font: inherit; color: inherit; }
 .top4-wrap { max-width: 760px; margin: 0 auto 36px; }
 .top4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .top4 a { display: block; }
-.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 4px; background: #0b0b0b; border: 1px solid var(--chip-line); transition: border-color .2s; }
+.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 0; background: #0b0b0b; border: 1px solid var(--chip-line); transition: border-color .2s; }
 .top4 .ph { display: grid; place-items: center; padding: 8px; font-size: 11px; color: var(--mute); text-align: center; }
 .cap4 { display: block; margin-top: 8px; font-size: 12px; line-height: 1.4; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cap4 i { font-style: normal; color: var(--dim); }
@@ -212,7 +212,7 @@ button { font: inherit; color: inherit; }
 .dh b { display: block; font-weight: 400; font-size: 18px; }
 .dh span { font-size: 12px; color: var(--mute); }
 .thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.thumbs img, .thumbs .ph { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; background: #0b0b0b; }
+.thumbs img, .thumbs .ph { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; background: #0b0b0b; }
 .thumbs .ph { display: grid; place-items: center; font-size: 9px; color: var(--dim); overflow: hidden; padding: 2px; text-align: center; }
 @media (hover: hover) { .stats .decades button:hover .dh b { color: var(--mute); } }
 /* the "which films?" list */
@@ -480,7 +480,7 @@ html:has(dialog[open]) { overflow: hidden; }
 /* Movies: a grid of poster cards */
 .shelf .list.pl { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 36px 20px; padding-top: 10px; }
 .shelf .list.pl li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "p p" "t t" "y r" "b b"; gap: 0 8px; align-items: baseline; padding: 0; border: 0; background: none; }
-.shelf .list.pl .p { grid-area: p; position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; margin-bottom: 12px; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 12px 28px -14px rgba(0, 0, 0, .9); transition: box-shadow .25s ease; }
+.shelf .list.pl .p { grid-area: p; position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; margin-bottom: 12px; border-radius: 0; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 12px 28px -14px rgba(0, 0, 0, .9); transition: box-shadow .25s ease; }
 .shelf .list.pl .p img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .shelf .list.pl .p > span { display: grid; place-items: center; height: 100%; padding: 12px; font-size: 12px; line-height: 1.5; color: var(--mute); text-align: center; }
 .shelf .list.pl li.now .t::before { content: none; }
@@ -488,7 +488,7 @@ html:has(dialog[open]) { overflow: hidden; }
 .shelf .list.pl .y { grid-area: y; font-size: 12px; }
 .shelf .list.pl .r { grid-area: r; font-size: 12px; }
 .shelf .list.pl .b { grid-area: b; margin-top: 2px; font-size: 11px; color: var(--dim); opacity: 1; }
-.shelf .list.pl .n { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 2 / 3; margin: 0; display: flex; align-items: flex-end; padding: 14px; border-radius: 6px; overflow: hidden; background: linear-gradient(to top, rgba(0, 0, 0, .94), rgba(0, 0, 0, .65) 45%, transparent 80%); color: var(--fg); font-size: 12px; line-height: 1.55; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+.shelf .list.pl .n { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 2 / 3; margin: 0; display: flex; align-items: flex-end; padding: 14px; border-radius: 0; overflow: hidden; background: linear-gradient(to top, rgba(0, 0, 0, .94), rgba(0, 0, 0, .65) 45%, transparent 80%); color: var(--fg); font-size: 12px; line-height: 1.55; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 .shelf .list.pl li.flash { background: none; }
 .shelf .list.pl li.flash .p { box-shadow: 0 0 0 2px var(--fg); }
 @media (hover: hover) {
@@ -497,7 +497,7 @@ html:has(dialog[open]) { overflow: hidden; }
 }
 @media (max-width: 700px) {
   .shelf .list.pl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 10px; }
-  .shelf .list.pl .p { margin-bottom: 8px; border-radius: 5px; }
+  .shelf .list.pl .p { margin-bottom: 8px; }
   .shelf .list.pl .t { font-size: 12px; white-space: nowrap; }
   .shelf .list.pl .y, .shelf .list.pl .r { font-size: 11px; }
   .shelf .list.pl .b, .shelf .list.pl .n { display: none; }
@@ -511,7 +511,7 @@ html:has(dialog[open]) { overflow: hidden; }
 /* Movies' inner tabs: Movies / Frames / Watchlist */
 .sub-tabs { display: flex; gap: 8px; margin: 4px 0 6px; overflow-x: auto; scrollbar-width: none; }
 .sub-tabs::-webkit-scrollbar { display: none; }
-.sub-tabs button { display: flex; align-items: baseline; gap: 8px; padding: 6px 14px; border: 1px solid var(--chip-line); border-radius: 99px; background: none; color: var(--mute); font: 13px var(--mono); white-space: nowrap; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.sub-tabs button { display: flex; align-items: baseline; gap: 8px; padding: 6px 14px; border: 1px solid var(--chip-line); border-radius: 0; background: none; color: var(--mute); font: 13px var(--mono); white-space: nowrap; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
 .sub-tabs button span { font-size: 11px; color: var(--dim); }
 .sub-tabs button[aria-selected="true"] { background: var(--fg); border-color: var(--fg); color: #000; }
 .sub-tabs button[aria-selected="true"] span { color: #555; }

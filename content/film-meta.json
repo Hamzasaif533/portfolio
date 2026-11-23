@@ -3919,7 +3919,36 @@
       ],
       "rating": 4.42,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/cl/dn/kr/f1/4C9LHDxMsoYI0S3iMPZdm3Oevwo-0-600-0-900-crop.jpg?v=d13ea36528",
-      "fetched": "2026-11-22"
+      "fetched": "2026-11-23",
+      "runtime": 107,
+      "genres": [
+        "Drama",
+        "Music",
+        "Thriller"
+      ],
+      "themes": [
+        "Moving relationship stories",
+        "Student coming-of-age challenges"
+      ],
+      "language": "English",
+      "cast": [
+        "Miles Teller",
+        "J.K. Simmons",
+        "Paul Reiser",
+        "Melissa Benoist",
+        "Austin Stowell",
+        "Nate Lang",
+        "Chris Mulkey",
+        "Damon Gupton",
+        "Suanne Spoke",
+        "Max Kasch"
+      ],
+      "studios": [
+        "Bold Films",
+        "Blumhouse Productions",
+        "Right of Way Films"
+      ],
+      "v": 2
     },
     "the-banshees-of-inisherin": {
       "year": 2022,
@@ -4210,6 +4239,7 @@
     "jaws|1975": "jaws",
     "blue velvet|1986": "blue-velvet",
     "12 angry men|1957": "12-angry-men",
-    "the dancing pig|1907": "the-dancing-pig"
+    "the dancing pig|1907": "the-dancing-pig",
+    "whiplash|2014": "whiplash-2014"
   }
 }

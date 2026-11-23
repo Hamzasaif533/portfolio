@@ -650,8 +650,8 @@ function shelfPage(site) {
     .map(([k, t]) => `<button type="button" data-item data-sort="${k}" aria-pressed="${k === "recent"}" data-arrow="↓">${t}</button>`).join("")}</div>`;
   const frames = movies.filter(m => m.frame).length;
   // tabs: Movies (with Movies / Frames / Watchlist inside), Games, Books, Stats
-  const tabs = (cls, label, list) => `<div class="${cls}" role="tablist" aria-label="${label}">${list.map(([id, t, n], i) =>
-      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>
+  const tabs = (cls, label, list) => `${cls === "shelf-tabs" ? `<div class="shelf-head">` : ""}<div class="${cls}" role="tablist" aria-label="${label}">${list.map(([id, t, n], i) =>
+      `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>${cls === "shelf-tabs" ? `</div>` : ""}
     ${list.map(([id, , , body], i) => `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`).join("")}`;
   const MOVIE_TABS = [
     ["films", "Movies", movies.length, sortBar + list(movies, "film")],

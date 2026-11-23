@@ -41,6 +41,12 @@
     if (panel) openTab(panel.id);
   }
   $$("[data-tab]").forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab, true)));
+  // the Shelf's tab row sticks to the top as you scroll; it turns to frosted glass once it's stuck
+  const head = $(".shelf-head");
+  if (head) {
+    const stuck = () => head.classList.toggle("stuck", head.getBoundingClientRect().top <= parseFloat(getComputedStyle(head).top) + 0.5);
+    addEventListener("scroll", stuck, { passive: true }); stuck();
+  }
   const SORTS = {
     recent: (a, b) => a.dataset.i - b.dataset.i,
     year: (a, b) => b.dataset.year - a.dataset.year || b.dataset.score - a.dataset.score,

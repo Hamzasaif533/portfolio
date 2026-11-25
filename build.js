@@ -225,7 +225,7 @@ const TABS = [
 ];
 
 const fontsUrl = arabic =>
-  `https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@200;300${arabic ? "&family=Firjar:wght@400;600" : ""}&display=swap`;
+  `https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500${arabic ? "&family=Firjar:wght@400;600" : ""}&display=swap`;
 
 /* shared dialogs: search, shortcut list (opened with ?), media viewer */
 const DIALOGS = `
@@ -463,10 +463,10 @@ function barChart(rows, { unit = "film", value = r => r.ids.length, fmt = v => p
 }
 
 /* a ranked list with thin bars: [name, ids, extra] */
-function rankList(rows, { max, extra = () => "" } = {}) {
+function rankList(rows, { max, extra = () => "", icon } = {}) {
   if (!rows.length) return `<p class="empty-note">Not enough films yet.</p>`;
   const top = max || Math.max(...rows.map(r => r[1].length));
-  return `<ol class="hbars">${rows.map(([name, ids, x]) => `<li><button${pick(ids, name)}><span class="nm">${esc(name)}</span><span class="hb"><i style="--v:${(ids.length / top).toFixed(3)}"></i></span><span class="ct">${ids.length}</span><span class="av">${x != null ? esc(x) : extra(ids)}</span></button></li>`).join("")}</ol>`;
+  return `<ol class="hbars${icon ? " with-ic" : ""}">${rows.map(([name, ids, x]) => `<li><button${pick(ids, name)}><span class="nm">${icon ? icon(name) : ""}<span>${esc(name)}</span></span><span class="hb"><i style="--v:${(ids.length / top).toFixed(3)}"></i></span><span class="ct">${ids.length}</span><span class="av">${x != null ? esc(x) : extra(ids)}</span></button></li>`).join("")}</ol>`;
 }
 
 /* a figure with Most watched / Highest rated (or other) views */
@@ -497,6 +497,23 @@ function statsPanel(site) {
   const mostWatched = (map, n = 8, min = 1) => [...map.entries()].filter(([, l]) => l.length >= min).sort((a, b) => b[1].length - a[1].length || (avgOf(b[1]) || 0) - (avgOf(a[1]) || 0) || String(a[0]).localeCompare(String(b[0]))).slice(0, n);
   const highestRated = (map, n = 8, min = 2) => [...map.entries()].filter(([, l]) => l.filter(m => m.rating != null).length >= min).sort((a, b) => avgOf(b[1]) - avgOf(a[1]) || b[1].length - a[1].length).slice(0, n);
   const asRows = list => list.map(([k, l]) => [k, ids(l), avgStr(l)]);
+
+  // small pictures beside names; the names asked for here are the ones the build fetches pictures for
+  const pics = readPics(), want = statsPanel.wanted = { country: new Set(), person: new Set(), studio: new Set() };
+  const initials = n => esc(String(n).split(/\s+/).filter(w => /^\p{L}/u.test(w)).slice(0, 2).map(w => w[0]).join("").toUpperCase());
+  const picIcon = kind => name => {
+    want[kind].add(name);
+    const e = (pics[kind] || {})[name];
+    return e && e.img && localFile(e.img)
+      ? `<img class="ic ${kind}" src="${esc(e.img)}" alt="" loading="lazy" decoding="async" width="26" height="26">`
+      : `<span class="ic ${kind} none" aria-hidden="true">${initials(name)}</span>`;
+  };
+  const shapeIcon = name => {
+    want.country.add(name);
+    const d = (pics.shapes || {})[name];
+    return `<svg class="ic shape" viewBox="0 0 24 24" aria-hidden="true">${d ? `<path d="${d}"/>` : `<circle cx="12" cy="12" r="2.5"/>`}</svg>`;
+  };
+  const listOf = (map, rated, icon, n = 8, min = 2) => rankList(asRows(rated ? highestRated(map, n, min) : mostWatched(map, n, min)), { icon });
 
   /* ---- Top 4 ---- */
   const favs = (site.favourites || []).slice(0, 4);
@@ -565,7 +582,7 @@ function statsPanel(site) {
 
   /* ---- genres, countries & languages ---- */
   const genres = groupBy(m => meta(m).genres), languages = groupBy(m => meta(m).language);
-  const gclCol = (title, map, mode) => `<div class="gcl-col"><p class="col-h">${esc(title)}</p>${rankList(asRows(mode === "rated" ? highestRated(map, 6) : mostWatched(map, 6)))}</div>`;
+  const gclCol = (title, map, mode) => `<div class="gcl-col"><p class="col-h">${esc(title)}</p>${listOf(map, mode === "rated", map === countries ? shapeIcon : null, 6, mode === "rated" ? 2 : 1)}</div>`;
   const gcl = `<div id="st-gcl">${switchable("Genres, countries & languages", "", [
     ["Most watched", `<div class="gcl">${gclCol("Genres", genres)}${gclCol("Countries", countries)}${gclCol("Languages", languages)}</div>`],
     ["Highest rated", `<div class="gcl">${gclCol("Genres", genres, "rated")}${gclCol("Countries", countries, "rated")}${gclCol("Languages", languages, "rated")}</div>`],
@@ -590,16 +607,16 @@ function statsPanel(site) {
   const cast = groupBy(m => meta(m).cast);
   const studios = groupBy(m => meta(m).studios);
   const castBox = cast.size ? switchable("Cast", "", [
-    ["Most watched", rankList(asRows(mostWatched(cast, 8, 2)))],
-    ["Highest rated", rankList(asRows(highestRated(cast, 8, 2)))],
+    ["Most watched", listOf(cast, false, picIcon("person"))],
+    ["Highest rated", listOf(cast, true, picIcon("person"))],
   ]) : "";
   const dirBox = `<div id="st-directors">${switchable("Directors", "", [
-    ["Most watched", rankList(asRows(mostWatched(directors, 8, 2)))],
-    ["Highest rated", rankList(asRows(highestRated(directors, 8, 2)))],
+    ["Most watched", listOf(directors, false, picIcon("person"))],
+    ["Highest rated", listOf(directors, true, picIcon("person"))],
   ])}</div>`;
   const studioBox = studios.size ? switchable("Studios", "", [
-    ["Most watched", rankList(asRows(mostWatched(studios, 8, 2)))],
-    ["Highest rated", rankList(asRows(highestRated(studios, 8, 2)))],
+    ["Most watched", listOf(studios, false, picIcon("studio"))],
+    ["Highest rated", listOf(studios, true, picIcon("studio"))],
   ]) : "";
 
   /* ---- when you watch ---- */
@@ -608,7 +625,7 @@ function statsPanel(site) {
   const days = `<figure class="chart"><figcaption><span>Day of the week</span><span>${dated.length} dated</span></figcaption>${barChart(DAYS.map((d, i) => ({ label: d, tip: `${d}s`, short: d[0], ids: ids(perDay.get(i) || []) })))}</figure>`;
 
   // the films every button above can list
-  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame || "" }));
+  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame || "", p: localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "" }));
   return `<div class="stats">
     ${top4}
     <div class="tiles-stat">${tiles}</div>
@@ -624,6 +641,10 @@ function statsPanel(site) {
       ${castBox}
       ${studioBox}
     </div>
+    ${(() => { // photos and logos are from Wikimedia Commons, each under its own licence
+      const shown = [...["person", "studio"].flatMap(k => [...want[k]].map(n => [n, (pics[k] || {})[n]]))].filter(([, e]) => e && e.img && localFile(e.img));
+      return `<details class="credits"><summary>Pictures: country shapes from Natural Earth; photos and logos from Wikimedia Commons</summary><p>${shown.map(([n, e]) => `<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(e.file.replace(/ /g, "_"))}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ")}</p></details>`;
+    })()}
     <dialog class="filmlist" aria-label="Films"><div class="fl-head"><p class="fl-title"></p><button class="fl-close" type="button" aria-label="Close">×</button></div><ul class="fl-list"></ul></dialog>
     <script type="application/json" id="statfilms">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
   </div>`;
@@ -1284,7 +1305,105 @@ async function refreshCovers() {
   if (total) console.log(`covers: ${got} of ${total} found`);
 }
 
-Promise.all([refreshRepos(), refreshLetterboxd(), refreshCovers()]).then(() => {
+/* Small pictures for Stats: a country's outline, a director's or actor's photo, a studio's logo.
+   Shapes come from Natural Earth (world-atlas), photos and logos from Wikidata / Wikimedia Commons.
+   Only the names Stats shows are fetched, once; content/pics.json remembers what was found (and misses, retried after 30 days). */
+const PICS_JSON = path.join(ROOT, "content/pics.json");
+const readPics = () => { try { return JSON.parse(fs.readFileSync(PICS_JSON, "utf8")); } catch (_) { return {}; } };
+const COUNTRY_ALIAS = { USA: "United States of America", UK: "United Kingdom", "State of Palestine": "Palestine", Czechia: "Czechia", "Czech Republic": "Czechia", "Republic of Ireland": "Ireland", "Bosnia and Herzegovina": "Bosnia and Herz.", "Dominican Republic": "Dominican Rep.", "Democratic Republic of Congo": "Dem. Rep. Congo", "Ivory Coast": "Côte d'Ivoire", "North Macedonia": "Macedonia" };
+function countryShape(topo, name) {
+  const g = topo.objects.countries.geometries.find(x => x.properties.name === (COUNTRY_ALIAS[name] || name));
+  if (!g) return "";
+  const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
+  const arc = i => { let x = 0, y = 0; const pts = topo.arcs[i < 0 ? ~i : i].map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]); return i < 0 ? pts.reverse() : pts; };
+  const ring = r => r.flatMap((i, k) => (k ? arc(i).slice(1) : arc(i)));
+  const polys = (g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : []).map(p => ring(p[0]));
+  if (!polys.length) return "";
+  const box = pts => pts.reduce((b, [x, y]) => [Math.min(b[0], x), Math.min(b[1], y), Math.max(b[2], x), Math.max(b[3], y)], [Infinity, Infinity, -Infinity, -Infinity]);
+  const area = pts => { const c = Math.cos(pts[0][1] * Math.PI / 180); let a = 0; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) a += (pts[j][0] - pts[i][0]) * (pts[j][1] + pts[i][1]); return Math.abs(a / 2) * c; };
+  // the mainland, plus islands close to it (no Alaska, Hawaii or overseas territories)
+  const sized = polys.map(p => ({ p, a: area(p), b: box(p) })).sort((a, b) => b.a - a.a);
+  const L = sized[0].b, pad = Math.max(L[2] - L[0], L[3] - L[1]) * .3;
+  const keep = sized.filter(s => s.a >= sized[0].a * .004 && s.b[0] >= L[0] - pad && s.b[2] <= L[2] + pad && s.b[1] >= L[1] - pad && s.b[3] <= L[3] + pad);
+  const all = box(keep.flatMap(s => s.p)), k = Math.cos((all[1] + all[3]) / 2 * Math.PI / 180);
+  const w = (all[2] - all[0]) * k, hgt = all[3] - all[1], f = 21 / Math.max(w, hgt);
+  const ox = (24 - w * f) / 2, oy = (24 - hgt * f) / 2;
+  return keep.map(({ p }) => {
+    let out = "", last = null;
+    for (const [lon, lat] of p) {
+      const pt = [+(ox + (lon - all[0]) * k * f).toFixed(1), +(oy + (all[3] - lat) * f).toFixed(1)];
+      if (last && Math.hypot(pt[0] - last[0], pt[1] - last[1]) < .45) continue;
+      out += (last ? "L" : "M") + pt[0] + " " + pt[1]; last = pt;
+    }
+    return out.split("L").length > 3 ? out + "Z" : "";
+  }).join("");
+}
+const WD = "https://www.wikidata.org/w/api.php?format=json&origin=*";
+const PERSON_RE = /\b(actor|actress|director|film|screenwriter|comedian|performer|voice|singer|rapper|musician|model|producer|cinematographer|animator|writer|television|presenter|artist|dancer|stunt|youtuber|athlete|wrestler|player)/i;
+const STUDIO_RE = /\b(company|compan|studio|production|distribut|film|television|entertainment|pictures|subsidiary|label|broadcast|network|division|enterprise|animation|media|cinema|channel|streaming|service)/i;
+// Wikimedia asks clients to slow down with 429 + Retry-After: wait and try again
+async function wikiFetch(u) {
+  for (let tries = 0; ; tries++) {
+    const r = await fetch(u, { headers: COVER_UA, signal: AbortSignal.timeout(15000) });
+    if (r.status !== 429 || tries >= 4) return r;
+    await new Promise(ok => setTimeout(ok, (Number(r.headers.get("retry-after")) || 3) * 1000 + 300));
+  }
+}
+const wikiJSON = async u => { const r = await wikiFetch(u); if (!r.ok) throw new Error(r.status); return r.json(); };
+async function wikiPic(name, kind) {
+  const r = await wikiJSON(`${WD}&action=wbsearchentities&language=en&type=item&limit=10&search=${encodeURIComponent(name)}`);
+  const re = kind === "person" ? PERSON_RE : STUDIO_RE;
+  const hits = (r.search || []).filter(h => coverNorm((h.match || {}).text || h.label) === coverNorm(name) && re.test(h.description || "")).slice(0, 3);
+  if (!hits.length) return null;
+  const d = await wikiJSON(`${WD}&action=wbgetentities&props=claims&ids=${hits.map(h => h.id).join("|")}`);
+  for (const h of hits) {
+    const c = ((d.entities || {})[h.id] || {}).claims || {};
+    const file = (((c[kind === "person" ? "P18" : "P154"] || [])[0] || {}).mainsnak || {}).datavalue;
+    if (!file || typeof file.value !== "string") continue;
+    const res = await wikiFetch(`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file.value)}?width=${kind === "person" ? 96 : 120}`);
+    const type = res.headers.get("content-type") || "";
+    if (!res.ok || !/^image\/(jpeg|png|webp|gif)/.test(type)) continue;
+    return { buf: Buffer.from(await res.arrayBuffer()), ext: type.includes("png") ? "png" : type.includes("webp") ? "webp" : type.includes("gif") ? "gif" : "jpg", file: file.value, id: h.id };
+  }
+  return null;
+}
+async function refreshPics() {
+  let site; try { site = loadSite(); } catch (_) { return; }
+  if (typeof fetch !== "function") return;
+  statsPanel(site); // fills statsPanel.wanted with the names Stats shows
+  const want = statsPanel.wanted || {};
+  const pics = readPics(); pics.shapes = pics.shapes || {}; pics.person = pics.person || {}; pics.studio = pics.studio || {};
+  let changed = false;
+  const needShapes = [...(want.country || [])].filter(c => !(c in pics.shapes));
+  if (needShapes.length) try {
+    const topo = await getJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json");
+    for (const c of needShapes) { pics.shapes[c] = countryShape(topo, c); changed = true; }
+  } catch (_) {}
+  const now = Date.now(), jobs = [];
+  for (const kind of ["person", "studio"]) for (const name of want[kind] || []) {
+    const e = pics[kind][name];
+    if (e && (e.img ? localFile(e.img) : now - new Date(e.miss) < 30 * 864e5)) continue;
+    jobs.push({ kind, name });
+  }
+  let got = 0; const total = jobs.length;
+  const work = async () => {
+    for (let j; (j = jobs.shift());) {
+      const p = await wikiPic(j.name, j.kind).catch(() => null);
+      if (p) {
+        const img = `assets/${j.kind === "person" ? "people" : "studios"}/${slug(j.name)}.${p.ext}`;
+        fs.mkdirSync(path.dirname(path.join(ROOT, img)), { recursive: true });
+        fs.writeFileSync(path.join(ROOT, img), p.buf);
+        pics[j.kind][j.name] = { img, file: p.file, wd: p.id }; got++;
+      } else pics[j.kind][j.name] = { miss: new Date().toISOString().slice(0, 10) };
+      changed = true;
+    }
+  };
+  await work(); // one at a time: Wikimedia is strict about bursts
+  if (changed) fs.writeFileSync(PICS_JSON, JSON.stringify(pics, null, 2) + "\n");
+  if (total) console.log(`pictures: ${got} of ${total} found`);
+}
+
+Promise.all([refreshRepos(), refreshLetterboxd().then(refreshPics), refreshCovers()]).then(() => {
   build();
   if (process.argv.includes("--dev")) dev();
 });

@@ -570,7 +570,7 @@ function statsPanel(site) {
   /* ---- headline numbers ---- */
   const minutes = movies.reduce((n, m) => n + (meta(m).runtime || 0), 0);
   const directors = groupBy(m => m.by);
-  const countries = groupBy(m => meta(m).countries);
+  const countries = groupBy(m => mainCountry(meta(m).countries, meta(m).language)); // one country per film
   // longest streak: consecutive weeks (Mon–Sun) with at least one film
   const weekNo = d => Math.floor((Date.parse(d + "T00:00:00Z") / 864e5 + 3) / 7);
   const weeks = [...new Set(dated.map(m => weekNo(m.watched)))].sort((a, b) => a - b);
@@ -632,7 +632,7 @@ function statsPanel(site) {
 
   /* ---- world map: countries you've watched films from (lighter = more films); tap one to list them ---- */
   const world = readWorld();
-  const MAP_STEPS = [[20, "#e6e6e6", "20+"], [5, "#a8a8a8", "5–19"], [2, "#6e6e6e", "2–4"], [1, "#454545", "1"]];
+  const MAP_STEPS = [[20, "#ffffff", "20+"], [5, "#dcdcdc", "5–19"], [2, "#b4b4b4", "2–4"], [1, "#8e8e8e", "1"]]; // countries you have films from are white; more films, whiter
   const mapBox = world && countries.size ? (() => {
     const byAtlas = new Map(); // atlas name -> [your name, films]
     for (const [n, l] of countries) byAtlas.set(COUNTRY_ALIAS[n] || n, [n, l]);
@@ -749,9 +749,8 @@ function shelfPage(site) {
 
 /* everything the film popup shows, by the film's row id (s-<title>) */
 function filmCards(site) {
-  const pics = readPics(), photos = site.photos || {};
+  const pics = readPics();
   const meta = m => (site.meta || {})[m.title + "|" + (m.year || "")] || {};
-  const face = name => { const own = photos[name], e = (pics.person || {})[name] || {}; return { n: name, p: localFile(own) ? own : e.img && localFile(e.img) ? e.img : "" }; };
   const icons = {}, films = {}, shapes = {};
   for (const m of site.movies || []) {
     const x = meta(m), poster = localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "";
@@ -760,8 +759,8 @@ function filmCards(site) {
     films[`s-${slug(m.title)}`] = {
       t: m.title, y: m.year || "", r: m.rating != null ? stars(m.rating) : "", l: !!m.liked, note: m.note || "", w: m.watched || "",
       p: webp(poster), f: m.frame ? webp(smallFrame(m.frame)) : "", ff: m.frame || "",
-      d: m.by ? face(m.by) : null, c: [].concat(x.cast || []).slice(0, 3).map(face),
-      co: [].concat(x.countries || []).map(n => { shapes[n] = (pics.shapes || {})[n] || ""; return n; }), g: genres,
+      d: String(m.by || "").split(/\s*&\s*/).filter(Boolean), c: [].concat(x.cast || []).slice(0, 3), // names only, no photos
+      co: [mainCountry(x.countries, x.language)].filter(Boolean).map(n => { shapes[n] = (pics.shapes || {})[n] || ""; return n; }), g: genres,
       rt: x.runtime || 0, avg: x.rating ? x.rating.toFixed(1) : "", lb: x.slug ? `https://letterboxd.com/film/${x.slug}/` : "",
     };
   }
@@ -1425,6 +1424,19 @@ async function refreshCovers() {
 const PICS_JSON = path.join(ROOT, "content/pics.json");
 const readPics = () => { try { return JSON.parse(fs.readFileSync(PICS_JSON, "utf8")); } catch (_) { return {}; } };
 const COUNTRY_ALIAS = { USA: "United States of America", UK: "United Kingdom", "State of Palestine": "Palestine", Czechia: "Czechia", "Czech Republic": "Czechia", "Republic of Ireland": "Ireland", "Bosnia and Herzegovina": "Bosnia and Herz.", "Dominican Republic": "Dominican Rep.", "Democratic Republic of Congo": "Dem. Rep. Congo", "Ivory Coast": "Côte d'Ivoire", "North Macedonia": "Macedonia" };
+/* a film made in several countries counts for one: the country of its language (Korean → South Korea),
+   else for English films the USA, then the UK, then the first one listed */
+const LANG_HOME = { Korean: ["South Korea"], Danish: ["Denmark"], French: ["France", "Belgium", "Canada"], German: ["Germany", "Austria"], Italian: ["Italy"], Japanese: ["Japan"],
+  Spanish: ["Spain", "Mexico", "Argentina"], Swedish: ["Sweden"], Norwegian: ["Norway"], Dutch: ["Netherlands", "Belgium"], Portuguese: ["Brazil", "Portugal"], Greek: ["Greece"],
+  Russian: ["Russia"], Hindi: ["India"], Arabic: ["Egypt", "Tunisia", "Lebanon", "State of Palestine", "Palestine", "Saudi Arabia", "Jordan"], Persian: ["Iran"], Turkish: ["Turkey"],
+  Chinese: ["China", "Hong Kong", "Taiwan"], Mandarin: ["China", "Taiwan", "Hong Kong"], Cantonese: ["Hong Kong"], Polish: ["Poland"], English: ["USA", "UK", "Ireland", "Canada", "Australia", "New Zealand"] };
+function mainCountry(countries, language) {
+  const list = [].concat(countries || []);
+  if (list.length < 2) return list[0];
+  const homes = LANG_HOME[language] || (language ? [] : ["USA", "UK"]);
+  return homes.find(c => list.includes(c)) || list[0];
+}
+
 function countryShape(topo, name) {
   const g = topo.objects.countries.geometries.find(x => x.properties.name === (COUNTRY_ALIAS[name] || name));
   if (!g) return "";
@@ -1453,22 +1465,39 @@ function countryShape(topo, name) {
   }).join("");
 }
 const WORLD_JSON = path.join(ROOT, "content/worldmap.json");
-const readWorld = () => { try { return JSON.parse(fs.readFileSync(WORLD_JSON, "utf8")); } catch (_) { return null; } };
+const WORLD_V = 3; // bump to redraw content/worldmap.json
+const readWorld = () => { try { const w = JSON.parse(fs.readFileSync(WORLD_JSON, "utf8")); return w.v === WORLD_V ? w : null; } catch (_) { return null; } };
+/* Natural Earth projection: the far north and south are not stretched the way a flat lat/lon grid stretches them */
+function naturalEarth(lon, lat) {
+  const l = lon * Math.PI / 180, p = lat * Math.PI / 180, p2 = p * p, p4 = p2 * p2;
+  return [l * (0.8707 - 0.131979 * p2 + p4 * (-0.013791 + p4 * (0.003971 * p2 - 0.001529 * p4))),
+          p * (1.007226 + p2 * (0.015085 + p4 * (-0.044475 + 0.028874 * p2 - 0.005916 * p4)))];
+}
+// parts of a country far from it that would read as a different place (France's French Guiana)
+const OVERSEAS = { France: ([lon]) => lon < -30 };
 function worldMap(topo) {
-  const W = 1000, TOP = 84, BOTTOM = -57, H = Math.round(W * (TOP - BOTTOM) / 360); // no Antarctica
+  const W = 1000, TOP = 84, BOTTOM = -57; // no Antarctica
   const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
   const arcs = topo.arcs.map(a => { let x = 0, y = 0; return a.map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]); });
   const arc = i => (i < 0 ? arcs[~i].slice().reverse() : arcs[i]);
   const ring = r => r.flatMap((i, k) => (k ? arc(i).slice(1) : arc(i)));
+  const x0 = naturalEarth(-180, 0)[0], x1 = naturalEarth(180, 0)[0], yT = naturalEarth(0, TOP)[1], yB = naturalEarth(0, BOTTOM)[1];
+  const k = W / (x1 - x0), H = Math.round((yT - yB) * k);
   const out = {};
   for (const g of topo.objects.countries.geometries) {
     const name = g.properties && g.properties.name;
     if (!name || name === "Antarctica") continue;
-    const polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
+    let polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
+    if (OVERSEAS[name]) polys = polys.filter(p => !OVERSEAS[name](ring(p[0])[0]));
     const d = polys.map(p => p.map(r => {
       let path = "", last = null, n = 0;
-      for (const [lon, lat] of ring(r)) {
-        const pt = [Math.round((lon + 180) / 360 * W), Math.round((TOP - lat) / (TOP - BOTTOM) * H)];
+      const pts = ring(r), lons = pts.map(q => q[0]);
+      // a shape crossing the date line (Fiji, the tip of Russia) would draw a stripe across the map: keep it on one side
+      const wrap = Math.max(...lons) - Math.min(...lons) > 180;
+      for (const [lon0, lat] of pts) {
+        const lon = wrap && lon0 < 0 ? lon0 + 360 : lon0;
+        const [x, y] = naturalEarth(lon, Math.max(BOTTOM, Math.min(TOP, lat)));
+        const pt = [Math.round((x - x0) * k), Math.round((yT - y) * k)];
         if (last && Math.abs(pt[0] - last[0]) + Math.abs(pt[1] - last[1]) < 2) continue;
         path += (last ? "L" : "M") + pt[0] + " " + pt[1]; last = pt; n++;
       }
@@ -1476,7 +1505,7 @@ function worldMap(topo) {
     }).join("")).join("");
     if (d) out[name] = d;
   }
-  return { w: W, h: H, countries: out };
+  return { v: WORLD_V, w: W, h: H, countries: out };
 }
 const WD = "https://www.wikidata.org/w/api.php?format=json&origin=*";
 const PERSON_RE = /\b(actor|actress|director|film|screenwriter|comedian|performer|voice|singer|rapper|musician|model|producer|cinematographer|animator|writer|television|presenter|artist|dancer|stunt|youtuber|athlete|wrestler|player)/i;
@@ -1548,7 +1577,8 @@ async function refreshPics() {
   if (total) console.log(`pictures: ${got} of ${total} found`);
 }
 
-Promise.all([refreshRepos(), refreshLetterboxd().then(refreshPics), refreshCovers()]).then(() => {
+// --offline: build from what's already here (no GitHub, Letterboxd or Wikimedia requests)
+Promise.all(process.argv.includes("--offline") ? [] : [refreshRepos(), refreshLetterboxd().then(refreshPics), refreshCovers()]).then(() => {
   build();
   if (process.argv.includes("--dev")) dev();
 });

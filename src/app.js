@@ -148,13 +148,8 @@
   const H = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
   const img = (src, cls) => { const im = new Image(); im.src = root + src; im.alt = ""; im.decoding = "async"; if (cls) im.className = cls; return im; };
   const svg = (inner, cls) => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("class", cls); s.setAttribute("aria-hidden", "true"); s.innerHTML = inner; return s; };
-  const initials = n => n.split(/\s+/).filter(w => /^\p{L}/u.test(w)).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-  const person = (p, role) => {
-    const el = H("div", "fd-person");
-    el.append(p.p ? img(p.p, "fd-face") : H("span", "fd-face none", initials(p.n)), H("b", null, p.n));
-    if (role) el.append(H("small", null, role));
-    return el;
-  };
+  // credits as text: "Directed by" / "Starring" (names only, no photos)
+  const credit = (label, names) => { const row = H("div", "fd-credit"); row.append(H("small", null, label), H("span", null, names.join(", "))); return row; };
   const fmtDate = w => { const d = new Date(w + "T12:00:00Z"); return isNaN(d) ? w : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); };
   async function openFilm(id) {
     const data = await loadCards();
@@ -176,10 +171,11 @@
     fdlg.append(close, top);
     if (f.note) fdlg.append(H("p", "fd-note", f.note));
     if (f.f) { const fr = H("a", "fd-frame"); fr.href = root + f.ff; fr.target = "_blank"; fr.rel = "noopener"; fr.setAttribute("aria-label", "Open the frame"); fr.append(img(f.f)); fdlg.append(fr); }
-    if (f.d || f.c.length) {
-      const ppl = H("div", "fd-people");
-      if (f.d) ppl.append(person(f.d, "Director"));
-      f.c.forEach(p => ppl.append(person(p, "")));
+    const dirs = [].concat(f.d || []).map(p => p.n || p), cast = f.c.map(p => p.n || p);
+    if (dirs.length || cast.length) {
+      const ppl = H("div", "fd-credits");
+      if (dirs.length) ppl.append(credit(dirs.length > 1 ? "Directors" : "Director", dirs));
+      if (cast.length) ppl.append(credit("Starring", cast));
       fdlg.append(ppl);
     }
     if (f.lb) { const a = H("a", "fd-lb", "Letterboxd ↗"); a.href = f.lb; a.target = "_blank"; a.rel = "noopener"; fdlg.append(a); }

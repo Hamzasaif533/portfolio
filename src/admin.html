@@ -7,84 +7,139 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com https://upload.wikimedia.org https://thumb.wikimedia.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com https://upload.wikimedia.org https://thumb.wikimedia.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
 <title>Editor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Firjar:wght@400;600&display=swap">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Firjar:wght@400;600&display=swap">
 <style>
-:root { --bg: #000; --fg: #f2f2f2; --mute: #8b8b8b; --dim: #555; --line: #1f1f1f; --chip: #141414; --chip-line: rgba(255,255,255,.08); --mono: "Geist Mono", Firjar, ui-monospace, Consolas, monospace; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* surfaces get lighter as they come closer: page → panel → raised → hover */
+:root {
+  --bg: #000; --panel: #0a0a0a; --raised: #111; --hover: #171717; --fg: #f2f2f2; --soft: #c9c9c9; --mute: #8b8b8b; --dim: #555;
+  --line: #1c1c1c; --line-2: #2a2a2a; --chip: #141414; --chip-line: rgba(255,255,255,.08); --warn: #e8c66a; --bad: #ff8a8a; --ok: #8fd19e;
+  --r: 8px; --r-lg: 16px; --mono: "Geist Mono", Firjar, ui-monospace, Consolas, monospace;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--bg); }
-body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono); min-height: 100vh; display: grid; grid-template-columns: 210px 1fr; }
+body { background: var(--bg); color: var(--fg); font: 13.5px/1.6 var(--mono); min-height: 100vh; display: grid; grid-template-columns: 232px minmax(0, 1fr); }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
 :focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
+::selection { background: #fff; color: #000; }
+svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
-nav { position: sticky; top: 0; height: 100vh; padding: 22px 16px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
-.brand { padding: 0 10px 18px; color: var(--mute); }
-.brand b { color: var(--fg); font-weight: 500; }
-nav button { text-align: left; padding: 7px 10px; border: 0; border-radius: 8px; background: none; color: var(--mute); cursor: pointer; display: flex; justify-content: space-between; gap: 10px; white-space: nowrap; }
-nav button span { color: var(--dim); font-size: 12px; }
-nav button[aria-current] { background: var(--chip); color: var(--fg); }
-nav .sep { height: 1px; background: var(--line); margin: 10px 4px; flex: none; }
-nav .foot { margin-top: auto; padding: 0 10px; font-size: 12px; color: var(--dim); display: grid; gap: 8px; }
-nav .foot a, nav .foot button { color: var(--mute); padding: 0; }
+/* ---------- sidebar ---------- */
+nav { position: sticky; top: 0; height: 100vh; overflow-y: auto; scrollbar-width: none; padding: 18px 12px 16px; border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; gap: 1px; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 2px 8px 16px; color: var(--mute); font-size: 12px; }
+.brand .logo { display: grid; place-items: center; width: 30px; height: 30px; border-radius: var(--r); background: var(--raised); border: 1px solid var(--chip-line); color: var(--fg); }
+.brand .logo svg { width: 17px; height: 17px; }
+.brand b { display: block; color: var(--fg); font-weight: 500; font-size: 13px; line-height: 1.3; }
+.jump { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 7px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg); color: var(--dim); cursor: pointer; text-align: left; font-size: 12px; }
+.jump:hover { color: var(--mute); border-color: var(--line-2); }
+.jump kbd { margin-left: auto; }
+kbd { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 5px; border: 1px solid var(--line-2); background: var(--raised); color: var(--mute); font: 10px/1 var(--mono); }
+nav .group { padding: 14px 10px 5px; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+nav button.nv { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border: 0; border-radius: var(--r); background: none; color: var(--mute); cursor: pointer; white-space: nowrap; text-align: left; transition: background .12s, color .12s; }
+nav button.nv:hover { background: var(--raised); color: var(--soft); }
+nav button.nv[aria-current] { background: var(--hover); color: var(--fg); }
+nav button.nv .lb { flex: 1; }
+nav button.nv .ct { font-size: 11px; color: var(--dim); font-variant-numeric: tabular-nums; }
+nav button.nv .wd { width: 6px; height: 6px; border-radius: 2px; background: var(--warn); }
+nav .sep { display: none; }
+nav .foot { margin-top: auto; padding: 16px 10px 0; font-size: 11.5px; line-height: 1.6; color: var(--dim); display: grid; gap: 8px; }
+nav .foot a, nav .foot button { color: var(--mute); }
 
-main { padding: 22px 32px 120px; max-width: 1000px; width: 100%; min-width: 0; }
-.bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 0 14px; margin-bottom: 8px; background: var(--bg); border-bottom: 1px solid var(--line); }
-.bar h1 { font-size: 16px; font-weight: 500; flex: 1; min-width: 8em; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--chip-line); background: var(--chip); cursor: pointer; white-space: nowrap; text-decoration: none; }
-.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.btn.primary:disabled { background: var(--chip); color: var(--dim); border-color: var(--chip-line); cursor: default; }
-.btn.danger { color: #ff8a8a; }
-.btn.small { min-height: 30px; padding: 3px 12px; font-size: 12px; }
+/* ---------- page ---------- */
+main { padding: 0 36px 120px; max-width: 1040px; width: 100%; min-width: 0; }
+.bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 18px 0 14px; margin-bottom: 6px; background: linear-gradient(var(--bg) 80%, transparent); }
+.bar h1 { font-size: 18px; font-weight: 500; letter-spacing: -.01em; flex: 1; min-width: 8em; display: flex; align-items: center; gap: 10px; }
+.bar h1 svg.i { width: 18px; height: 18px; color: var(--mute); }
+#saveState { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: var(--r); font-size: 11.5px; color: var(--mute); }
+#saveState:empty { display: none; }
+#saveState.unsaved { background: rgba(232,198,106,.08); color: var(--warn); }
+#saveState.unsaved::before { content: ""; width: 6px; height: 6px; border-radius: 2px; background: currentColor; }
+#saveState.saved { color: var(--ok); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 5px 13px; border-radius: var(--r); border: 1px solid var(--line-2); background: var(--raised); cursor: pointer; white-space: nowrap; text-decoration: none; font-size: 12.5px; transition: background .12s, border-color .12s, color .12s; }
+.btn:hover { background: var(--hover); border-color: #3a3a3a; }
+.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); font-weight: 500; }
+.btn.primary:hover { background: #fff; }
+.btn.primary:disabled { background: var(--raised); color: var(--dim); border-color: var(--line-2); cursor: default; font-weight: 400; }
+.btn.danger { color: var(--bad); }
+.btn.small { min-height: 28px; padding: 3px 10px; font-size: 12px; }
+.btn kbd { margin-left: 2px; background: transparent; border-color: currentColor; color: inherit; opacity: .45; }
 .status { font-size: 12px; color: var(--mute); }
-.warn { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 12px; padding: 10px 12px; font-size: 12px; line-height: 1.6; color: #e8c66a; border: 1px solid rgba(232,198,106,.25); border-radius: 10px; background: rgba(232,198,106,.05); }
+.warn { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 12px; padding: 10px 12px; font-size: 12px; line-height: 1.6; color: var(--warn); border: 1px solid rgba(232,198,106,.22); border-radius: var(--r); background: rgba(232,198,106,.05); }
 .warn span { flex: 1 1 260px; }
-.sum .miss { color: #e8c66a; }
 
-.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
-.tools input[type=search] { flex: 1; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0 12px; }
+.tools input[type=search] { flex: 1 1 220px; }
 input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea {
-  width: 100%; padding: 8px 10px; background: #0b0b0b; border: 1px solid var(--line); border-radius: 8px; outline: none; }
-input:focus, select:focus, textarea:focus { border-color: #444; }
+  width: 100%; min-height: 34px; padding: 7px 10px; background: var(--panel); border: 1px solid var(--line-2); border-radius: var(--r); outline: none; transition: border-color .12s, background .12s; }
+input:hover, select:hover, textarea:hover { border-color: #353535; }
+input:focus, select:focus, textarea:focus { border-color: #5a5a5a; background: #0d0d0d; }
+input::placeholder, textarea::placeholder { color: #4a4a4a; }
 textarea { min-height: 90px; resize: vertical; line-height: 1.7; }
 textarea.body { min-height: 60vh; font-size: 15px; }
 
-.items { display: grid; gap: 6px; }
-.item { border: 1px solid var(--line); border-radius: 10px; background: #050505; }
-.item > header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 10px 8px 14px; cursor: pointer; }
-.item > header .sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.item > header .sum small { color: var(--mute); margin-left: 10px; }
-.item > header .acts { display: flex; gap: 2px; }
-.icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); cursor: pointer; }
+/* ---------- lists ---------- */
+.items { display: grid; gap: 4px; }
+.item { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); transition: border-color .12s, background .12s; }
+.item:hover { border-color: var(--line-2); }
+.item.open { border-color: var(--line-2); background: #0c0c0c; }
+.item > header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 7px 8px 7px 8px; cursor: pointer; min-height: 50px; }
+.item .tn { width: 30px; height: 44px; border-radius: 5px; background: var(--raised) center / cover no-repeat; border: 1px solid var(--line); }
+.item .tn.none { width: 8px; border: 0; background: none; }
+.item > header .sum { display: grid; min-width: 0; }
+.item > header .sum > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item > header .sum b { font-weight: 500; }
+.item > header .sum small { color: var(--mute); font-size: 12px; }
+.item > header .sum .miss { color: var(--warn); }
+.item > header .acts { display: flex; gap: 2px; opacity: 0; transition: opacity .12s; }
+.item:hover > header .acts, .item.open > header .acts, .item > header .acts:focus-within { opacity: 1; }
+.icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: var(--r); border: 1px solid transparent; background: none; color: var(--mute); cursor: pointer; }
+.icon:hover { background: var(--hover); color: var(--fg); }
 .icon:focus-visible { border-color: var(--fg); }
-.icon.del { color: #ff8a8a; }
-.item .form { display: none; padding: 4px 14px 14px; }
+.icon.del:hover { color: var(--bad); }
+.item .form { display: none; padding: 4px 16px 16px; }
 .item.open .form { display: grid; }
 .item.open > header { border-bottom: 1px solid var(--line); }
-.form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; padding-top: 12px !important; }
-.field { display: grid; gap: 5px; min-width: 0; }
+.form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; padding-top: 14px !important; }
+.field { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .field.wide { grid-column: 1 / -1; }
-.field > span { font-size: 12px; color: var(--mute); }
-.check { display: flex; gap: 8px; align-items: center; padding-top: 22px; }
-.check input { width: 18px; height: 18px; accent-color: #fff; }
+.field > span { font-size: 11.5px; color: var(--mute); }
+/* on/off switch */
+.check { display: flex; gap: 10px; align-items: center; align-self: end; min-height: 34px; cursor: pointer; color: var(--soft); font-size: 12.5px; }
+.check input { appearance: none; -webkit-appearance: none; flex: none; position: relative; width: 32px; height: 18px; border-radius: 6px; background: var(--line-2); cursor: pointer; transition: background .15s; }
+.check input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 4px; background: #8b8b8b; transition: transform .15s, background .15s; }
+.check input:checked { background: var(--fg); }
+.check input:checked::after { transform: translateX(14px); background: #000; }
+/* half-star rating */
+.stars { display: flex; align-items: center; gap: 2px; min-height: 34px; }
+.stars .st { position: relative; width: 22px; height: 22px; color: #2e2e2e; font-size: 20px; line-height: 22px; text-align: center; user-select: none; }
+.stars .st .half, .stars .st .full { position: absolute; inset: 0; overflow: hidden; color: var(--fg); pointer-events: none; }
+.stars .st .half { width: 50%; text-align: left; }
+.stars .st .half::before, .stars .st .full::before { content: "★"; display: block; width: 22px; text-align: center; }
+.stars .st button { position: absolute; top: 0; bottom: 0; width: 50%; padding: 0; border: 0; background: none; cursor: pointer; }
+.stars .st button.l { left: 0; } .stars .st button.r { right: 0; }
+.stars .val { margin-left: 10px; font-size: 12px; color: var(--mute); min-width: 2.5em; }
+.stars .clr { margin-left: 2px; }
 .media { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
-.thumb { width: 96px; height: 60px; border-radius: 6px; background: #0b0b0b center / cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--dim); }
+.thumb { width: 96px; height: 60px; border-radius: var(--r); background: var(--raised) center / cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--dim); }
 .media .row { display: flex; flex-wrap: wrap; gap: 6px; }
 .media .row input { flex: 1 1 160px; }
-.panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 10px; padding: 18px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--panel); }
 .empty { color: var(--dim); padding: 20px 0; }
-.finder { margin: 0 0 14px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #050505; }
+.finder { margin: 0 0 14px; padding: 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); }
 .finder[hidden] { display: none; }
 .finder .inline { display: flex; gap: 8px; align-items: center; }
 .found { margin-top: 10px; display: grid; gap: 4px; }
-.found li { list-style: none; border-radius: 10px; }
+.found li { list-style: none; border-radius: var(--r); }
 .found li.sel { background: #161616; }
 .found li.none { padding: 10px; color: var(--dim); }
-.found button { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; padding: 6px 8px; border: 0; border-radius: 10px; background: none; text-align: start; cursor: pointer; }
-.found .poster { width: 40px; height: 60px; border-radius: 5px; background: #0b0b0b center / cover no-repeat; border: 1px solid var(--line); }
+.found button { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; padding: 6px 8px; border: 0; border-radius: var(--r); background: none; text-align: start; cursor: pointer; }
+.found .poster { width: 40px; height: 60px; border-radius: var(--r); background: #0b0b0b center / cover no-repeat; border: 1px solid var(--line); }
 .found .meta { display: grid; }
 .found .meta b { font-weight: 500; }
 .found small { color: var(--mute); }
@@ -95,7 +150,7 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .pick header small { color: var(--mute); }
 .pick header .has { color: var(--dim); }
 .strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #222 transparent; min-height: 40px; align-items: center; }
-.still { flex: none; width: 180px; aspect-ratio: 16 / 9; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #0b0b0b; cursor: pointer; scroll-snap-align: start; }
+.still { flex: none; width: 180px; aspect-ratio: 16 / 9; padding: 0; border: 2px solid transparent; border-radius: var(--r); overflow: hidden; background: #0b0b0b; cursor: pointer; scroll-snap-align: start; }
 .still img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .still.on { border-color: var(--fg); }
 .steps { display: grid; gap: 6px; padding-left: 1.2em; color: var(--mute); }
@@ -106,15 +161,15 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .top4-pick select { flex: 1 1 220px; min-width: 0; }
 .poster-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; align-items: start; }
 .poster-now { display: grid; gap: 6px; }
-.poster-now img, .poster-now span { display: grid; place-items: center; width: 200px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); background: #0b0b0b; color: var(--dim); font-size: 11px; text-align: center; padding: 0; }
+.poster-now img, .poster-now span { display: grid; place-items: center; width: 200px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: var(--r); border: 1px solid var(--line); background: #0b0b0b; color: var(--dim); font-size: 11px; text-align: center; padding: 0; }
 .poster-now span { padding: 8px; }
 .poster-now small { color: var(--mute); font-size: 11px; }
-.still.poster { width: 180px; aspect-ratio: 2 / 3; border-radius: 10px; }
+.still.poster { width: 180px; aspect-ratio: 2 / 3; border-radius: var(--r); }
 .sub { margin: 26px 0 12px; font-size: 13px; font-weight: 500; }
 .sub small { color: var(--mute); font-weight: 400; }
 .poster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 18px 14px; }
 .pg-cell { display: grid; gap: 6px; padding: 0; border: 0; background: none; color: var(--mute); font: inherit; font-size: 11px; text-align: start; cursor: pointer; min-width: 0; }
-.pg-cell img, .pg-cell .ph { display: grid; place-items: center; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 6px; border: 2px solid transparent; background: #0b0b0b; color: var(--dim); font-size: 10px; text-align: center; padding: 4px; }
+.pg-cell img, .pg-cell .ph { display: grid; place-items: center; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: var(--r); border: 2px solid transparent; background: #0b0b0b; color: var(--dim); font-size: 10px; text-align: center; padding: 4px; }
 .pg-cell img { padding: 0; }
 .pg-cell.own img { border-color: var(--fg); }
 .pg-cell span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -125,7 +180,7 @@ dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: a
 .ph-cell > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ph-cell:hover > span:last-child { color: var(--fg); }
 .pic { display: grid; place-items: center; width: 72px; height: 72px; object-fit: cover; object-position: 50% 22%; border: 2px solid transparent; background: #141414; color: var(--dim); font-size: 10px; box-sizing: border-box; }
-.pic.person { border-radius: 50%; }
+.pic.person { border-radius: var(--r); }
 .pic.studio { border-radius: 8px; object-fit: contain; background: #e9e9e9; padding: 6px; }
 .ph-cell.own .pic { border-color: var(--fg); }
 .photo-row { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 16px; align-items: start; }
@@ -141,8 +196,8 @@ dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: a
 dialog.crop-dlg { width: min(340px, 100% - 24px); }
 .crop-view { position: relative; width: 260px; height: 260px; margin: 4px auto 0; overflow: hidden; background: #141414; cursor: grab; touch-action: none; user-select: none; }
 .crop-view.dragging { cursor: grabbing; }
-.crop-view.person { border-radius: 50%; }
-.crop-view.studio { border-radius: 18px; background: #e9e9e9; }
+.crop-view.person { border-radius: var(--r); }
+.crop-view.studio { border-radius: var(--r); background: #e9e9e9; }
 .crop-view img { position: absolute; left: 50%; top: 50%; max-width: none; height: auto; pointer-events: none; }
 .crop-ring { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); pointer-events: none; }
 .crop-zoom { display: flex; align-items: center; gap: 10px; margin: 16px 4px 4px; color: var(--mute); }
@@ -156,11 +211,23 @@ dialog.poster-dlg::backdrop { background: rgba(0, 0, 0, .72); }
 .poster-dlg .x { margin-left: auto; }
 .pd-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 @media (max-width: 760px) { .poster-row { grid-template-columns: 1fr; } .poster-now img, .poster-now span { width: 140px; } .still.poster { width: 140px; } .poster-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px 10px; } }
-.toast { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); max-width: calc(100% - 36px); padding: 10px 16px; border-radius: 10px; background: var(--chip); border: 1px solid var(--chip-line); opacity: 0; transform: translateY(8px); transition: .2s; pointer-events: none; z-index: 20; }
-.toast.on { opacity: 1; transform: none; }
-.toast.err { color: #ff8a8a; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); max-width: calc(100% - 32px); display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: var(--r); background: #161616; border: 1px solid var(--line-2); box-shadow: 0 16px 40px -12px #000; font-size: 12.5px; opacity: 0; transform: translate(-50%, 8px); transition: opacity .2s, transform .2s; pointer-events: none; z-index: 30; }
+.toast::before { content: "✓"; color: var(--ok); }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { color: var(--bad); }
+.toast.err::before { content: "!"; color: var(--bad); }
 
-.login { grid-column: 1 / -1; width: min(460px, 100% - 32px); margin: 12vh auto; display: grid; gap: 14px; }
+/* Ctrl+K: jump to a section or any item */
+dialog.jumper { width: min(560px, 100% - 24px); margin: 12vh auto auto; padding: 0; color: var(--fg); background: rgba(14,14,14,.97); border: 1px solid var(--line-2); border-radius: var(--r-lg); box-shadow: 0 30px 80px -20px #000; overflow: hidden; }
+dialog.jumper::backdrop { background: rgba(0,0,0,.6); }
+.jumper input { border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important; background: none !important; min-height: 48px; padding: 12px 16px; font-size: 14px; }
+.jumper ul { max-height: 50vh; overflow-y: auto; padding: 6px; list-style: none; }
+.jumper li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: var(--r); background: none; text-align: left; cursor: pointer; color: var(--soft); }
+.jumper li button small { margin-left: auto; color: var(--dim); font-size: 11px; }
+.jumper li.sel button { background: var(--hover); color: var(--fg); }
+.jumper .none { padding: 14px 12px; color: var(--dim); }
+
+.login { grid-column: 1 / -1; width: min(440px, 100% - 32px); margin: 12vh auto; display: grid; gap: 14px; padding: 28px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--panel); }
 .login h1 { font-size: 18px; font-weight: 500; }
 .login p { color: var(--mute); font-size: 13px; }
 .login .note { color: var(--dim); font-size: 12px; }
@@ -168,18 +235,23 @@ dialog.poster-dlg::backdrop { background: rgba(0, 0, 0, .72); }
 /* phones */
 @media (max-width: 760px) {
   body { display: block; }
-  nav { position: static; height: auto; flex-direction: row; overflow-x: auto; scrollbar-width: none; padding: calc(10px + env(safe-area-inset-top)) 12px 10px; border-right: 0; border-bottom: 1px solid var(--line); gap: 4px; }
-  nav .brand, nav .foot { display: none; }
-  nav .sep { width: 1px; height: auto; margin: 4px 2px; }
-  nav button { padding: 9px 12px; }
-  main { padding: 6px 14px calc(90px + env(safe-area-inset-bottom)); }
+  nav { position: sticky; top: 0; z-index: 8; height: auto; flex-direction: row; align-items: center; overflow-x: auto; padding: calc(10px + env(safe-area-inset-top)) 10px 10px; border-right: 0; border-bottom: 1px solid var(--line); gap: 4px; }
+  nav .brand, nav .foot, nav .group, nav .jump { display: none; }
+  nav button.nv { flex: none; padding: 8px 11px; }
+  nav button.nv .ct { display: none; }
+  main { padding: 0 14px calc(90px + env(safe-area-inset-bottom)); }
+  .bar { padding: 14px 0 10px; }
+  .bar h1 { flex-basis: 100%; font-size: 17px; }
+  .bar .btn { flex: 1 1 auto; }
   .form, .panel { grid-template-columns: 1fr; }
-  .check { padding-top: 4px; }
+  .panel { padding: 14px; }
   /* 16px stops iPhone from zooming into fields */
-  input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea { font-size: 16px; padding: 10px 12px; }
-  .item > header { padding: 6px 6px 6px 12px; }
-  .item > header .sum small { display: block; margin: 0; }
-  .icon { width: 38px; height: 38px; }
+  input[type=text], input[type=number], input[type=url], input[type=date], input[type=search], input[type=password], select, textarea { font-size: 16px; padding: 9px 12px; min-height: 42px; }
+  .item > header { padding: 6px; }
+  .item > header .acts { opacity: 1; }
+  .icon { width: 36px; height: 36px; }
+  .stars .st { width: 30px; height: 30px; font-size: 27px; line-height: 30px; }
+  .stars .st .half::before, .stars .st .full::before { width: 30px; }
   .mobile-foot { display: grid !important; }
 }
 .mobile-foot { display: none; gap: 8px; margin-top: 40px; font-size: 12px; color: var(--dim); }
@@ -500,19 +572,41 @@ let site = null, dirty = false, section = "profile";
 const getPath = (obj, p) => p.reduce((o, k) => (o == null ? o : o[k]), obj);
 const setPath = (obj, p, v) => { let o = obj; p.slice(0, -1).forEach(k => (o = o[k] ??= {})); if (v === undefined || v === "" || v === false) delete o[p.at(-1)]; else o[p.at(-1)] = v; };
 const listOf = def => { let arr = getPath(site, def.path); if (!Array.isArray(arr)) { arr = []; setPath(site, def.path, arr); } return arr; };
-function markDirty() { dirty = true; $("#save") && ($("#save").disabled = false); $("#saveState") && ($("#saveState").textContent = "unsaved"); }
+function markDirty() { dirty = true; $("#save") && ($("#save").disabled = false); saveState("Unsaved changes", "unsaved"); }
 addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
 
 /* ---------- one input, any type ---------- */
 function input(def, value, onChange) {
-  const wrap = h("label", { class: "field" + (def.wide ? " wide" : "") }, h("span", {}, def.label));
+  // (a <label> around the star buttons would turn any click in it into "½ star", so ratings get a <div>)
+  const wrap = h(def.type === "rating" ? "div" : "label", { class: "field" + (def.wide ? " wide" : "") }, h("span", {}, def.label));
   const set = v => { onChange(v); markDirty(); };
   if (def.type === "check") {
     return h("label", { class: "check" }, h("input", { type: "checkbox", checked: !!value, onchange: e => set(e.target.checked || undefined) }), def.label);
   }
-  if (def.type === "rating") {
-    wrap.append(h("select", { onchange: e => set(e.target.value ? Number(e.target.value) : undefined) }, h("option", { value: "" }, "—"),
-      [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map(r => h("option", { value: r, selected: Number(value) === r }, `${stars(r)}  ${r}`))));
+  if (def.type === "rating") { // five stars, tap the left or right half; arrow keys work too
+    let cur = value == null ? null : Number(value);
+    const box = h("div", { class: "stars", role: "slider", tabindex: "0", "aria-label": def.label, "aria-valuemin": "0", "aria-valuemax": "5" });
+    const val = h("span", { class: "val" });
+    const clr = h("button", { type: "button", class: "btn small clr", onclick: () => put(null) }, "Clear");
+    const cells = [1, 2, 3, 4, 5].map(n => {
+      const half = h("span", { class: "half" }), full = h("span", { class: "full" });
+      const st = h("span", { class: "st" }, "★", half, full,
+        h("button", { type: "button", class: "l", tabindex: "-1", "aria-label": `${n - .5} stars`, onclick: () => put(n - .5) }),
+        h("button", { type: "button", class: "r", tabindex: "-1", "aria-label": `${n} stars`, onclick: () => put(n) }));
+      return { n, half, full, st };
+    });
+    const show = () => {
+      cells.forEach(({ n, half, full }) => { full.hidden = !(cur >= n); half.hidden = !(cur === n - .5); });
+      val.textContent = cur == null ? "no rating" : String(cur);
+      box.setAttribute("aria-valuenow", cur == null ? 0 : cur); clr.hidden = cur == null;
+    };
+    const put = r => { cur = r; set(r == null ? undefined : r); show(); };
+    box.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); put(Math.min(5, (cur || 0) + .5)); }
+      else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); const r = (cur || 0) - .5; put(r > 0 ? r : null); }
+    });
+    box.append(...cells.map(c => c.st), val, clr); show();
+    wrap.append(box);
     return wrap;
   }
   if (def.type === "select") {
@@ -561,10 +655,12 @@ function input(def, value, onChange) {
 /* ---------- views ---------- */
 const viewSite = () => h("a", { class: "btn", href: "/", target: "_blank", rel: "noopener" }, "Site ↗");
 function header(title) {
-  return h("div", { class: "bar" }, h("h1", {}, title), h("span", { class: "status", id: "saveState" }, dirty ? "unsaved" : ""), viewSite(),
+  return h("div", { class: "bar" }, h("h1", {}, ICONS[section] ? icon(section) : null, title),
+    h("span", { class: "status" + (dirty ? " unsaved" : ""), id: "saveState" }, dirty ? "Unsaved changes" : ""), viewSite(),
     h("button", { class: "btn", id: "preview", title: "See your unsaved changes on the site before saving", onclick: e => previewSite(e.currentTarget) }, "Preview"),
-    h("button", { class: "btn primary", id: "save", disabled: !dirty, onclick: saveSite }, "Save"));
+    h("button", { class: "btn primary", id: "save", disabled: !dirty, onclick: saveSite, title: "Save (Ctrl+S)" }, "Save"));
 }
+function saveState(text, cls) { const s = $("#saveState"); if (s) { s.textContent = text; s.className = "status" + (cls ? " " + cls : ""); } }
 const mobileFoot = () => h("div", { class: "mobile-foot" }, footText());
 
 function viewProfile() {
@@ -948,26 +1044,39 @@ function viewList(id) {
       const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; drawWarn(); })));
       const card = h("article", { class: "item" + (i === openIndex ? " open" : "") },
         h("header", { onclick: e => { if (!e.target.closest("button")) { card.classList.toggle("open"); if (!card.classList.contains("open")) draw(); } } },
-          h("div", { class: "sum", dir: "auto" }, title || h("i", {}, "untitled"), h("small", {}, sub || "", miss.length ? h("span", { class: "miss", title: "Missing: " + miss.join(", ") }, ` ⚠ no ${miss.join(", no ")}`) : "")),
+          rowThumb(id, it),
+          h("div", { class: "sum", dir: "auto" }, h("b", {}, title || h("i", {}, "untitled")), h("small", {}, sub || "", miss.length ? h("span", { class: "miss", title: "Missing: " + miss.join(", ") }, ` · no ${miss.join(", no ")}`) : "")),
           h("div", { class: "acts" },
-            h("button", { class: "icon", title: "Move up", "aria-label": "Move up", onclick: () => { if (i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; markDirty(); draw(i - 1); } } }, "↑"),
-            h("button", { class: "icon", title: "Move down", "aria-label": "Move down", onclick: () => { if (i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; markDirty(); draw(i + 1); } } }, "↓"),
-            h("button", { class: "icon del", title: "Delete", "aria-label": "Delete", onclick: () => { if (confirm(`Delete "${title || "this item"}"?`)) { items.splice(i, 1); markDirty(); draw(); } } }, "✕"))),
+            h("button", { class: "icon", title: "Move up", "aria-label": "Move up", onclick: () => { if (i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; markDirty(); draw(i - 1); } } }, icon("up")),
+            h("button", { class: "icon", title: "Move down", "aria-label": "Move down", onclick: () => { if (i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; markDirty(); draw(i + 1); } } }, icon("down")),
+            h("button", { class: "icon del", title: "Delete", "aria-label": "Delete", onclick: () => { if (confirm(`Delete "${title || "this item"}"?`)) { items.splice(i, 1); markDirty(); draw(); } } }, icon("del")))),
         form);
       box.append(card);
     });
     if (!box.children.length) box.append(h("p", { class: "empty" }, q ? "No matches." : "Nothing here yet. Press + Add."));
   }
+  box._draw = draw; // for Ctrl+K
   draw();
+}
+/* the little picture at the start of each row: poster / cover, or the project's image */
+function rowThumb(id, it) {
+  const kind = { movies: "film", books: "book", games: "game" }[id];
+  const src = it.poster ? thumbUrl(it.poster) : kind && it.title ? "/" + coverPath(kind, it).replace(/\.jpg$/, ".webp") : (it.image && !/\.(mp4|webm|mov)$/i.test(it.image)) ? thumbUrl(it.image) : "";
+  if (!src) return h("span", { class: "tn none" });
+  const el = h("span", { class: "tn" });
+  const img = new Image(); img.onload = () => (el.style.backgroundImage = `url("${src}")`);
+  img.onerror = () => { if (kind && !it.poster && src.endsWith(".webp")) { const j = src.replace(/\.webp$/, ".jpg"); img.onerror = null; img.src = j; img.onload = () => (el.style.backgroundImage = `url("${j}")`); } };
+  img.src = src;
+  return el;
 }
 
 async function viewPosts() {
   const main = $("#main"); main.textContent = "";
-  main.append(h("div", { class: "bar" }, h("h1", {}, "Writing"), h("span", { class: "status" }, "loading…")));
+  main.append(h("div", { class: "bar" }, h("h1", {}, icon("posts"), "Writing"), h("span", { class: "status" }, "loading…")));
   let posts;
   try { posts = await store.listPosts(); } catch (err) { toast(err.message, true); posts = []; }
   main.textContent = "";
-  main.append(h("div", { class: "bar" }, h("h1", {}, `Writing (${posts.length})`), viewSite(),
+  main.append(h("div", { class: "bar" }, h("h1", {}, icon("posts"), `Writing (${posts.length})`), viewSite(),
     h("button", { class: "btn primary", onclick: () => editPost(null) }, "+ New post")));
   const box = h("div", { class: "items" });
   posts.forEach(p => box.append(h("article", { class: "item" }, h("header", { onclick: () => editPost(p.slug) },
@@ -1049,10 +1158,10 @@ async function editPost(slug) {
 async function saveSite() {
   const btn = $("#save");
   try {
-    btn.disabled = true; $("#saveState").textContent = "saving…";
+    btn.disabled = true; saveState("Saving…");
     await store.putSite(site);
-    dirty = false; $("#saveState").textContent = "saved"; toast(store.savedMsg);
-  } catch (err) { btn.disabled = false; $("#saveState").textContent = "unsaved"; toast(err.message, true); }
+    dirty = false; saveState("Saved", "saved"); drawNav(); toast(store.savedMsg);
+  } catch (err) { btn.disabled = false; saveState("Unsaved changes", "unsaved"); toast(err.message, true); }
 }
 addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "s" && section !== "posts") { e.preventDefault(); if (dirty) saveSite(); } });
 
@@ -1061,7 +1170,7 @@ function viewFrames() {
   const main = $("#main"); main.textContent = "";
   if (!tmdbKey()) {
     const key = h("input", { type: "password", placeholder: "TMDB API key or Read Access Token", autocomplete: "off", spellcheck: "false" });
-    main.append(h("div", { class: "bar" }, h("h1", {}, "Frame picker")),
+    main.append(h("div", { class: "bar" }, h("h1", {}, icon("frames"), "Frame picker")),
       h("div", { class: "login", style: "margin:24px 0;width:auto;max-width:560px" },
         h("p", {}, "Frames come from TMDB (The Movie Database). It needs a free key, once per device:"),
         h("ol", { class: "steps" },
@@ -1083,7 +1192,7 @@ function viewFrames() {
   const count = () => { addBtn.disabled = !picks.size; addBtn.textContent = picks.size ? `Add ${picks.size} frame${picks.size === 1 ? "" : "s"}` : "Add frames"; };
   const toggle = h("button", { class: "btn small", onclick: () => { onlyMissing = !onlyMissing; draw(); } });
   const box = h("div", { class: "pick-list" });
-  main.append(h("div", { class: "bar" }, h("h1", {}, "Frame picker"), toggle, addBtn),
+  main.append(h("div", { class: "bar" }, h("h1", {}, icon("frames"), "Frame picker"), toggle, addBtn),
     h("p", { class: "status", style: "margin:4px 0 14px" }, "Tap a still to choose it for that film, tap again to unchoose. Then press Add. ", h("button", { class: "btn small", onclick: () => { try { localStorage.removeItem(TMDB_KEY); } catch (_) {} viewFrames(); } }, "Change TMDB key")),
     box, h("p", { class: "note", style: "margin-top:30px;font-size:11px;color:var(--dim)" }, "Stills from TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB."));
 
@@ -1505,19 +1614,85 @@ function openPhotoPicker(kind, p, dlg, changed) {
   dlg.showModal();
 }
 
-const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["posters", "Posters"], ["photos", "Photos"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
+/* sidebar: sections in groups, each with an icon (Lucide, ISC licence), a count, and a yellow mark when something is missing */
+const ICONS = {
+  profile: '<circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>',
+  movies: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4M3 12h18"/>',
+  frames: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+  posters: '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 17h6"/>',
+  photos: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-1a5 5 0 0 1 10 0v1"/>',
+  books: '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>',
+  games: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/>',
+  projects: '<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',
+  designs: '<circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2a10 10 0 0 0 0 20c.9 0 1.6-.7 1.6-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-4.9-4.5-8.4-10-8.4Z"/>',
+  qa: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  experience: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>',
+  socials: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  posts: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  up: '<path d="m18 15-6-6-6 6"/>', down: '<path d="m6 9 6 6 6-6"/>', del: '<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',
+};
+const icon = name => { const t = document.createElement("template"); t.innerHTML = `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`; return t.content.firstChild; };
+const LOGO_SVG = () => { const t = document.createElement("template"); t.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 6v20M7 16h14M13 6h12l-8 20"/></svg>'; return t.content.firstChild; };
+const SECTIONS = [
+  ["Site", [["profile", "Profile & home"]]],
+  ["Shelf", [["movies"], ["frames", "Frame picker"], ["posters", "Posters"], ["photos", "Photos"], ["books"], ["games"]]],
+  ["Work", [["projects"], ["designs"]]],
+  ["About", [["qa"], ["experience"], ["socials"]]],
+  ["Writing", [["posts", "Posts"]]],
+];
+const sectionLabel = id => { for (const [, items] of SECTIONS) for (const [k, l] of items) if (k === id) return l || LISTS[k].label; return id; };
 function drawNav() {
   const nav = $("#nav"); nav.textContent = "";
-  nav.append(h("div", { class: "brand" }, h("b", {}, site.name), " · editor"));
-  SECTIONS.forEach(s => {
-    if (s === "-") return nav.append(h("div", { class: "sep" }));
-    const [id, label] = s, def = LISTS[id];
-    nav.append(h("button", { "aria-current": section === id ? "page" : false, onclick: () => go(id) }, label || def.label, def ? h("span", {}, listOf(def).length) : ""));
-  });
+  if (!STATUS) loadStatus().then(() => site && drawNav());
+  nav.append(h("div", { class: "brand" }, h("span", { class: "logo" }, LOGO_SVG()), h("span", {}, h("b", {}, site.name), "Editor")),
+    h("button", { class: "jump", type: "button", onclick: openJumper }, icon("search"), "Jump to…", h("kbd", {}, "Ctrl K")));
+  for (const [group, items] of SECTIONS) {
+    nav.append(h("div", { class: "group" }, group));
+    for (const [id, label] of items) {
+      const def = LISTS[id], bad = def && listOf(def).some(it => missing(id, it).length);
+      nav.append(h("button", { class: "nv", "aria-current": section === id ? "page" : false, onclick: () => go(id) },
+        icon(id), h("span", { class: "lb" }, label || def.label), bad ? h("i", { class: "wd", title: "Something is missing" }) : null, def ? h("span", { class: "ct" }, listOf(def).length) : ""));
+    }
+  }
   nav.append(h("div", { class: "foot" }, footText()));
   const cur = $("nav button[aria-current]");
   if (cur) cur.scrollIntoView({ block: "nearest", inline: "center" });
 }
+
+/* Ctrl+K: jump to any section, film, book, game, project… */
+function openJumper() {
+  if (!site) return;
+  const all = [];
+  for (const [, items] of SECTIONS) for (const [id] of items) all.push({ t: sectionLabel(id), k: "Section", go: () => go(id) });
+  for (const [id, def] of Object.entries(LISTS)) listOf(def).forEach((it, i) => { const t = def.sum(it)[0]; if (t) all.push({ t: String(t), k: def.label, go: () => { go(id); openItem(i); } }); });
+  const q = h("input", { type: "search", placeholder: "Jump to a section or anything in your lists…", "aria-label": "Jump to" });
+  const ul = h("ul");
+  const dlg = h("dialog", { class: "jumper" }, q, ul);
+  let hits = [], sel = 0;
+  const draw = () => {
+    const s = q.value.trim().toLowerCase();
+    hits = (s ? all.filter(x => x.t.toLowerCase().includes(s)) : all.filter(x => x.k === "Section")).slice(0, 40);
+    sel = Math.min(sel, Math.max(0, hits.length - 1));
+    ul.textContent = "";
+    hits.forEach((x, i) => ul.append(h("li", { class: i === sel ? "sel" : "" }, h("button", { type: "button", onclick: () => pickIt(x) }, x.t, h("small", {}, x.k)))));
+    if (!hits.length) ul.append(h("li", { class: "none" }, "Nothing found."));
+    const s2 = ul.children[sel]; if (s2) s2.scrollIntoView({ block: "nearest" });
+  };
+  const pickIt = x => { dlg.close(); x.go(); };
+  q.addEventListener("input", () => { sel = 0; draw(); });
+  q.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown") { e.preventDefault(); sel = (sel + 1) % Math.max(1, hits.length); draw(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); sel = (sel - 1 + hits.length) % Math.max(1, hits.length); draw(); }
+    else if (e.key === "Enter" && hits[sel]) { e.preventDefault(); pickIt(hits[sel]); }
+  });
+  dlg.addEventListener("close", () => dlg.remove());
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+  document.body.append(dlg); draw(); dlg.showModal(); q.focus();
+}
+addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k" && site) { e.preventDefault(); if (!$("dialog.jumper[open]")) openJumper(); } });
+// open item i of the list on screen (after go())
+function openItem(i) { const box = $("#main .items"); if (box && box._draw) { box._draw(i); const el = $(".item.open"); if (el) el.scrollIntoView({ block: "center" }); } }
 function go(id) {
   if (section === "posts" && id !== "posts" && $("#main textarea.body") && !confirm("Leave this post? Unsaved text will be lost.")) return;
   section = id; history.replaceState(null, "", "#" + id); drawNav();

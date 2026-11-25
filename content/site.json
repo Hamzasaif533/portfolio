@@ -83,7 +83,9 @@
       "year": 2026,
       "tmdb": 1765072,
       "rating": 3.5,
-      "by": "Nathan Fielder & Lance Oppenheim"
+      "by": "Nathan Fielder & Lance Oppenheim",
+      "poster": "assets/posters/you-can-see-everything-aq7lptmfpp.jpg",
+      "frame": "assets/frames/you-can-see-everything-gssapachds.jpg"
     },
     {
       "title": "Whiplash",

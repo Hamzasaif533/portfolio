@@ -1054,5 +1054,33 @@
       "image": "assets/designs/ps-07.webp",
       "tools": "Photoshop"
     }
-  ]
+  ],
+  "photos": {
+    "Florence Pugh": "assets/people/florence-pugh-own-3.jpg",
+    "Michael Caine": "assets/people/michael-caine-own-2.jpg",
+    "Josh Brolin": "assets/people/josh-brolin-own-2.jpg",
+    "Patrick Wilson": "assets/people/patrick-wilson-own-2.jpg",
+    "Vera Farmiga": "assets/people/vera-farmiga-own-2.jpg",
+    "Bradley Cooper": "assets/people/bradley-cooper-own-2.jpg",
+    "Timothée Chalamet": "assets/people/timothee-chalamet-own-2.jpg",
+    "Rebecca Ferguson": "assets/people/rebecca-ferguson-own-2.jpg",
+    "Dave Bautista": "assets/people/dave-bautista-own-3.jpg",
+    "Casey Affleck": "assets/people/casey-affleck-own.jpg",
+    "Joseph Gordon-Levitt": "assets/people/joseph-gordon-levitt-own.jpg",
+    "Javier Bardem": "assets/people/javier-bardem-own.jpg",
+    "Paul Dano": "assets/people/paul-dano-own.jpg"
+  },
+  "logos": {
+    "Legendary Pictures": "assets/studios/legendary-pictures-own.png",
+    "New Line Cinema": "assets/studios/new-line-cinema-own.png",
+    "20th Century Fox": "assets/studios/20th-century-fox-own.png",
+    "Columbia Pictures": "assets/studios/columbia-pictures-own.png",
+    "TSG Entertainment": "assets/studios/tsg-entertainment-own.png",
+    "A24": "assets/studios/a24-own.png",
+    "Alcon Entertainment": "assets/studios/alcon-entertainment-own.png",
+    "Syncopy": "assets/studios/syncopy-own.png",
+    "Skydance Media": "assets/studios/skydance-media-own-2.png",
+    "Scott Free Productions": "assets/studios/scott-free-productions-own.png",
+    "Fox 2000 Pictures": "assets/studios/fox-2000-pictures-own.png"
+  }
 }

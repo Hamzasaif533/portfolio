@@ -305,6 +305,16 @@ async function ghCommit(files, message) {
   await ghReq(`/git/refs/heads/${encodeURIComponent(gh.branch)}`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
   for (const f of files) delete shas[f.path];
 }
+/* Every frame also gets a small copy in assets/frames-sm (same name, .jpg): the Frames wall and Stats use it,
+   the full frame opens in the viewer. Returns null when the frame is already small. */
+const smallFramePath = p => p.replace(/^assets\/frames\//, "assets/frames-sm/").replace(/\.\w+$/, ".jpg");
+async function smallFrameOf(blob) { if (!/^image\/(jpeg|png|webp)/.test(blob.type || "image/jpeg")) return null; const sm = await shrinkPoster(blob, 640, .78); return sm === blob ? null : sm; }
+async function uploadSmallFrame(blob, fullPath) {
+  try {
+    const sm = await smallFrameOf(blob); if (!sm) return;
+    await store.upload(new File([sm], smallFramePath(fullPath).split("/").pop(), { type: "image/jpeg" }), "frames-sm");
+  } catch (_) {} // the full frame still works on its own
+}
 /* Frame links are written to a copy and only applied after the save succeeds,
    so a failed save never leaves a link to an image that wasn't stored. */
 function withFrames(data, picks, paths) {
@@ -314,7 +324,7 @@ function withFrames(data, picks, paths) {
 }
 LocalStore.saveFrames = async (picks, data) => {
   const paths = [];
-  for (const p of picks) paths.push(await LocalStore.upload(new File([p.blob], p.name, { type: p.blob.type || "image/jpeg" }), "frames"));
+  for (const p of picks) { const path = await LocalStore.upload(new File([p.blob], p.name, { type: p.blob.type || "image/jpeg" }), "frames"); paths.push(path); await uploadSmallFrame(p.blob, path); }
   await LocalStore.putSite(withFrames(data, picks, paths));
   picks.forEach((p, i) => (p.movie.frame = paths[i]));
 };
@@ -334,7 +344,11 @@ GitHubStore.saveFrames = async (picks, data) => {
     site = data; // the editor now shows the latest content
   }
   const files = [], paths = picks.map(p => `assets/frames/${p.name}`);
-  for (let i = 0; i < picks.length; i++) files.push({ path: paths[i], b64: await fileToB64(picks[i].blob) });
+  for (let i = 0; i < picks.length; i++) {
+    files.push({ path: paths[i], b64: await fileToB64(picks[i].blob) });
+    const sm = await smallFrameOf(picks[i].blob);
+    if (sm) files.push({ path: smallFramePath(paths[i]), b64: await fileToB64(sm) });
+  }
   files.push({ path: "content/site.json", b64: textToB64(JSON.stringify(withFrames(data, picks, paths), null, 2) + "\n") });
   await ghCommit(files, `Add ${picks.length} film frame${picks.length === 1 ? "" : "s"}`);
   // only now, after GitHub has the images, does the editor show the new links
@@ -447,7 +461,7 @@ function input(def, value, onChange) {
     path.addEventListener("input", () => { set(path.value.trim() || undefined); show(path.value.trim()); });
     const file = h("input", { type: "file", accept: "image/*,video/*", hidden: true, onchange: async e => {
       const f = e.target.files[0]; if (!f) return;
-      try { const p = await upload(f, def.folder); path.value = p; set(p); show(p); } catch (err) { toast(err.message, true); }
+      try { const p = await upload(f, def.folder); if (def.folder === "frames") await uploadSmallFrame(f, p); path.value = p; set(p); show(p); } catch (err) { toast(err.message, true); }
       e.target.value = "";
     } });
     show(value);
@@ -1040,14 +1054,14 @@ async function findPosters(m) {
   return job;
 }
 // posters are resized in the browser before they're uploaded, so the site stays light
-async function shrinkPoster(blob, w) {
+async function shrinkPoster(blob, w, q = .84) {
   try {
     const bmp = await createImageBitmap(blob);
     if (bmp.width <= w) return blob;
     const c = document.createElement("canvas");
     c.width = w; c.height = Math.round(bmp.height * w / bmp.width);
     c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-    return await new Promise(r => c.toBlob(b => r(b || blob), "image/jpeg", .86));
+    return await new Promise(r => c.toBlob(b => r(b || blob), "image/jpeg", q));
   } catch (_) { return blob; }
 }
 const coverPath = (kind, m) => `assets/posters/${kind}/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // found by the build (Letterboxd, Steam, Wikipedia, Open Library)

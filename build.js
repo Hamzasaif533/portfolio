@@ -425,7 +425,7 @@ function filmDiary(movies = []) {
     <div class="frames">${withFrames.map(m => {
       const meta = [m.year, m.by, ratingText(m), m.watched ? `watched ${m.watched.replace(/-/g, ".")}` : ""].filter(Boolean).join(" · ");
       return `<button type="button" class="tile frame" id="f-${slug(m.title)}" data-item${viewAttrs("frames", m.frame, m.title, meta, m.note)}>
-        ${tileImg(m.frame, `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
+        ${tileImg(smallFrame(m.frame), `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
       </button>`;
     }).join("")}</div>
   </section>${credit}`;
@@ -461,6 +461,32 @@ function barChart(rows, { unit = "film", value = r => r.ids.length, fmt = v => p
   }).join("")}</div>
     <div class="axis" aria-hidden="true">${rows.map(r => `<span>${esc(r.short ?? "")}</span>`).join("")}</div>`;
 }
+
+/* genre icons from Lucide (lucide.dev), ISC licence: Copyright (c) Lucide Contributors 2022, portions (c) Cole Bemis 2013-2022 (Feather, MIT) */
+const GENRE_ICONS = {
+  "Romance": "<path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/>",
+  "Drama": "<path d=\"M10 11h.01\"/><path d=\"M14 6h.01\"/><path d=\"M18 6h.01\"/><path d=\"M6.5 13.1h.01\"/><path d=\"M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3\"/><path d=\"M17.4 9.9c-.8.8-2 .8-2.8 0\"/><path d=\"M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7\"/><path d=\"M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4\"/>",
+  "Comedy": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5h12Z\"/><line x1=\"9\" x2=\"9.01\" y1=\"9\" y2=\"9\"/><line x1=\"15\" x2=\"15.01\" y1=\"9\" y2=\"9\"/>",
+  "Thriller": "<path d=\"M7 18v-6a5 5 0 1 1 10 0v6\"/><path d=\"M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z\"/><path d=\"M21 12h1\"/><path d=\"M18.5 4.5 18 5\"/><path d=\"M2 12h1\"/><path d=\"M12 2v1\"/><path d=\"m4.929 4.929.707.707\"/><path d=\"M12 12v6\"/>",
+  "Horror": "<path d=\"M9 10h.01\"/><path d=\"M15 10h.01\"/><path d=\"M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z\"/>",
+  "Science Fiction": "<path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0\"/><path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/>",
+  "Mystery": "<circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/>",
+  "Crime": "<path d=\"M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4\"/><path d=\"M14 13.12c0 2.38 0 6.38-1 8.88\"/><path d=\"M17.29 21.02c.12-.6.43-2.3.5-3.02\"/><path d=\"M2 12a10 10 0 0 1 18-6\"/><path d=\"M2 16h.01\"/><path d=\"M21.8 16c.2-2 .131-5.354 0-6\"/><path d=\"M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2\"/><path d=\"M8.65 22c.21-.66.45-1.32.57-2\"/><path d=\"M9 6.8a6 6 0 0 1 9 5.2v2\"/>",
+  "History": "<line x1=\"3\" x2=\"21\" y1=\"22\" y2=\"22\"/><line x1=\"6\" x2=\"6\" y1=\"18\" y2=\"11\"/><line x1=\"10\" x2=\"10\" y1=\"18\" y2=\"11\"/><line x1=\"14\" x2=\"14\" y1=\"18\" y2=\"11\"/><line x1=\"18\" x2=\"18\" y1=\"18\" y2=\"11\"/><polygon points=\"12 2 20 7 4 7\"/>",
+  "Action": "<polyline points=\"14.5 17.5 3 6 3 3 6 3 17.5 14.5\"/><line x1=\"13\" x2=\"19\" y1=\"19\" y2=\"13\"/><line x1=\"16\" x2=\"20\" y1=\"16\" y2=\"20\"/><line x1=\"19\" x2=\"21\" y1=\"21\" y2=\"19\"/><polyline points=\"14.5 6.5 18 3 21 3 21 6 17.5 9.5\"/><line x1=\"5\" x2=\"9\" y1=\"14\" y2=\"18\"/><line x1=\"7\" x2=\"4\" y1=\"17\" y2=\"20\"/><line x1=\"3\" x2=\"5\" y1=\"19\" y2=\"21\"/>",
+  "Adventure": "<path d=\"m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z\"/><circle cx=\"12\" cy=\"12\" r=\"10\"/>",
+  "War": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/>",
+  "Family": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>",
+  "Animation": "<circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z\"/>",
+  "Fantasy": "<path d=\"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72\"/><path d=\"m14 7 3 3\"/><path d=\"M5 6v4\"/><path d=\"M19 14v4\"/><path d=\"M10 2v2\"/><path d=\"M7 8H3\"/><path d=\"M21 16h-4\"/><path d=\"M11 3H9\"/>",
+  "Music": "<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>",
+  "Documentary": "<path d=\"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5\"/><rect x=\"2\" y=\"6\" width=\"14\" height=\"12\" rx=\"2\"/>",
+  "Western": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>",
+  "TV Movie": "<rect width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\" ry=\"2\"/><polyline points=\"17 2 12 7 7 2\"/>",
+  "_film": "<path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z\"/><path d=\"m6.2 5.3 3.1 3.9\"/><path d=\"m12.4 3.4 3.1 4\"/><path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z\"/>",
+  "_silent": "<path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\"/><line x1=\"22\" x2=\"16\" y1=\"9\" y2=\"15\"/><line x1=\"16\" x2=\"22\" y1=\"9\" y2=\"15\"/>",
+};
+const LANG_CODES = { English: "EN", Korean: "KO", Spanish: "ES", Danish: "DA", French: "FR", German: "DE", Italian: "IT", Japanese: "JA", Chinese: "ZH", Mandarin: "ZH", Cantonese: "YUE", Hindi: "HI", Arabic: "AR", Russian: "RU", Swedish: "SV", Norwegian: "NO", Dutch: "NL", Portuguese: "PT", Greek: "EL", Turkish: "TR", Polish: "PL", Persian: "FA", Hebrew: "HE", Thai: "TH", Tamil: "TA", Telugu: "TE", Serbian: "SR", Irish: "GA", Latin: "LA" };
 
 /* a ranked list with thin bars: [name, ids, extra] */
 function rankList(rows, { max, extra = () => "", icon } = {}) {
@@ -505,7 +531,7 @@ function statsPanel(site) {
     want[kind].add(name);
     const e = (pics[kind] || {})[name];
     return e && e.img && localFile(e.img)
-      ? `<img class="ic ${kind}" src="${esc(e.img)}" alt="" loading="lazy" decoding="async" width="26" height="26">`
+      ? `<img class="ic ${kind}" src="${esc(e.img)}" title="${esc(name)} · picture: ${esc(e.file)}, Wikimedia Commons" alt="" loading="lazy" decoding="async" width="26" height="26">`
       : `<span class="ic ${kind} none" aria-hidden="true">${initials(name)}</span>`;
   };
   const shapeIcon = name => {
@@ -513,13 +539,18 @@ function statsPanel(site) {
     const d = (pics.shapes || {})[name];
     return `<svg class="ic shape" viewBox="0 0 24 24" aria-hidden="true">${d ? `<path d="${d}"/>` : `<circle cx="12" cy="12" r="2.5"/>`}</svg>`;
   };
+  const genreIcon = name => `<svg class="ic genre" viewBox="0 0 24 24" aria-hidden="true">${GENRE_ICONS[name] || GENRE_ICONS._film}</svg>`;
+  const langIcon = name => GENRE_ICONS._silent && /no spoken/i.test(name)
+    ? `<svg class="ic genre" viewBox="0 0 24 24" aria-hidden="true">${GENRE_ICONS._silent}</svg>`
+    : `<span class="ic lang" aria-hidden="true">${esc(LANG_CODES[name] || String(name).slice(0, 2).toUpperCase())}</span>`;
+  const posterOf = m => localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "";
   const listOf = (map, rated, icon, n = 8, min = 2) => rankList(asRows(rated ? highestRated(map, n, min) : mostWatched(map, n, min)), { icon });
 
   /* ---- Top 4 ---- */
   const favs = (site.favourites || []).slice(0, 4);
   const top4 = favs.length ? `<section class="top4-wrap" aria-label="Top 4">
-    <p class="st-label"><span>Top 4</span><span>from Letterboxd</span></p>
-    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)} data-item title="${esc(f.title)}${f.year ? ` (${f.year})` : ""}">${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
+    <p class="st-label"><span>Top 4</span></p>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)}>${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
   </section>` : "";
 
   /* ---- headline numbers ---- */
@@ -532,15 +563,12 @@ function statsPanel(site) {
   let streak = weeks.length ? 1 : 0, run = 1, runEnd = weeks[0], bestEnd = weeks[0];
   for (let i = 1; i < weeks.length; i++) { run = weeks[i] === weeks[i - 1] + 1 ? run + 1 : 1; if (run > streak) { streak = run; bestEnd = weeks[i]; } }
   const streakFilms = dated.filter(m => { const w = weekNo(m.watched); return w > bestEnd - streak && w <= bestEnd; });
-  const byDay = groupBy(m => (dated.includes(m) ? m.watched : null));
-  const multiDays = [...byDay.values()].filter(l => l.length >= 2);
   const tiles = [
     [fmtN(movies.length), "Films", ids(movies)],
     [fmtN(Math.round(minutes / 60)), "Hours", null],
     [fmtN(directors.size), "Directors", null, "#st-directors"],
     [fmtN(countries.size), "Countries", null, "#st-gcl"],
     [`${streak}w`, "Longest streak", ids(streakFilms)],
-    [fmtN(multiDays.length), "2+ film days", ids(multiDays.flat())],
   ].map(([n, k, list, href]) => list && list.length
     ? `<button class="tile-stat"${pick(list, k)}><b>${esc(n)}</b><span>${esc(k)}</span></button>`
     : href ? `<a class="tile-stat" href="${href}" data-item><b>${esc(n)}</b><span>${esc(k)}</span></a>`
@@ -577,27 +605,20 @@ function statsPanel(site) {
   const decadesBest = bestDecades.length ? `<figure class="chart wide"><figcaption><span>Highest rated decades</span><span>2+ rated films</span></figcaption>
     <ol class="decades">${bestDecades.map(([d, l]) => {
       const tops = l.filter(m => m.rating != null).sort((a, b) => b.rating - a.rating).slice(0, 4);
-      return `<li><button${pick(ids(l), `${d}s`)}><span class="dh"><b>${d}s</b><span>${avgStr(l)} · ${plural(l.length, "film")}</span></span><span class="thumbs">${tops.map(m => m.frame ? `<img src="${esc(m.frame)}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${esc(m.title)}</span>`).join("")}</span></button></li>`;
+      return `<li><button${pick(ids(l), `${d}s`)}><span class="dh"><b>${d}s</b><span>${avgStr(l)} · ${plural(l.length, "film")}</span></span><span class="thumbs">${tops.map(m => m.frame ? `<img src="${esc(smallFrame(m.frame))}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${esc(m.title)}</span>`).join("")}</span></button></li>`;
     }).join("")}</ol></figure>` : "";
 
   /* ---- genres, countries & languages ---- */
   const genres = groupBy(m => meta(m).genres), languages = groupBy(m => meta(m).language);
-  const gclCol = (title, map, mode) => `<div class="gcl-col"><p class="col-h">${esc(title)}</p>${listOf(map, mode === "rated", map === countries ? shapeIcon : null, 6, mode === "rated" ? 2 : 1)}</div>`;
+  const gclCol = (title, map, mode) => `<div class="gcl-col"><p class="col-h">${esc(title)}</p>${listOf(map, mode === "rated", map === countries ? shapeIcon : map === genres ? genreIcon : langIcon, 6, mode === "rated" ? 2 : 1)}</div>`;
   const gcl = `<div id="st-gcl">${switchable("Genres, countries & languages", "", [
     ["Most watched", `<div class="gcl">${gclCol("Genres", genres)}${gclCol("Countries", countries)}${gclCol("Languages", languages)}</div>`],
     ["Highest rated", `<div class="gcl">${gclCol("Genres", genres, "rated")}${gclCol("Countries", countries, "rated")}${gclCol("Languages", languages, "rated")}</div>`],
   ])}</div>`;
 
-  /* ---- themes ---- */
-  const themes = groupBy(m => meta(m).themes);
-  const themeBox = themes.size ? `<div id="st-themes">` + switchable("Themes", "", [
-    ["Most watched", rankList(asRows(mostWatched(themes, 8, 2)))],
-    ["Highest rated", rankList(asRows(highestRated(themes, 8, 2)))],
-  ]) + `</div>` : "";
-
   /* ---- rated higher / lower than the Letterboxd average ---- */
   const diffs = rated.filter(m => meta(m).rating).map(m => ({ m, d: m.rating - meta(m).rating }));
-  const diffList = list => list.length ? `<ol class="difflist">${list.map(({ m, d }) => `<li><button${pick(ids([m]), m.title)}><span class="nm">${esc(m.title)}</span><span class="ct">${esc(m.year || "")}</span><span class="av">${stars(m.rating)}</span><span class="df">${d > 0 ? "+" : "−"}${Math.abs(d).toFixed(1)}</span></button></li>`).join("")}</ol>` : `<p class="empty-note">Nothing yet.</p>`;
+  const diffList = list => list.length ? `<ol class="difflist with-ic">${list.map(({ m, d }) => `<li><button${pick(ids([m]), m.title)}><span class="nm"><span class="ic poster" aria-hidden="true">${posterOf(m) ? `<img src="${esc(posterOf(m))}" alt="" loading="lazy" decoding="async" width="20" height="30">` : ""}</span><span>${esc(m.title)}</span></span><span class="ct">${esc(m.year || "")}</span><span class="av">${stars(m.rating)}</span><span class="df">${d > 0 ? "+" : "−"}${Math.abs(d).toFixed(1)}</span></button></li>`).join("")}</ol>` : `<p class="empty-note">Nothing yet.</p>`;
   const vsAvg = diffs.length ? switchable("Compared with Letterboxd", "Your rating minus the Letterboxd average", [
     ["Rated higher", diffList(diffs.filter(x => x.d > 0).sort((a, b) => b.d - a.d).slice(0, 6))],
     ["Rated lower", diffList(diffs.filter(x => x.d < 0).sort((a, b) => a.d - b.d).slice(0, 6))],
@@ -625,7 +646,7 @@ function statsPanel(site) {
   const days = `<figure class="chart"><figcaption><span>Day of the week</span><span>${dated.length} dated</span></figcaption>${barChart(DAYS.map((d, i) => ({ label: d, tip: `${d}s`, short: d[0], ids: ids(perDay.get(i) || []) })))}</figure>`;
 
   // the films every button above can list
-  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame || "", p: localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "" }));
+  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame ? smallFrame(m.frame) : "", p: localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "" }));
   return `<div class="stats">
     ${top4}
     <div class="tiles-stat">${tiles}</div>
@@ -636,15 +657,10 @@ function statsPanel(site) {
       ${decadesBest}
       ${vsAvg}
       ${gcl}
-      ${themeBox}
       ${dirBox}
       ${castBox}
       ${studioBox}
     </div>
-    ${(() => { // photos and logos are from Wikimedia Commons, each under its own licence
-      const shown = [...["person", "studio"].flatMap(k => [...want[k]].map(n => [n, (pics[k] || {})[n]]))].filter(([, e]) => e && e.img && localFile(e.img));
-      return `<details class="credits"><summary>Pictures: country shapes from Natural Earth; photos and logos from Wikimedia Commons</summary><p>${shown.map(([n, e]) => `<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(e.file.replace(/ /g, "_"))}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ")}</p></details>`;
-    })()}
     <dialog class="filmlist" aria-label="Films"><div class="fl-head"><p class="fl-title"></p><button class="fl-close" type="button" aria-label="Close">×</button></div><ul class="fl-list"></ul></dialog>
     <script type="application/json" id="statfilms">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
   </div>`;
@@ -685,9 +701,7 @@ function shelfPage(site) {
     ["books", "Books", books.length, list(books, "book")],
     ["stats", "Stats", null, statsPanel(site)],
   ];
-  const rated = movies.filter(m => m.rating != null);
-  const avg = rated.length ? (rated.reduce((n, m) => n + Number(m.rating), 0) / rated.length).toFixed(1) : "";
-  return `<main class="shelf" id="main">${pageHead("Shelf", `${movies.length} films${avg ? ` · avg ${avg}★` : ""} · ${movies.filter(m => m.liked).length} ♥`)}
+  return `<main class="shelf" id="main">${pageHead("Shelf")}
     ${tabs("shelf-tabs", "Shelf", TABS_)}
   </main>`;
 }
@@ -828,6 +842,8 @@ const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCa
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
 // posters and covers live in assets/posters/<film|game|book>/<title>-<year>.jpg (the editor uses the same names)
 const coverPath = (kind, it) => `assets/posters/${kind}/${[slug(it.title), it.year].filter(Boolean).join("-")}.jpg`;
+// a film frame's small copy (assets/frames-sm, made by the editor), for grids; the full frame is for the viewer
+const smallFrame = p => { const s = String(p || "").replace(/^assets\/frames\//, "assets/frames-sm/").replace(/\.\w+$/, ".jpg"); return s !== p && localFile(s) ? s : p; };
 const localFile = p => p && !/^(https?:)?\/\//i.test(p) && fs.existsSync(path.join(ROOT, p)); // a file in this repo
 // your top 4 from content/site.json; films picked in the editor have no Letterboxd slug yet, so find it
 const topFour = (site, titles = {}) => (site.top4 || []).filter(f => f && (f.slug || f.title)).slice(0, 4)
@@ -1075,7 +1091,7 @@ function dev() {
   };
   const POSTS = path.join(ROOT, "content/posts");
   const SLUG = /^[a-z0-9][a-z0-9-]{0,80}$/;
-  const FOLDERS = ["frames", "code", "designs", "posts", "me", "posters"];
+  const FOLDERS = ["frames", "frames-sm", "code", "designs", "posts", "me", "posters"];
   const MEDIA_EXT = /\.(jpe?g|png|webp|avif|gif|svg|mp4|webm|mov)$/i;
 
   const send = (res, code, body, type = "application/json") => {

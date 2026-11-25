@@ -157,11 +157,10 @@ button { font: inherit; color: inherit; }
 .top4-wrap { max-width: 760px; margin: 0 auto 36px; }
 .top4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .top4 a { display: block; }
-.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 4px; background: #0b0b0b; border: 1px solid var(--chip-line); transition: border-color .2s; }
+.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 4px; background: #0b0b0b; border: 1px solid var(--chip-line); }
 .top4 .ph { display: grid; place-items: center; padding: 8px; font-size: 11px; color: var(--mute); text-align: center; }
 .cap4 { display: block; margin-top: 8px; font-size: 12px; line-height: 1.4; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cap4 i { font-style: normal; color: var(--dim); }
-@media (hover: hover) { .top4 a:hover img { border-color: rgba(255, 255, 255, .35); } }
 .tiles-stat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
 .stats .tile-stat { display: block; background: var(--bg); padding: 16px 16px 14px; text-align: left; transition: background .15s; }
 .tile-stat b { display: block; font-size: 24px; font-weight: 400; line-height: 1.3; }
@@ -196,8 +195,7 @@ button { font: inherit; color: inherit; }
 .stats .hbars button { grid-template-columns: minmax(0, 11em) minmax(0, 1fr) 2em 3.2em; }
 .stats .difflist button { grid-template-columns: minmax(0, 1fr) 3em 5em 3em; }
 .gcl .stats .hbars button, .gcl .hbars button { grid-template-columns: minmax(0, 1fr) 2em 3.2em; }
-.gcl .hb, #st-themes .hb { display: none; }
-.stats #st-themes .hbars button { grid-template-columns: minmax(0, 1fr) 2em 3.2em; }
+.gcl .hb { display: none; }
 .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hb { height: 6px; }
 .hb i { display: block; height: 100%; width: calc(var(--v) * 100%); background: #8b8b8b; transition: background .15s; }
@@ -508,14 +506,7 @@ html:has(dialog[open]) { overflow: hidden; }
 .shelf .list.pl .p > span { padding: 16px; background: radial-gradient(120% 80% at 30% 0%, #262626, #0c0c0c 70%); color: var(--fg); font-size: 15px; letter-spacing: .02em; }
 @media (max-width: 700px) { .shelf .list.pl .p > span { padding: 8px; font-size: 12px; } }
 /* Movies' inner tabs: Movies / Frames / Watchlist */
-/* glass + blur */
-.shelf-head { position: sticky; top: 62px; z-index: 35; }
-.shelf-head::before { content: ""; position: absolute; z-index: -1; left: 50%; width: 100vw; transform: translateX(-50%); top: -62px; bottom: 0; background: rgba(10, 10, 10, .55); backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid rgba(255, 255, 255, .08); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
-.shelf-head.stuck::before { opacity: 1; }
-.shelf-head .shelf-tabs { border-bottom-color: transparent; }
-.shelf-head:not(.stuck) .shelf-tabs { border-bottom-color: var(--line); }
 .shelf .list.pl .n { background: rgba(0, 0, 0, .42); backdrop-filter: blur(12px) saturate(1.3); -webkit-backdrop-filter: blur(12px) saturate(1.3); align-items: center; justify-content: center; text-align: center; }
-html:has(.shelf-head) { overflow-x: clip; }
 .fl-list .t, .fl-list .y, .fl-list .r { grid-area: auto; } .fl-list .t { white-space: nowrap; font-size: 14px; line-height: inherit; }
 /* Movies' inner tabs: plain words, spaced apart; the open one is bright */
 .sub-tabs { display: flex; gap: 26px; margin: 6px 0 4px; overflow-x: auto; scrollbar-width: none; }
@@ -528,8 +519,8 @@ html:has(.shelf-head) { overflow-x: clip; }
 .sub-tabs ~ .panel { padding-top: 10px; }
 @media (max-width: 700px) { .sub-tabs { gap: 20px; } .sub-tabs button { font-size: 12px; } }
 /* popups: sharp, see-through dark, no blur (the page behind is darkened so text stays easy to read) */
-dialog.filmlist, dialog.palette, dialog.help { border-radius: 0; background: rgba(8, 8, 8, .8); border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 30px 80px -20px #000; backdrop-filter: none; -webkit-backdrop-filter: none; }
-dialog.filmlist::backdrop, dialog.palette::backdrop, dialog.help::backdrop { background: rgba(0, 0, 0, .62); backdrop-filter: none; -webkit-backdrop-filter: none; }
+dialog.filmlist, dialog.palette, dialog.help { border-radius: 0; background: rgba(10, 10, 10, .94); border: 1px solid rgba(255, 255, 255, .16); box-shadow: 0 30px 80px -20px #000; backdrop-filter: none; -webkit-backdrop-filter: none; }
+dialog.filmlist::backdrop, dialog.palette::backdrop, dialog.help::backdrop { background: rgba(0, 0, 0, .72); backdrop-filter: none; -webkit-backdrop-filter: none; }
 dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important; }
 .fl-list a:hover, .fl-list a:focus-visible { background: rgba(255, 255, 255, .08); }
 /* small posters in the "which films?" list */
@@ -550,12 +541,6 @@ dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important
 .stats .hbars.with-ic button { grid-template-columns: minmax(0, 14em) minmax(0, 1fr) 2em 3.2em; }
 .gcl .hbars.with-ic button { grid-template-columns: minmax(0, 1fr) 2em 3.2em; }
 @media (hover: hover) { .stats .hbars button:hover .ic.shape { color: var(--fg); } }
-.credits { margin-top: 34px; font-size: 11px; color: var(--dim); }
-.credits summary { cursor: pointer; list-style: none; }
-.credits summary::-webkit-details-marker { display: none; }
-.credits summary:hover { color: var(--mute); }
-.credits p { margin-top: 8px; line-height: 1.8; }
-.credits a { color: var(--mute); }
 @media (max-width: 700px) {
   .stats .hbars.with-ic button { grid-template-columns: minmax(0, 11em) minmax(0, 1fr) 1.6em 2.8em; }
   .gcl .hbars.with-ic button { grid-template-columns: minmax(0, 1fr) 2em 3.2em; }
@@ -567,3 +552,16 @@ dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important
   .stats .hbars.with-ic button { grid-template-columns: minmax(0, 1fr) 4.5em 1.6em 2.8em; }
   .stats .gcl .hbars.with-ic button { grid-template-columns: minmax(0, 1fr) 2em 3.2em; }
 }
+/* genre icons, language codes, posters beside film names */
+.ic.genre { width: 20px; height: 20px; margin: -1px 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--mute); }
+.ic.lang { display: inline-grid; place-items: center; width: 22px; height: 20px; margin: -1px 0; font-size: 9px; letter-spacing: .03em; color: var(--mute); border: 1px solid #2a2a2a; border-radius: 3px; box-sizing: border-box; }
+.difflist .nm { display: flex; align-items: center; gap: 10px; }
+.difflist .nm > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ic.poster { width: 20px; height: 30px; background: #151515; overflow: hidden; border-radius: 2px; }
+.ic.poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.difflist.with-ic button { padding: 4px 0; }
+.tiles-stat { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 700px) { .tiles-stat { grid-template-columns: repeat(6, minmax(0, 1fr)); } .tile-stat { grid-column: span 2; } .tile-stat:nth-child(n+4) { grid-column: span 3; } }
+@media (hover: hover) { .stats .hbars button:hover .ic.genre, .stats .hbars button:hover .ic.lang { color: var(--fg); } }
+.mb { filter: url(#mblur-card); }
+html:has(main.shelf) { overflow-x: clip; } /* the year chart's hover labels can reach past the right edge */

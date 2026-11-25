@@ -41,12 +41,6 @@
     if (panel) openTab(panel.id);
   }
   $$("[data-tab]").forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab, true)));
-  // the Shelf's tab row sticks to the top as you scroll; it turns to frosted glass once it's stuck
-  const head = $(".shelf-head");
-  if (head) {
-    const stuck = () => head.classList.toggle("stuck", head.getBoundingClientRect().top <= parseFloat(getComputedStyle(head).top) + 0.5);
-    addEventListener("scroll", stuck, { passive: true }); stuck();
-  }
   const SORTS = {
     recent: (a, b) => a.dataset.i - b.dataset.i,
     year: (a, b) => b.dataset.year - a.dataset.year || b.dataset.score - a.dataset.score,
@@ -415,24 +409,49 @@
   }
 
   /* ---------- motion blur, only when you scroll fast ----------
-     A vertical-only blur on the page, growing with scroll speed and gone as soon as you slow down. */
-  const blurTarget = $("main");
-  if (blurTarget && !reduce) {
-    document.body.insertAdjacentHTML("beforeend", '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="mblur" x="0" y="-5%" width="100%" height="110%"><feGaussianBlur stdDeviation="0 0"/></filter></svg>');
-    const fe = $("#mblur feGaussianBlur");
-    let lastY = scrollY, lastT = performance.now(), speed = 0, on = false, raf = 0;
+     A vertical-only blur, growing with scroll speed and gone as soon as you slow down.
+     Text pages blur <main> as one piece. Pages full of pictures (posters, frames) blur only the cards on
+     screen, one by one: blurring the whole page there means redrawing every image each frame, which stutters.
+     The strength moves in a few steps, so the blur isn't recomputed on every frame. */
+  const blurPage = $("main");
+  if (blurPage && !reduce) {
+    const filter = (id, pad) => `<filter id="${id}" x="0" y="-${pad}%" width="100%" height="${100 + 2 * pad}%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="0 0"/></filter>`;
+    document.body.insertAdjacentHTML("beforeend", `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${filter("mblur", 5)}${filter("mblur-card", 25)}</svg>`);
+    const fes = $$("#mblur feGaussianBlur, #mblur-card feGaussianBlur");
+    // cards on screen right now, kept up to date without measuring anything while scrolling
+    const CARDS = ".list.pl > li, .tile, .top4 li";
+    const onScreen = new Set();
+    let mode = ""; // "", "page" or "cards"
+    const cardIO = new IntersectionObserver(es => es.forEach(en => {
+      if (en.isIntersecting) { onScreen.add(en.target); if (mode === "cards") en.target.classList.add("mb"); }
+      else { onScreen.delete(en.target); en.target.classList.remove("mb"); }
+    }), { rootMargin: "150px 0px" });
+    $$(CARDS).forEach(c => cardIO.observe(c));
+    const start = () => {
+      mode = [...onScreen].some(c => c.offsetParent) ? "cards" : "page"; // offsetParent: skip cards in hidden tabs
+      if (mode === "cards") onScreen.forEach(c => c.classList.add("mb"));
+      else blurPage.style.filter = "url(#mblur)";
+    };
+    const stop = () => {
+      if (mode === "cards") onScreen.forEach(c => c.classList.remove("mb"));
+      else blurPage.style.filter = "";
+      mode = "";
+    };
+    let lastY = scrollY, lastT = performance.now(), speed = 0, step = 0, raf = 0;
     const FAST = 3; // px per ms before any blur shows
     const settle = () => {
       raf = 0;
       const now = performance.now(), dt = Math.max(1, now - lastT);
       speed = speed * .6 + (Math.abs(scrollY - lastY) / dt) * .4; // smoothed px/ms
       lastY = scrollY; lastT = now;
-      const amount = Math.max(0, Math.min(9, (speed - FAST) * 2.2));
-      if (amount > .4) {
-        fe.setAttribute("stdDeviation", `0 ${amount.toFixed(1)}`);
-        if (!on) { blurTarget.style.filter = "url(#mblur)"; on = true; }
-        raf = requestAnimationFrame(settle); // keep easing out
-      } else if (on) { blurTarget.style.filter = ""; on = false; speed = 0; }
+      const next = Math.round(Math.max(0, Math.min(9, (speed - FAST) * 2.2)) / 1.5) * 1.5; // 0, 1.5, 3 … 9
+      if (next !== step) {
+        step = next;
+        fes.forEach(fe => fe.setAttribute("stdDeviation", `0 ${step}`));
+        if (step && !mode) start(); else if (!step && mode) stop();
+      }
+      if (step) raf = requestAnimationFrame(settle); // keep easing out
+      else speed = 0;
     };
     addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(settle); }, { passive: true });
   }

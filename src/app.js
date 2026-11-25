@@ -556,4 +556,43 @@
     };
     addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(settle); }, { passive: true });
   }
+
+  /* ---------- loading screen (first page of a visit): fetch every page, the Shelf tabs, the film details
+     and every picture on them, so everything after it is instant. Skip appears after 3 s; gives up waiting at 12 s. ---------- */
+  const boot = $("#boot");
+  if (boot && document.documentElement.classList.contains("booting")) {
+    const bar = $(".boot-bar i", boot), pct = $(".boot-pct", boot), skip = $(".boot-skip", boot);
+    let total = 0, done = 0, shown = 0, finished = false;
+    const draw = () => { const p = total ? done / total : 0; if (p < shown) return; shown = p; bar.style.transform = `scaleX(${p})`; pct.textContent = Math.round(p * 100) + "%"; };
+    const track = pr => { total++; draw(); return Promise.resolve(pr).catch(() => {}).finally(() => { done++; draw(); }); };
+    const seen = new Set();
+    const pic = src => { if (!src || seen.has(src)) return; seen.add(src); track(new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = src; })); };
+    const picsIn = (html, base) => { for (const m of html.matchAll(/<(?:img|source)\b[^>]*?\s(?:src|data-src-img)="([^"]+)"/g)) pic(new URL(m[1].replace(/&amp;/g, "&"), base).href); };
+    const partsIn = (html, base) => { for (const m of html.matchAll(/data-src="(parts\/[^"]+)"/g)) { const u = new URL(m[1], base).href; if (!seen.has(u)) { seen.add(u); track(fetch(u).then(r => r.text()).then(t => picsIn(t, base))); } } }; // a tab's pictures are relative to its page
+    const finish = () => {
+      if (finished) return; finished = true;
+      try { sessionStorage.setItem("booted", "1"); } catch (_) {}
+      boot.classList.add("out");
+      setTimeout(() => { document.documentElement.classList.remove("booting"); boot.remove(); }, reduce ? 0 : 500);
+    };
+    skip.addEventListener("click", finish);
+    setTimeout(() => skip.classList.add("on"), 3000);
+    setTimeout(finish, 12000);
+    // this page
+    track(document.fonts.ready);
+    $$("img").forEach(i => { if (i.loading === "lazy" && !i.closest("[role=tabpanel][hidden]")) i.loading = "eager"; pic(i.currentSrc || i.src); });
+    partsIn(document.documentElement.innerHTML, location.href);
+    track(fetch(root + "parts/films.json"));
+    // every other page
+    const here = location.href.split("#")[0];
+    [...new Set($$(".tabs a").map(a => a.href))].filter(u => u !== here).forEach(u =>
+      track(fetch(u).then(r => r.text()).then(html => { picsIn(html, u); partsIn(html, u); })));
+    // wait until nothing is left (new work keeps arriving as pages are read), and show the logo for at least 0.9 s
+    const t0 = performance.now();
+    (function wait() {
+      if (finished) return;
+      if (done >= total && performance.now() - t0 > 900) return finish();
+      setTimeout(wait, 100);
+    })();
+  }
 })();

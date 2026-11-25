@@ -1017,7 +1017,8 @@
   "projects": [
     {
       "name": "portfolio",
-      "description": "This website. A zero-dependency static builder with keyboard navigation, a film diary and an editor that saves to GitHub."
+      "description": "This website. A zero-dependency static builder with keyboard navigation, a film diary and an editor that saves to GitHub.",
+      "hidden": true
     },
     {
       "name": "groundx",

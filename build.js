@@ -265,6 +265,10 @@ const VIEWER = `
   </div>
 </dialog>`;
 
+/* the logo: an H whose right leg is a 7 (the crossbar runs into the 7's stroke) */
+const LOGO_PATH = `<path pathLength="1" d="M7 6v20M7 16h14M13 6h12l-8 20"/>`;
+const logo = () => `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">${LOGO_PATH}</svg>`;
+
 function layout({ site, css, title, description, root, active, body, bodyClass = "", data = {}, viewer = false }) {
   const i = TABS.findIndex(t => t[2] === active);
   const prev = TABS[(i - 1 + TABS.length) % TABS.length], next = TABS[(i + 1) % TABS.length];
@@ -283,18 +287,20 @@ function layout({ site, css, title, description, root, active, body, bodyClass =
 <meta name="description" content="${esc(description)}">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#000"/><text x="16" y="22" font-size="17" text-anchor="middle" font-family="monospace" fill="#fff">*${esc(site.initial || site.name[0])}</text></svg>`)}">
+<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#000"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(16 16) scale(.78) translate(-16 -16)">${LOGO_PATH}</g></svg>`)}">
 <link rel="preload" href="${root}assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${root}${css}">
 ${hasArabic(body + title) ? `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${fontsUrl()}">` : ""}
 <noscript><style>.tile .media{opacity:1!important;transform:none!important}</style></noscript>
+<script>try{if(!sessionStorage.getItem("booted")){document.documentElement.classList.add("booting");setTimeout(()=>document.documentElement.classList.remove("booting"),15000)}}catch(e){}</script>
 <script type="speculationrules">${JSON.stringify(spec)}</script>
 <script>for(const t of["pageswap","pagereveal"])addEventListener(t,e=>{const v=e.viewTransition;if(v)for(const p of["ready","finished","updateCallbackDone"])v[p]&&v[p].catch(()=>{})})</script>
 </head>
 <body class="${bodyClass}"${Object.entries(attrs).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}>
+<div id="boot" aria-hidden="true"><div class="boot-in">${logo()}<div class="boot-bar"><i></i></div><div class="boot-row"><span class="boot-pct">0%</span><button type="button" class="boot-skip" tabindex="-1">skip</button></div></div></div>
 <header class="top">
-  <a class="chip" href="${root}index.html">*${esc(site.name)}*</a>
+  <a class="chip logo" href="${root}index.html" aria-label="${esc(site.name)}, home" title="${esc(site.name)}">${logo()}</a>
 </header>
 ${body}
 <footer class="bar">
@@ -766,7 +772,7 @@ function aboutPage(site) {
   const a = site.about || {};
   const avatar = a.avatar
     ? `<img class="avatar" src="${esc(a.avatar)}" alt="${esc(site.name)}" ${dims(a.avatar, 140, 140)}>`
-    : `<div class="avatar ph" aria-hidden="true">*${esc(site.initial || site.name[0])}</div>`;
+    : `<div class="avatar ph" aria-hidden="true">${logo()}</div>`;
   return `<main class="about" id="main">
   <h1 class="sr-only">About</h1>
   <section class="row">
@@ -1080,6 +1086,11 @@ function build(draft) {
   const t0 = Date.now();
   sizeCache.clear();
   const site = loadSite(draft);
+  { // a project ticked "Hide from the site" in the editor hides itself and the GitHub repo with the same name
+    const hidden = new Set((site.projects || []).filter(p => p.hidden).map(p => String(p.name).toLowerCase()));
+    site.projects = (site.projects || []).filter(p => !p.hidden);
+    site.repos = (site.repos || []).filter(r => !hidden.has(r.name.toLowerCase()));
+  }
   const cssText = minifyCSS(fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8"));
   const css = `styles.${require("crypto").createHash("sha1").update(cssText).digest("hex").slice(0, 10)}.css`;
 

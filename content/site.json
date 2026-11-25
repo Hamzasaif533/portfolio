@@ -248,7 +248,8 @@
       "by": "Christopher McQuarrie",
       "rating": 4.5,
       "frame": "assets/frames/mission-impossible-dead-reckoning-part-one-mrdnsdtjsn.jpg",
-      "poster": "assets/posters/mission-impossible-dead-reckoning-part-one-tuipxmvtxo.jpg"
+      "poster": "assets/posters/mission-impossible-dead-reckoning-part-one-tuipxmvtxo.jpg",
+      "watched": "2026-01-07"
     },
     {
       "title": "Smile",
@@ -327,7 +328,8 @@
       "by": "Michael Chaves",
       "rating": 3,
       "frame": "assets/frames/the-conjuring-last-rites-6yj51c0lbo.jpg",
-      "poster": "assets/posters/the-conjuring-last-rites-vufnnzdamz.jpg"
+      "poster": "assets/posters/the-conjuring-last-rites-vufnnzdamz.jpg",
+      "watched": "2026-02-10"
     },
     {
       "title": "The Queen's Gambit",
@@ -859,7 +861,7 @@
       "year": 1907,
       "rating": 3,
       "frame": "assets/frames/le-cochon-danseur-kv7kocn92m.jpg",
-      "watched": "2026-08-15",
+      "watched": "2026-06-11",
       "tmdb": 142026
     }
   ],

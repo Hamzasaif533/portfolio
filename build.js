@@ -1068,7 +1068,7 @@ function build() {
   write("admin/index.html", adminHtml);
   { // for the editor's Photos page: who Stats shows, and the picture found for each (your own choices are in site.json)
     const w = statsPanel.wanted || { person: new Set(), studio: new Set(), role: {} }, pics = readPics();
-    const entry = kind => name => { const e = (pics[kind] || {})[name] || {}; return { name, role: w.role[name], found: e.img && localFile(e.img) ? e.img : "" }; };
+    const entry = kind => name => { const e = (pics[kind] || {})[name] || {}; return { name, role: w.role[name], found: e.img && localFile(e.img) ? e.img : "", file: e.file || "" }; };
     write("admin/people.json", JSON.stringify({ person: [...w.person].map(entry("person")), studio: [...w.studio].map(entry("studio")) }));
   }
   write("robots.txt", "User-agent: *\nDisallow: /admin/\n");

@@ -23,19 +23,19 @@
       "url": "https://letterboxd.com/ham7a533/"
     },
     {
-      "label": "Goodreads",
-      "icon": "book",
-      "url": "https://www.goodreads.com/"
-    },
-    {
       "label": "Behance",
       "icon": "palette",
       "url": "https://www.behance.net/"
     },
     {
+      "label": "Goodreads",
+      "icon": "book",
+      "url": "https://www.goodreads.com/"
+    },
+    {
       "label": "Email",
       "icon": "mail",
-      "url": "mailto:hello@example.com"
+      "url": "mailto: ham7a8@gmail.com"
     }
   ],
   "about": {

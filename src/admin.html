@@ -40,6 +40,9 @@ main { padding: 22px 32px 120px; max-width: 1000px; width: 100%; min-width: 0; }
 .btn.danger { color: #ff8a8a; }
 .btn.small { min-height: 30px; padding: 3px 12px; font-size: 12px; }
 .status { font-size: 12px; color: var(--mute); }
+.warn { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 12px; padding: 10px 12px; font-size: 12px; line-height: 1.6; color: #e8c66a; border: 1px solid rgba(232,198,106,.25); border-radius: 10px; background: rgba(232,198,106,.05); }
+.warn span { flex: 1 1 260px; }
+.sum .miss { color: #e8c66a; }
 
 .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
 .tools input[type=search] { flex: 1; }
@@ -116,7 +119,7 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .pg-cell.own img { border-color: var(--fg); }
 .pg-cell span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pg-cell:hover span:last-child { color: var(--fg); }
-dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: auto; padding: 16px; color: var(--fg); background: rgba(10, 10, 10, .95); border: 1px solid rgba(255, 255, 255, .16); border-radius: 0; box-shadow: 0 30px 80px -20px #000; }
+dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: auto; padding: 16px; color: var(--fg); background: rgba(10, 10, 10, .95); border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; box-shadow: 0 30px 80px -20px #000; }
 .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 12px; }
 .ph-cell { display: grid; justify-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--mute); font: inherit; font-size: 11px; cursor: pointer; min-width: 0; }
 .ph-cell > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -334,6 +337,38 @@ async function ghCommit(files, message) {
   await ghReq(`/git/refs/heads/${encodeURIComponent(gh.branch)}`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
   for (const f of files) delete shas[f.path];
 }
+/* Preview: your unsaved content as one commit on a separate "preview" branch (your branch is not touched).
+   Cloudflare Pages builds it at preview.<project>.pages.dev; that copy is hidden from search engines. */
+const PREVIEW_BRANCH = "preview";
+async function ghPreview(data) {
+  if (gh.branch === PREVIEW_BRANCH) throw new Error(`You're editing the ${PREVIEW_BRANCH} branch itself.`);
+  const ref = await ghReq(`/git/ref/heads/${encodeURIComponent(gh.branch)}`);
+  const parent = await ghReq(`/git/commits/${ref.object.sha}`);
+  const blob = await ghReq("/git/blobs", { method: "POST", body: JSON.stringify({ content: textToB64(JSON.stringify(data, null, 2) + "\n"), encoding: "base64" }) });
+  const tree = await ghReq("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: parent.tree.sha, tree: [{ path: "content/site.json", mode: "100644", type: "blob", sha: blob.sha }] }) });
+  const commit = await ghReq("/git/commits", { method: "POST", body: JSON.stringify({ message: "Preview (not published)", tree: tree.sha, parents: [ref.object.sha] }) });
+  const have = await ghReq(`/git/ref/heads/${PREVIEW_BRANCH}`, {}, true);
+  if (have) await ghReq(`/git/refs/heads/${PREVIEW_BRANCH}`, { method: "PATCH", body: JSON.stringify({ sha: commit.sha, force: true }) });
+  else await ghReq("/git/refs", { method: "POST", body: JSON.stringify({ ref: `refs/heads/${PREVIEW_BRANCH}`, sha: commit.sha }) });
+  const host = location.hostname.endsWith(".pages.dev") ? location.hostname.split(".").slice(-3).join(".") : "";
+  return host ? `https://${PREVIEW_BRANCH}.${host}/` : "";
+}
+async function previewSite(btn) {
+  btn.disabled = true; const label = btn.textContent; btn.textContent = "Preparing…";
+  try {
+    if (LOCAL) {
+      await localApi("/api/preview", { method: "PUT", body: JSON.stringify(site) });
+      window.open("/", "_blank", "noopener");
+      toast("Preview built here (not saved). Press Save to keep it.");
+    } else {
+      const url = await ghPreview(site);
+      toast(url ? "Preview is building: it's ready in about a minute." : `Preview pushed to the "${PREVIEW_BRANCH}" branch. Open it from Cloudflare Pages → Deployments.`);
+      if (url) window.open(url, "_blank", "noopener");
+    }
+  } catch (err) { toast(err.message, true); }
+  btn.disabled = false; btn.textContent = label;
+}
+
 /* Every frame also gets a small copy in assets/frames-sm (same name, .jpg): the Frames wall and Stats use it,
    the full frame opens in the viewer. Returns null when the frame is already small. */
 const smallFramePath = p => p.replace(/^assets\/frames\//, "assets/frames-sm/").replace(/\.\w+$/, ".jpg");
@@ -526,6 +561,7 @@ function input(def, value, onChange) {
 const viewSite = () => h("a", { class: "btn", href: "/", target: "_blank", rel: "noopener" }, "Site ↗");
 function header(title) {
   return h("div", { class: "bar" }, h("h1", {}, title), h("span", { class: "status", id: "saveState" }, dirty ? "unsaved" : ""), viewSite(),
+    h("button", { class: "btn", id: "preview", title: "See your unsaved changes on the site before saving", onclick: e => previewSite(e.currentTarget) }, "Preview"),
     h("button", { class: "btn primary", id: "save", disabled: !dirty, onclick: saveSite }, "Save"));
 }
 const mobileFoot = () => h("div", { class: "mobile-foot" }, footText());
@@ -555,7 +591,7 @@ function movieFinder(items, onAdd) {
     wrap.hidden = false;
     if (!tmdbKey()) return needKey();
     wrap.textContent = "";
-    const q = h("input", { type: "search", placeholder: "Type a movie title (add a year to narrow it down)…", autocomplete: "off", spellcheck: "false", "aria-label": "Search movies" });
+    const q = h("input", { type: "search", placeholder: "Type a title (add a year to narrow it down), or paste a TMDB, IMDb or Letterboxd link…", autocomplete: "off", spellcheck: "false", "aria-label": "Search movies" });
     const list = h("ul", { class: "found" });
     wrap.append(h("div", { class: "inline" }, q, h("button", { class: "btn small", onclick: hide }, "Close")), list);
     let results = [], sel = 0, timer = 0, seq = 0;
@@ -580,9 +616,22 @@ function movieFinder(items, onAdd) {
     async function run() {
       const raw = q.value.trim(), mine = ++seq;
       if (raw.length < 2) { results = []; render(); return; }
-      const ym = raw.match(/^(.*\S)\s+((?:19|20)\d\d)$/); // "arrival 2016"
+      // a pasted link: TMDB or IMDb adds that exact film; a Letterboxd link searches by the title in its address
+      const tm = raw.match(/themoviedb\.org\/movie\/(\d+)/i), im = raw.match(/imdb\.com\/(?:[a-z-]+\/)?title\/(tt\d+)/i);
+      const lb = raw.match(/letterboxd\.com\/(?:[^/\s]+\/)?film\/([a-z0-9-]+)/i);
+      if (/boxd\.it\//i.test(raw)) { list.textContent = ""; list.append(h("li", { class: "none" }, "Short boxd.it links can't be read here. Open it and paste the full letterboxd.com/film/… address.")); return; }
+      if (tm || im) try {
+        const r = tm ? await tmdb(`/movie/${tm[1]}`) : ((await tmdb(`/find/${im[1]}`, { external_source: "imdb_id" })).movie_results || [])[0];
+        if (mine !== seq) return;
+        if (!r || !r.id) { list.textContent = ""; list.append(h("li", { class: "none" }, "That link isn't a movie TMDB knows.")); return; }
+        results = [r]; sel = 0; render(); return pick(r);
+      } catch (e) { return toast(e.message, true); }
+      const fromLb = lb && lb[1].match(/^(.*?)(?:-((?:18|19|20)\d\d))?(?:-\d)?$/); // "dune-2021" → Dune, 2021
+      const lbYear = fromLb && fromLb[2] && +fromLb[2] <= new Date().getFullYear() + 3 ? fromLb[2] : ""; // "blade-runner-2049" is a title, not a year
+      const ym = fromLb ? [, (lbYear ? fromLb[1] : lb[1].replace(/-\d$/, "")).replace(/-/g, " "), lbYear] : raw.match(/^(.*\S)\s+((?:19|20)\d\d)$/); // "arrival 2016"
       try {
-        const r = await tmdb("/search/movie", { query: ym ? ym[1] : raw, year: ym ? ym[2] : "" });
+        let r = await tmdb("/search/movie", { query: ym ? ym[1] : raw, year: ym ? ym[2] : "" });
+        if (fromLb && !(r.results || []).length) r = await tmdb("/search/movie", { query: lb[1].replace(/-/g, " ") });
         if (mine !== seq) return; // a newer search is already running
         results = (r.results || []).slice(0, 8); sel = 0; render();
         if (!results.length) list.append(h("li", { class: "none" }, "No movies found."));
@@ -601,7 +650,7 @@ function movieFinder(items, onAdd) {
       toast(`Added “${r.title}”. Set your rating below, then Save.`);
       onAdd(0);
     }
-    q.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 250); });
+    q.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, /^\s*https?:|\.(com|org|it)\//i.test(q.value) ? 0 : 250); });
     q.addEventListener("keydown", e => {
       if (e.key === "ArrowDown") { e.preventDefault(); mark(sel + 1); }
       else if (e.key === "ArrowUp") { e.preventDefault(); mark(sel - 1); }
@@ -819,9 +868,37 @@ async function syncLetterboxd(items) {
   return { total: entries.length, added, updated };
 }
 
+/* ---------- warnings: what each item is missing (pictures come from the last build's admin/status.json) ---------- */
+let STATUS = null;
+const loadStatus = () => STATUS ? Promise.resolve(STATUS) : fetch("/admin/status.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(s => (STATUS = s));
+function missing(id, it) {
+  if (!["movies", "books", "games"].includes(id) || !it.title) return [];
+  const out = [];
+  if (!it.poster && STATUS && ((STATUS.cover || {})[id] || []).includes(it.title + "|" + (it.year || ""))) out.push(id === "movies" ? "poster" : "cover");
+  if (id === "movies") {
+    if (!it.frame) out.push("frame");
+    if (!it.watched) out.push("watch date");
+    if (it.rating == null) out.push("rating");
+    if (!it.by) out.push("director");
+  }
+  return out;
+}
+
 function viewList(id) {
   const def = LISTS[id], items = listOf(def), main = $("#main");
   main.textContent = "";
+  let onlyMissing = false;
+  const warn = h("p", { class: "warn", hidden: true });
+  const drawWarn = () => {
+    const bad = items.filter(it => missing(id, it).length), counts = {};
+    bad.forEach(it => missing(id, it).forEach(k => (counts[k] = (counts[k] || 0) + 1)));
+    warn.textContent = ""; warn.hidden = !bad.length && !onlyMissing;
+    if (warn.hidden) return;
+    const noun = { movies: "film", books: "book", games: "game" }[id];
+    warn.append(h("span", {}, bad.length ? `⚠ ${bad.length} ${noun}${bad.length === 1 ? " is" : "s are"} missing something: ${Object.entries(counts).map(([k, n]) => `${n} without a ${k}`).join(", ")}.` : "Nothing is missing now."),
+      h("button", { class: "btn small", onclick: () => { onlyMissing = !onlyMissing; draw(); } }, onlyMissing ? "Show all" : "Show only these"));
+  };
+  if (!STATUS) loadStatus().then(() => { if (section === id) draw(); });
   const search = h("input", { type: "search", placeholder: `Search ${def.label.toLowerCase()}…`, oninput: () => draw() });
   const box = h("div", { class: "items" });
   const manual = () => { items.unshift({}); markDirty(); draw(0); };
@@ -857,18 +934,20 @@ function viewList(id) {
            b.disabled = false; b.textContent = "Sync Letterboxd";
          } }, "Sync Letterboxd"),
          h("button", { class: "btn", title: "Fill in when you watched each film, from your full Letterboxd export (.zip)", onclick: () => importIn.click() }, "Import export"), importIn]
-      : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder, note] : []), box, mobileFoot());
+      : [h("button", { class: "btn", onclick: manual }, "+ Add")])), ...(finder ? [finder, note] : []), warn, box, mobileFoot());
 
   function draw(openIndex) {
     const q = search.value.trim().toLowerCase();
     box.textContent = "";
+    drawWarn();
     items.forEach((it, i) => {
-      const [title, sub] = def.sum(it);
+      const [title, sub] = def.sum(it), miss = missing(id, it);
       if (q && !JSON.stringify(it).toLowerCase().includes(q)) return;
-      const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; })));
+      if (onlyMissing && !miss.length && i !== openIndex) return;
+      const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; drawWarn(); })));
       const card = h("article", { class: "item" + (i === openIndex ? " open" : "") },
         h("header", { onclick: e => { if (!e.target.closest("button")) { card.classList.toggle("open"); if (!card.classList.contains("open")) draw(); } } },
-          h("div", { class: "sum", dir: "auto" }, title || h("i", {}, "untitled"), h("small", {}, sub || "")),
+          h("div", { class: "sum", dir: "auto" }, title || h("i", {}, "untitled"), h("small", {}, sub || "", miss.length ? h("span", { class: "miss", title: "Missing: " + miss.join(", ") }, ` ⚠ no ${miss.join(", no ")}`) : "")),
           h("div", { class: "acts" },
             h("button", { class: "icon", title: "Move up", "aria-label": "Move up", onclick: () => { if (i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; markDirty(); draw(i - 1); } } }, "↑"),
             h("button", { class: "icon", title: "Move down", "aria-label": "Move down", onclick: () => { if (i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; markDirty(); draw(i + 1); } } }, "↓"),

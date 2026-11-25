@@ -16,6 +16,20 @@
   /* ---------- shelf: tabs, sorting ---------- */
   // a tab's pictures all load as soon as it's opened (not one by one as you scroll)
   const loadPanel = panel => panel && $$('img[loading="lazy"]', panel).forEach(img => { if (img.closest("[role=tabpanel]") === panel) img.loading = "eager"; });
+  // Frames, Watchlist, Games, Books and Stats arrive only when their tab is first opened (data-src)
+  const parts = new Map();
+  function fillPanel(panel) {
+    if (!panel || !panel.dataset.src) return Promise.resolve(panel);
+    if (!parts.has(panel.id)) parts.set(panel.id, fetch(root + panel.dataset.src).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); }).then(html => {
+      panel.innerHTML = html;
+      delete panel.dataset.src;
+      if (!panel.hidden) loadPanel(panel);
+      document.dispatchEvent(new CustomEvent("panelfilled", { detail: panel }));
+      return panel;
+    }).catch(() => { parts.delete(panel.id); panel.innerHTML = '<p class="empty-note">Couldn\'t load this tab. Check your connection and open it again.</p>'; return panel; }));
+    return parts.get(panel.id);
+  }
+  const fillAll = () => Promise.all($$("[role=tabpanel][data-src]").map(fillPanel));
   function openTab(id, push) {
     const tab = document.getElementById("tab-" + id);
     if (!tab) return;
@@ -28,9 +42,9 @@
     const outer = row.parentElement.closest("[role=tabpanel]");
     if (outer) openTab(outer.id); // opening Watchlist also opens Movies
     const panel = document.getElementById(id);
-    loadPanel(panel);
+    loadPanel(panel); fillPanel(panel);
     const inner = panel && $("[role=tablist]", panel); // and opening Movies loads its open inner tab
-    if (inner) loadPanel(document.getElementById(($("[aria-selected=true]", inner) || {}).getAttribute?.("aria-controls")));
+    if (inner) { const ip = document.getElementById(($("[aria-selected=true]", inner) || {}).getAttribute?.("aria-controls")); loadPanel(ip); fillPanel(ip); }
     // on phones the tab row scrolls sideways: keep the chosen tab in view
     if (row.scrollWidth > row.clientWidth) row.scrollTo({ left: row.scrollLeft + tab.getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - tab.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
     if (push) history.replaceState(null, "", "#" + id);
@@ -40,14 +54,16 @@
     const panel = el.matches("[role=tabpanel]") ? el : el.closest("[role=tabpanel]");
     if (panel) openTab(panel.id);
   }
-  $$("[data-tab]").forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab, true)));
+  // clicks are handled on the document, so they also work in tabs that arrive later
+  const on = (sel, fn) => document.addEventListener("click", e => { const el = e.target.closest(sel); if (el) fn(el, e); });
+  on("[data-tab]", t => openTab(t.dataset.tab, true));
   const SORTS = {
     recent: (a, b) => a.dataset.i - b.dataset.i,
     year: (a, b) => b.dataset.year - a.dataset.year || b.dataset.score - a.dataset.score,
     score: (a, b) => b.dataset.score - a.dataset.score || b.dataset.liked - a.dataset.liked || a.dataset.i - b.dataset.i,
     liked: (a, b) => b.dataset.liked - a.dataset.liked || b.dataset.score - a.dataset.score || a.dataset.i - b.dataset.i,
   };
-  $$("[data-sort]").forEach(btn => btn.addEventListener("click", () => {
+  on("[data-sort]", btn => {
     const list = btn.closest("[role=tabpanel]").querySelector(".list");
     // pressing the active sort again flips the order
     const flip = btn.getAttribute("aria-pressed") === "true" && btn.dataset.arrow === "↓";
@@ -56,20 +72,27 @@
     const rows = $$("li", list).sort(SORTS[btn.dataset.sort]);
     if (flip) rows.reverse();
     rows.forEach(li => list.appendChild(li));
-  }));
+  });
 
   /* ---------- stats: view switches + "which films?" lists ---------- */
-  $$(".seg button").forEach(b => b.addEventListener("click", () => {
+  on(".seg button", b => {
     const fig = b.closest("figure");
     $$(".seg button", fig).forEach(x => x.setAttribute("aria-pressed", x === b));
     $$(".seg-view", fig).forEach((v, i) => (v.hidden = String(i) !== b.dataset.seg));
-  }));
-  const filmData = (() => { try { return JSON.parse(($("#statfilms") || {}).textContent || "[]"); } catch (_) { return []; } })();
-  const flist = $(".filmlist");
-  if (flist) {
+  });
+  // Stats arrives with its own film list and dialog
+  let filmData = null, flist = null;
+  const statsReady = () => {
+    if (flist || !$(".filmlist")) return !!flist;
+    try { filmData = JSON.parse(($("#statfilms") || {}).textContent || "[]"); } catch (_) { filmData = []; }
+    flist = $(".filmlist");
     flist.addEventListener("click", e => { if (e.target === flist) flist.close(); });
     $(".fl-close", flist).addEventListener("click", () => flist.close());
-    $$("[data-films]").forEach(el => el.addEventListener("click", () => {
+    return true;
+  };
+  {
+    on("[data-films]", el => {
+      if (!statsReady()) return;
       const films = el.dataset.films.split(",").filter(Boolean).map(Number).map(i => filmData[i]).filter(Boolean);
       $(".fl-title", flist).textContent = `${el.dataset.ftitle} · ${films.length} ${films.length === 1 ? "film" : "films"}`;
       const ul = $(".fl-list", flist);
@@ -80,9 +103,10 @@
         a.innerHTML = "<span class=fp aria-hidden=true></span><span class=t></span><span class=y></span><span class=r></span>";
         if (f.p) { const im = new Image(); im.src = root + f.p; im.alt = ""; im.decoding = "async"; a.children[0].append(im); }
         a.children[1].textContent = f.t; a.children[2].textContent = f.y; a.children[3].textContent = f.r;
-        // jump to the film on the Movies tab
-        a.addEventListener("click", e => {
+        // open the film's popup (or, if that can't load, jump to it on the Movies tab)
+        a.addEventListener("click", async e => {
           e.preventDefault(); flist.close();
+          if (await openFilm(f.id)) return;
           if (location.hash === a.hash) focusHash(); else location.hash = a.hash;
           const row = document.getElementById(f.id); // a short highlight so you can see where you landed
           if (row) { row.classList.add("flash"); setTimeout(() => row.classList.remove("flash"), 1600); }
@@ -92,14 +116,87 @@
       openDialog(flist);
       const first = $("a", ul);
       if (first) first.focus({ preventScroll: true });
-    }));
+    });
   }
 
+  /* ---------- watchlist: pick one for me ---------- */
+  let lastPick = null;
+  on(".wl-pick", btn => {
+    const items = $$(".wl > li", btn.closest("[role=tabpanel]")).filter(li => li !== lastPick);
+    if (!items.length) return;
+    // a quick shuffle through a few posters, then it lands on one
+    let n = reduce ? 0 : 8, li;
+    const spin = () => {
+      li = items[(Math.random() * items.length) | 0];
+      $$(".wl > li").forEach(x => { x.classList.toggle("picked", x === li); x.classList.toggle("dimmed", x !== li); });
+      if (n-- > 0) return setTimeout(spin, 70 + (8 - n) * 18);
+      lastPick = li;
+      btn.firstChild.textContent = `→ ${$(".t", li).textContent} · pick again`;
+      li.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+      $("a", li).focus({ preventScroll: true });
+      setTimeout(() => $$(".wl > li.dimmed").forEach(x => x.classList.remove("dimmed")), 2200);
+    };
+    spin();
+  });
+
+  /* ---------- film popup: tap a movie poster ---------- */
+  let cards = null;
+  const loadCards = () => cards || (cards = fetch(root + "parts/films.json").then(r => r.json()).catch(() => { cards = null; return null; }));
+  const fdlg = document.createElement("dialog");
+  fdlg.className = "film-dlg"; fdlg.setAttribute("aria-label", "Film");
+  fdlg.addEventListener("click", e => { if (e.target === fdlg || e.target.closest(".fd-close")) fdlg.close(); });
+  const H = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
+  const img = (src, cls) => { const im = new Image(); im.src = root + src; im.alt = ""; im.decoding = "async"; if (cls) im.className = cls; return im; };
+  const svg = (inner, cls) => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("class", cls); s.setAttribute("aria-hidden", "true"); s.innerHTML = inner; return s; };
+  const initials = n => n.split(/\s+/).filter(w => /^\p{L}/u.test(w)).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  const person = (p, role) => {
+    const el = H("div", "fd-person");
+    el.append(p.p ? img(p.p, "fd-face") : H("span", "fd-face none", initials(p.n)), H("b", null, p.n));
+    if (role) el.append(H("small", null, role));
+    return el;
+  };
+  const fmtDate = w => { const d = new Date(w + "T12:00:00Z"); return isNaN(d) ? w : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); };
+  async function openFilm(id) {
+    const data = await loadCards();
+    const f = data && data.films[id];
+    if (!f) return false;
+    fdlg.textContent = "";
+    const close = H("button", "fd-close", "×"); close.type = "button"; close.setAttribute("aria-label", "Close");
+    const top = H("div", "fd-top");
+    top.append(f.p ? img(f.p, "fd-poster") : H("span", "fd-poster none", f.t));
+    const head = H("div", "fd-head");
+    const h = H("h2", null, f.t); if (f.y) h.append(" ", H("span", "fd-year", f.y));
+    head.append(h);
+    if (f.r || f.l) head.append(H("p", "fd-rating", `${f.r}${f.l ? " ♥" : ""}`));
+    const facts = [f.w && `Watched ${fmtDate(f.w)}`, f.rt && `${f.rt} min`, f.avg && `Letterboxd ${f.avg}★`].filter(Boolean);
+    if (facts.length) head.append(H("p", "fd-facts", facts.join(" · ")));
+    if (f.g.length) { const g = H("ul", "fd-tags"); f.g.forEach(n => { const li = H("li"); li.append(svg(data.icons[n] || "", "fd-ic"), n); g.append(li); }); head.append(g); }
+    if (f.co.length) { const c = H("ul", "fd-tags"); f.co.forEach(n => { const d = data.shapes[n], li = H("li"); li.append(svg(d ? `<path d="${d}"/>` : '<circle cx="12" cy="12" r="2.5"/>', "fd-ic shape"), n); c.append(li); }); head.append(c); }
+    top.append(head);
+    fdlg.append(close, top);
+    if (f.note) fdlg.append(H("p", "fd-note", f.note));
+    if (f.f) { const fr = H("a", "fd-frame"); fr.href = root + f.ff; fr.target = "_blank"; fr.rel = "noopener"; fr.setAttribute("aria-label", "Open the frame"); fr.append(img(f.f)); fdlg.append(fr); }
+    if (f.d || f.c.length) {
+      const ppl = H("div", "fd-people");
+      if (f.d) ppl.append(person(f.d, "Director"));
+      f.c.forEach(p => ppl.append(person(p, "")));
+      fdlg.append(ppl);
+    }
+    if (f.lb) { const a = H("a", "fd-lb", "Letterboxd ↗"); a.href = f.lb; a.target = "_blank"; a.rel = "noopener"; fdlg.append(a); }
+    if (!fdlg.isConnected) document.body.append(fdlg);
+    openDialog(fdlg);
+    close.focus({ preventScroll: true });
+    return true;
+  }
+  on("#films .list.pl > li", li => openFilm(li.id));
+  if ($("#films")) loadCards(); // small, and makes the first tap instant
+
   /* ---------- deep links (#id) land focus on that item ---------- */
-  const focusHash = () => {
+  const focusHash = (retry = true) => {
     if (!location.hash) return;
     const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    if (!el) return;
+    // the item may be in a tab that hasn't arrived yet: fetch the tabs, then look again
+    if (!el) { if (retry && $("[role=tabpanel][data-src]")) fillAll().then(() => focusHash(false)); return; }
     reveal(el);
     if (el.tagName === "DETAILS") el.open = true;
     const t = el.matches("[data-item]") ? el : el.querySelector("[data-item]") || el;
@@ -108,7 +205,7 @@
     t.scrollIntoView({ block: "center" });
   };
   focusHash();
-  addEventListener("hashchange", focusHash);
+  addEventListener("hashchange", () => focusHash());
   $$("[role=tabpanel]").filter(p => !p.closest("[hidden]")).forEach(loadPanel); // the tabs open on arrival
 
   /* ---------- moving between items: arrows / WASD go in that direction on screen ---------- */
@@ -249,13 +346,13 @@
     [cur + 1, cur - 1].forEach(k => { const n = group[(k + group.length) % group.length]; if (n) new Image().src = n.dataset.src; });
   }
   if (viewer) {
-    $$("[data-view]").forEach(el => el.addEventListener("click", () => {
+    on("[data-view]", el => {
       group = $$(`[data-view="${el.dataset.view}"]`);
       viewer.classList.toggle("bare", el.dataset.view === "design"); // posters show on their own, no caption
       opener = el;
       show(group.indexOf(el));
       openDialog(viewer);
-    }));
+    });
     $(".vw-close", viewer).addEventListener("click", () => viewer.close());
     $(".vw-prev", viewer).addEventListener("click", () => show(cur - 1));
     $(".vw-next", viewer).addEventListener("click", () => show(cur + 1));
@@ -298,8 +395,9 @@
 
     const item = currentItem();
     const tabs = $$(".tabs a");
-    if (k === " " && item) { e.preventDefault(); item.click(); } // space opens the selected item (enter works natively)
-    else if (k === "Enter" && item && !item.matches("a,button,summary")) { e.preventDefault(); item.click(); }
+    const press = el => (el.click ? el.click() : el.dispatchEvent(new MouseEvent("click", { bubbles: true }))); // map countries are SVG
+    if (k === " " && item) { e.preventDefault(); press(item); } // space opens the selected item (enter works natively)
+    else if (k === "Enter" && item && !item.matches("a,button,summary")) { e.preventDefault(); press(item); }
     else if (k === "?" || (e.code === "Slash" && e.shiftKey)) { e.preventDefault(); openDialog(help); }
     else if (/^[1-9]$/.test(k) && tabs[k - 1]) { e.preventDefault(); location.href = tabs[k - 1].href; }
     else if (k === "q" || k === "Q") { e.preventDefault(); go(d.prev); }
@@ -370,18 +468,20 @@
   }
 
   /* ---------- tiles fade in as they enter the viewport ---------- */
-  const tiles = $$(".tile");
-  if (tiles.length) {
-    const io = new IntersectionObserver(entries => entries.forEach(en => {
-      const t = en.target, v = t.querySelector("video");
-      if (en.isIntersecting) {
-        if (!t.classList.contains("seen")) { t.style.setProperty("--d", (Math.random() * 0.3).toFixed(2) + "s"); t.classList.add("seen"); }
-        if (v) v.play().catch(() => {});
-      } else if (v) v.pause();
-    }), { rootMargin: "0px 0px -40px 0px" });
-    tiles.forEach(t => io.observe(t));
+  const tileIO = new IntersectionObserver(entries => entries.forEach(en => {
+    const t = en.target, v = t.querySelector("video");
+    if (en.isIntersecting) {
+      if (!t.classList.contains("seen")) { t.style.setProperty("--d", (Math.random() * 0.3).toFixed(2) + "s"); t.classList.add("seen"); }
+      if (v) v.play().catch(() => {});
+    } else if (v) v.pause();
+  }), { rootMargin: "0px 0px -40px 0px" });
+  const watchTiles = (el = document) => {
+    const tiles = $$(".tile", el);
+    tiles.forEach(t => tileIO.observe(t));
     setTimeout(() => tiles.forEach(t => { if (t.getBoundingClientRect().top < innerHeight) t.classList.add("seen"); }), 900);
-  }
+  };
+  watchTiles();
+  document.addEventListener("panelfilled", e => watchTiles(e.detail));
 
   /* ---------- caption card pinned to the mouse ---------- */
   const cap = $(".cap");
@@ -427,6 +527,7 @@
       else { onScreen.delete(en.target); en.target.classList.remove("mb"); }
     }), { rootMargin: "150px 0px" });
     $$(CARDS).forEach(c => cardIO.observe(c));
+    document.addEventListener("panelfilled", e => $$(CARDS, e.detail).forEach(c => cardIO.observe(c)));
     const start = () => {
       mode = [...onScreen].some(c => c.offsetParent) ? "cards" : "page"; // offsetParent: skip cards in hidden tabs
       if (mode === "cards") onScreen.forEach(c => c.classList.add("mb"));

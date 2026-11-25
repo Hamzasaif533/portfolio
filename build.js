@@ -66,6 +66,11 @@ function imageSize(src) {
         if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) { out = [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)]; break; }
         i += 2 + len;
       }
+    } else if (b.toString("ascii", 4, 8) === "ftyp") { // mp4 / mov: the video track's size from its tkhd box
+      for (let i = b.indexOf("tkhd"); i > 0 && !out; i = b.indexOf("tkhd", i + 4)) {
+        const at = i + 4 + (b[i + 4] === 1 ? 88 : 76), w = b.readUInt32BE(at) >>> 16, h = b.readUInt32BE(at + 4) >>> 16;
+        if (w && h) out = [w, h];
+      }
     } else {
       const tag = (b.toString("utf8", 0, 3000).match(/<svg[^>]*>/) || [])[0];
       if (tag) {
@@ -224,8 +229,7 @@ const TABS = [
   ["About", "about.html", "about"],
 ];
 
-const fontsUrl = arabic =>
-  `https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500${arabic ? "&family=Firjar:wght@400;600" : ""}&display=swap`;
+const fontsUrl = () => "https://fonts.googleapis.com/css2?family=Firjar:wght@400;600&display=swap"; // Arabic only; Geist Mono is in assets/fonts
 
 /* shared dialogs: search, shortcut list (opened with ?), media viewer */
 const DIALOGS = `
@@ -280,11 +284,11 @@ function layout({ site, css, title, description, root, active, body, bodyClass =
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#000"/><text x="16" y="22" font-size="17" text-anchor="middle" font-family="monospace" fill="#fff">*${esc(site.initial || site.name[0])}</text></svg>`)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${fontsUrl(hasArabic(body + title))}">
+<link rel="preload" href="${root}assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="${root}${css}">
+${hasArabic(body + title) ? `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="${fontsUrl()}">` : ""}
 <noscript><style>.tile .media{opacity:1!important;transform:none!important}</style></noscript>
-<style>${css}</style>
 <script type="speculationrules">${JSON.stringify(spec)}</script>
 <script>for(const t of["pageswap","pagereveal"])addEventListener(t,e=>{const v=e.viewTransition;if(v)for(const p of["ready","finished","updateCallbackDone"])v[p]&&v[p].catch(()=>{})})</script>
 </head>
@@ -425,7 +429,7 @@ function filmDiary(movies = []) {
     <div class="frames">${withFrames.map(m => {
       const meta = [m.year, m.by, ratingText(m), m.watched ? `watched ${m.watched.replace(/-/g, ".")}` : ""].filter(Boolean).join(" · ");
       return `<button type="button" class="tile frame" id="f-${slug(m.title)}" data-item${viewAttrs("frames", m.frame, m.title, meta, m.note)}>
-        ${tileImg(smallFrame(m.frame), `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
+        ${tileImg(webp(smallFrame(m.frame)), `Frame from ${m.title}`, m.frameWidth, m.frameHeight, false)}
       </button>`;
     }).join("")}</div>
   </section>${credit}`;
@@ -436,9 +440,9 @@ function watchlistPanel(site) {
   const wl = site.watchlist || [];
   if (!wl.length) return `<p class="empty-note">Your Letterboxd watchlist shows here after the next build.</p>`;
   const note = wl.some(f => f.lbRating) ? `<p class="wl-note">Ratings are Letterboxd averages</p>` : "";
-  return note + `<ul class="list pl wl">${wl.map(f => {
+  return `<div class="wl-bar"><button type="button" class="wl-pick" data-item><span>Pick one for me</span></button>${note}</div><ul class="list pl wl">${wl.map(f => {
     const url = `https://letterboxd.com/film/${f.slug}/`, p = coverPath("film", f);
-    const poster = `<span class="p" aria-hidden="true">${localFile(p) ? `<img src="${esc(p)}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(f.title)}</span>`}</span>`;
+    const poster = `<span class="p" aria-hidden="true">${localFile(p) ? `<img src="${esc(webp(p))}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(f.title)}</span>`}</span>`;
     return `<li id="w-${slug(f.title)}"><a href="${esc(url)}"${linkAttrs(url)} data-item>${poster}<span class="t">${esc(f.title)}</span><span class="y">${esc(f.year || "")}</span><span class="r"${f.lbRating ? ` title="Letterboxd average" aria-label="Letterboxd average ${f.lbRating.toFixed(2)} out of 5"` : ""}>${f.lbRating ? `${f.lbRating.toFixed(1)}<i>★</i>` : ""}</span></a></li>`;
   }).join("")}</ul>`;
 }
@@ -547,14 +551,14 @@ function statsPanel(site) {
   const langIcon = name => GENRE_ICONS._silent && /no spoken/i.test(name)
     ? `<svg class="ic genre" viewBox="0 0 24 24" aria-hidden="true">${GENRE_ICONS._silent}</svg>`
     : `<span class="ic lang" aria-hidden="true">${esc(LANG_CODES[name] || String(name).slice(0, 2).toUpperCase())}</span>`;
-  const posterOf = m => localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "";
+  const posterOf = m => webp(localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "");
   const listOf = (map, rated, icon, n = 8, min = 2) => rankList(asRows(rated ? highestRated(map, n, min) : mostWatched(map, n, min)), { icon });
 
   /* ---- Top 4 ---- */
   const favs = (site.favourites || []).slice(0, 4);
   const top4 = favs.length ? `<section class="top4-wrap" aria-label="Top 4">
     <p class="st-label"><span>Top 4</span></p>
-    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)}>${f.poster ? `<img src="${esc(f.poster)}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
+    <ol class="top4">${favs.map(f => { const url = `https://letterboxd.com/film/${f.slug}/`; return `<li><a href="${esc(url)}"${linkAttrs(url)}>${f.poster ? `<img src="${esc(webp(f.poster))}" alt="${esc(f.title)}" width="230" height="345" decoding="async">` : `<span class="ph">${esc(f.title)}</span>`}<span class="cap4">${esc(f.title)}${f.year ? ` <i>${f.year}</i>` : ""}</span></a></li>`; }).join("")}</ol>
   </section>` : "";
 
   /* ---- headline numbers ---- */
@@ -609,7 +613,7 @@ function statsPanel(site) {
   const decadesBest = bestDecades.length ? `<figure class="chart wide"><figcaption><span>Highest rated decades</span><span>2+ rated films</span></figcaption>
     <ol class="decades">${bestDecades.map(([d, l]) => {
       const tops = l.filter(m => m.rating != null).sort((a, b) => b.rating - a.rating).slice(0, 4);
-      return `<li><button${pick(ids(l), `${d}s`)}><span class="dh"><b>${d}s</b><span>${avgStr(l)} · ${plural(l.length, "film")}</span></span><span class="thumbs">${tops.map(m => m.frame ? `<img src="${esc(smallFrame(m.frame))}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${esc(m.title)}</span>`).join("")}</span></button></li>`;
+      return `<li><button${pick(ids(l), `${d}s`)}><span class="dh"><b>${d}s</b><span>${avgStr(l)} · ${plural(l.length, "film")}</span></span><span class="thumbs">${tops.map(m => m.frame ? `<img src="${esc(webp(smallFrame(m.frame)))}" alt="" loading="lazy" decoding="async">` : `<span class="ph">${esc(m.title)}</span>`).join("")}</span></button></li>`;
     }).join("")}</ol></figure>` : "";
 
   /* ---- genres, countries & languages ---- */
@@ -619,6 +623,26 @@ function statsPanel(site) {
     ["Most watched", `<div class="gcl">${gclCol("Genres", genres)}${gclCol("Countries", countries)}${gclCol("Languages", languages)}</div>`],
     ["Highest rated", `<div class="gcl">${gclCol("Genres", genres, "rated")}${gclCol("Countries", countries, "rated")}${gclCol("Languages", languages, "rated")}</div>`],
   ])}</div>`;
+
+  /* ---- world map: countries you've watched films from (lighter = more films); tap one to list them ---- */
+  const world = readWorld();
+  const MAP_STEPS = [[20, "#e6e6e6", "20+"], [5, "#a8a8a8", "5–19"], [2, "#6e6e6e", "2–4"], [1, "#454545", "1"]];
+  const mapBox = world && countries.size ? (() => {
+    const byAtlas = new Map(); // atlas name -> [your name, films]
+    for (const [n, l] of countries) byAtlas.set(COUNTRY_ALIAS[n] || n, [n, l]);
+    const land = Object.entries(world.countries).map(([atlas, d]) => {
+      const hit = byAtlas.get(atlas);
+      if (!hit) return `<path d="${d}"/>`;
+      const [n, l] = hit, fill = MAP_STEPS.find(([min]) => l.length >= min)[1];
+      return `<path class="on" d="${d}" fill="${fill}"${pick(ids(l), n).replace(' type="button"', "")} tabindex="0" role="button" aria-label="${esc(n)}: ${plural(l.length, "film")}"><title>${esc(n)} · ${plural(l.length, "film")}</title></path>`;
+    }).join("");
+    const missing = [...countries.keys()].filter(n => !world.countries[COUNTRY_ALIAS[n] || n]);
+    return `<div id="st-map"><figure class="chart wide"><figcaption><span>Countries</span><span>${fmtN(countries.size)} ${countries.size === 1 ? "country" : "countries"}</span></figcaption>
+      <svg class="worldmap" viewBox="0 0 ${world.w} ${world.h}" role="group" aria-label="World map of the countries your films are from">${land}</svg>
+      <p class="map-key" aria-hidden="true">${MAP_STEPS.slice().reverse().map(([, c, t]) => `<span><i style="background:${c}"></i>${t}</span>`).join("")}<span class="films">films</span></p>
+      ${missing.length ? `<p class="chart-note">Too small for the map: ${missing.map(esc).join(", ")}</p>` : ""}
+    </figure></div>`;
+  })() : "";
 
   /* ---- rated higher / lower than the Letterboxd average ---- */
   const diffs = rated.filter(m => meta(m).rating).map(m => ({ m, d: m.rating - meta(m).rating }));
@@ -650,7 +674,7 @@ function statsPanel(site) {
   const days = `<figure class="chart"><figcaption><span>Day of the week</span><span>${dated.length} dated</span></figcaption>${barChart(DAYS.map((d, i) => ({ label: d, tip: `${d}s`, short: d[0], ids: ids(perDay.get(i) || []) })))}</figure>`;
 
   // the films every button above can list
-  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame ? smallFrame(m.frame) : "", p: localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "" }));
+  const data = movies.map(m => ({ t: m.title, y: m.year || "", r: ratingText(m), id: `s-${slug(m.title)}`, f: m.frame ? webp(smallFrame(m.frame)) : "", p: posterOf(m) }));
   return `<div class="stats">
     ${top4}
     <div class="tiles-stat">${tiles}</div>
@@ -661,6 +685,7 @@ function statsPanel(site) {
       ${decadesBest}
       ${vsAvg}
       ${gcl}
+      ${mapBox}
       ${dirBox}
       ${castBox}
       ${studioBox}
@@ -670,14 +695,16 @@ function statsPanel(site) {
   </div>`;
 }
 
+const LAZY_TABS = new Set(["diary", "watchlist", "games", "books", "stats"]);
 function shelfPage(site) {
+  shelfPage.parts = {};
   const movies = byWatched(site.movies || []), books = site.books || [], games = site.games || [];
   // rows are plain (frames open from the Movie frames tab only)
   const frameView = () => "";
   // every movie, game and book is a poster card: the poster you chose in the editor, else the one found for it
   const thumb = (it, kind) => {
     const own = localFile(it.poster), p = own ? it.poster : localFile(coverPath(kind, it)) ? coverPath(kind, it) : "";
-    return `<span class="p" aria-hidden="true">${p ? `<img src="${esc(p)}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(it.title)}</span>`}</span>`;
+    return `<span class="p" aria-hidden="true">${p ? `<img src="${esc(webp(p))}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(it.title)}</span>`}</span>`;
   };
   const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
       ${posters ? thumb(it, posters) : ""}<span class="t">${esc(it.title)}</span>
@@ -693,7 +720,11 @@ function shelfPage(site) {
   // tabs: Movies (with Movies / Frames / Watchlist inside), Games, Books, Stats
   const tabs = (cls, label, list) => `${cls === "shelf-tabs" ? `<div class="shelf-head">` : ""}<div class="${cls}" role="tablist" aria-label="${label}">${list.map(([id, t, n], i) =>
       `<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${i === 0}" data-item data-tab="${id}">${t}${n == null ? "" : `<span>${pad2(n)}</span>`}</button>`).join("")}</div>${cls === "shelf-tabs" ? `</div>` : ""}
-    ${list.map(([id, , , body], i) => `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`).join("")}`;
+    ${list.map(([id, , , body], i) => {
+      if (!LAZY_TABS.has(id)) return `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}"${i ? " hidden" : ""}>${body}</section>`;
+      shelfPage.parts[id] = body;
+      return `<section class="panel" id="${id}" role="tabpanel" aria-labelledby="tab-${id}" data-src="parts/shelf-${id}"${i ? " hidden" : ""}><p class="empty-note">Loading…</p><noscript><p class="empty-note">This tab needs JavaScript.</p></noscript></section>`;
+    }).join("")}`;
   const MOVIE_TABS = [
     ["films", "Movies", movies.length, sortBar + list(movies, "film")],
     ["diary", "Frames", frames, filmDiary(movies) || `<p class="empty-note">Add a <code>frame</code> to a movie to start your film diary.</p>`],
@@ -708,6 +739,27 @@ function shelfPage(site) {
   return `<main class="shelf" id="main">${pageHead("Shelf")}
     ${tabs("shelf-tabs", "Shelf", TABS_)}
   </main>`;
+}
+
+/* everything the film popup shows, by the film's row id (s-<title>) */
+function filmCards(site) {
+  const pics = readPics(), photos = site.photos || {};
+  const meta = m => (site.meta || {})[m.title + "|" + (m.year || "")] || {};
+  const face = name => { const own = photos[name], e = (pics.person || {})[name] || {}; return { n: name, p: localFile(own) ? own : e.img && localFile(e.img) ? e.img : "" }; };
+  const icons = {}, films = {}, shapes = {};
+  for (const m of site.movies || []) {
+    const x = meta(m), poster = localFile(m.poster) ? m.poster : localFile(coverPath("film", m)) ? coverPath("film", m) : "";
+    const genres = [].concat(x.genres || []);
+    genres.forEach(g => { icons[g] = GENRE_ICONS[g] || GENRE_ICONS._film; });
+    films[`s-${slug(m.title)}`] = {
+      t: m.title, y: m.year || "", r: m.rating != null ? stars(m.rating) : "", l: !!m.liked, note: m.note || "", w: m.watched || "",
+      p: webp(poster), f: m.frame ? webp(smallFrame(m.frame)) : "", ff: m.frame || "",
+      d: m.by ? face(m.by) : null, c: [].concat(x.cast || []).slice(0, 3).map(face),
+      co: [].concat(x.countries || []).map(n => { shapes[n] = (pics.shapes || {})[n] || ""; return n; }), g: genres,
+      rt: x.runtime || 0, avg: x.rating ? x.rating.toFixed(1) : "", lb: x.slug ? `https://letterboxd.com/film/${x.slug}/` : "",
+    };
+  }
+  return { icons, shapes, films };
 }
 
 function aboutPage(site) {
@@ -803,9 +855,10 @@ function write(rel, content) {
 }
 
 const SITE_JSON = path.join(ROOT, "content/site.json");
-function loadSite() {
+function loadSite(draft) {
   let site;
-  if (fs.existsSync(SITE_JSON)) site = JSON.parse(fs.readFileSync(SITE_JSON, "utf8"));
+  if (draft) site = JSON.parse(JSON.stringify(draft)); // unsaved content from the editor (local preview)
+  else if (fs.existsSync(SITE_JSON)) site = JSON.parse(fs.readFileSync(SITE_JSON, "utf8"));
   else {
     const p = require.resolve("./content/site.js"); // older format still works
     delete require.cache[p];
@@ -823,7 +876,7 @@ function loadSite() {
     return { ...f, lbRating: (mf[f.slug] || {}).rating, own: !!own, poster: own || (fs.existsSync(path.join(ROOT, lb)) ? lb : "") };
   });
   site.meta = {}; // film title|year -> Letterboxd details (countries, genres, cast…), for the stats
-  for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.meta[m.title + "|" + (m.year || "")] = mf[slug]; }
+  for (const m of site.movies || []) { const slug = mt[`${String(m.title).toLowerCase()}|${m.year || ""}`]; if (slug && mf[slug]) site.meta[m.title + "|" + (m.year || "")] = { ...mf[slug], slug }; }
   return site;
 }
 
@@ -846,6 +899,8 @@ const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCa
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
 // posters and covers live in assets/posters/<film|game|book>/<title>-<year>.jpg (the editor uses the same names)
 const coverPath = (kind, it) => `assets/posters/${kind}/${[slug(it.title), it.year].filter(Boolean).join("-")}.jpg`;
+// the .webp copy of a picture when there is one (tools/webp.py makes them), else the picture itself
+const webp = p => { if (!p || !/[.](jpe?g|png)$/i.test(p)) return p; const w = p.replace(/[.][a-z]+$/i, ".webp"); return localFile(w) ? w : p; };
 // a film frame's small copy (assets/frames-sm, made by the editor), for grids; the full frame is for the viewer
 const smallFrame = p => { const s = String(p || "").replace(/^assets\/frames\//, "assets/frames-sm/").replace(/\.\w+$/, ".jpg"); return s !== p && localFile(s) ? s : p; };
 const localFile = p => p && !/^(https?:)?\/\//i.test(p) && fs.existsSync(path.join(ROOT, p)); // a file in this repo
@@ -1021,11 +1076,12 @@ async function refreshRepos() {
   }
 }
 
-function build() {
+function build(draft) {
   const t0 = Date.now();
   sizeCache.clear();
-  const site = loadSite();
-  const css = minifyCSS(fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8"));
+  const site = loadSite(draft);
+  const cssText = minifyCSS(fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8"));
+  const css = `styles.${require("crypto").createHash("sha1").update(cssText).digest("hex").slice(0, 10)}.css`;
 
   const postDir = path.join(ROOT, "content/posts");
   const posts = (fs.existsSync(postDir) ? fs.readdirSync(postDir) : [])
@@ -1043,6 +1099,8 @@ function build() {
   page("code.html", { title: `Code — ${site.name}`, description: desc, root: "", active: "code", body: codePage(site) });
   page("design.html", { title: `Design — ${site.name}`, description: desc, root: "", active: "design", body: designPage(site), viewer: true });
   page("shelf.html", { title: `Shelf — ${site.name}`, description: desc, root: "", active: "shelf", body: shelfPage(site), viewer: true });
+  for (const [id, html] of Object.entries(shelfPage.parts || {})) write(`parts/shelf-${id}.html`, cleanUrls(html));
+  write("parts/films.json", JSON.stringify(filmCards(site)));
   page("about.html", { title: `About — ${site.name}`, description: desc, root: "", active: "about", body: aboutPage(site) });
 
   posts.forEach((p, i) => {
@@ -1059,6 +1117,7 @@ function build() {
   });
 
   write("search.json", JSON.stringify(searchIndex(site, posts).map(it => ({ ...it, u: cleanUrl(it.u) }))));
+  write(css, cssText);
   write("app.js", minifyJS(fs.readFileSync(path.join(ROOT, "src/app.js"), "utf8")));
   // the editor on the live site: works only with your GitHub token (see README → Edit from anywhere)
   const adminHtml = fs.readFileSync(path.join(ROOT, "src/admin.html"), "utf8");
@@ -1070,13 +1129,25 @@ function build() {
     const w = statsPanel.wanted || { person: new Set(), studio: new Set(), role: {} }, pics = readPics();
     const entry = kind => name => { const e = (pics[kind] || {})[name] || {}; return { name, role: w.role[name], found: e.img && localFile(e.img) ? e.img : "", file: e.file || "" }; };
     write("admin/people.json", JSON.stringify({ person: [...w.person].map(entry("person")), studio: [...w.studio].map(entry("studio")) }));
+    // for the editor's warnings: shelf items whose picture the build couldn't find
+    const noCover = (kind, list) => (list || []).filter(it => it.title && !(/^https?:/i.test(it.poster || "") || localFile(it.poster) || localFile(coverPath(kind, it)))).map(it => it.title + "|" + (it.year || ""));
+    write("admin/status.json", JSON.stringify({
+      cover: { movies: noCover("film", site.movies), books: noCover("book", site.books), games: noCover("game", site.games) },
+      photo: [...w.person].filter(n => { const own = (site.photos || {})[n], e = (pics.person || {})[n] || {}; return !localFile(own) && !(e.img && localFile(e.img)); }),
+      logo: [...w.studio].filter(n => { const own = (site.logos || {})[n], e = (pics.studio || {})[n] || {}; return !localFile(own) && !(e.img && localFile(e.img)); }),
+    }));
   }
-  write("robots.txt", "User-agent: *\nDisallow: /admin/\n");
+  // a Cloudflare build of any branch but main (e.g. the editor's preview) is hidden from search engines
+  const draftCopy = !!process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== "main";
+  write("robots.txt", draftCopy ? "User-agent: *\nDisallow: /\n" : "User-agent: *\nDisallow: /admin/\nDisallow: /parts/\n");
   // host settings (Netlify + Cloudflare Pages both read this file)
   write("_headers", [
     "/admin/*", "  X-Robots-Tag: noindex, nofollow", "  Cache-Control: no-store", "  Referrer-Policy: no-referrer", "  X-Frame-Options: DENY", "",
     "/assets/*", "  Cache-Control: public, max-age=604800", "",
-    "/*", "  X-Content-Type-Options: nosniff", "  Referrer-Policy: strict-origin-when-cross-origin", "",
+    "/assets/fonts/*", "  Cache-Control: public, max-age=31536000, immutable", "",
+    "/styles.*", "  Cache-Control: public, max-age=31536000, immutable", "",
+    "/parts/*", "  X-Robots-Tag: noindex", "",
+    "/*", "  X-Content-Type-Options: nosniff", "  Referrer-Policy: strict-origin-when-cross-origin", ...(draftCopy ? ["  X-Robots-Tag: noindex, nofollow"] : []), "",
   ].join("\n"));
   if (fs.existsSync(path.join(ROOT, "assets"))) fs.cpSync(path.join(ROOT, "assets"), path.join(OUT, "assets"), { recursive: true });
 
@@ -1152,6 +1223,13 @@ function dev() {
       const err = rebuild();
       return send(res, err ? 500 : 200, err ? { error: err } : { ok: true });
     }
+    // preview: rebuild the local site from unsaved content (site.json is not touched); DELETE goes back to the saved content
+    if (p === "/api/preview" && m === "PUT") {
+      const data = await readJSON(req);
+      if (!data || typeof data !== "object" || Array.isArray(data) || !data.name) return send(res, 400, { error: "invalid content" });
+      try { build(data); return send(res, 200, { ok: true }); } catch (e) { rebuild(); return send(res, 500, { error: e.message }); }
+    }
+    if (p === "/api/preview" && m === "DELETE") { const err = rebuild(); return send(res, err ? 500 : 200, err ? { error: err } : { ok: true }); }
     if (p === "/api/posts" && m === "GET") {
       const list = (fs.existsSync(POSTS) ? fs.readdirSync(POSTS) : []).filter(f => f.endsWith(".md")).map(f => {
         const { slug: s, meta } = readRaw(f.slice(0, -3));
@@ -1363,6 +1441,32 @@ function countryShape(topo, name) {
     return out.split("L").length > 3 ? out + "Z" : "";
   }).join("");
 }
+const WORLD_JSON = path.join(ROOT, "content/worldmap.json");
+const readWorld = () => { try { return JSON.parse(fs.readFileSync(WORLD_JSON, "utf8")); } catch (_) { return null; } };
+function worldMap(topo) {
+  const W = 1000, TOP = 84, BOTTOM = -57, H = Math.round(W * (TOP - BOTTOM) / 360); // no Antarctica
+  const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
+  const arcs = topo.arcs.map(a => { let x = 0, y = 0; return a.map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]); });
+  const arc = i => (i < 0 ? arcs[~i].slice().reverse() : arcs[i]);
+  const ring = r => r.flatMap((i, k) => (k ? arc(i).slice(1) : arc(i)));
+  const out = {};
+  for (const g of topo.objects.countries.geometries) {
+    const name = g.properties && g.properties.name;
+    if (!name || name === "Antarctica") continue;
+    const polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
+    const d = polys.map(p => p.map(r => {
+      let path = "", last = null, n = 0;
+      for (const [lon, lat] of ring(r)) {
+        const pt = [Math.round((lon + 180) / 360 * W), Math.round((TOP - lat) / (TOP - BOTTOM) * H)];
+        if (last && Math.abs(pt[0] - last[0]) + Math.abs(pt[1] - last[1]) < 2) continue;
+        path += (last ? "L" : "M") + pt[0] + " " + pt[1]; last = pt; n++;
+      }
+      return n > 2 ? path + "Z" : "";
+    }).join("")).join("");
+    if (d) out[name] = d;
+  }
+  return { w: W, h: H, countries: out };
+}
 const WD = "https://www.wikidata.org/w/api.php?format=json&origin=*";
 const PERSON_RE = /\b(actor|actress|director|film|screenwriter|comedian|performer|voice|singer|rapper|musician|model|producer|cinematographer|animator|writer|television|presenter|artist|dancer|stunt|youtuber|athlete|wrestler|player)/i;
 const STUDIO_RE = /\b(company|compan|studio|production|distribut|film|television|entertainment|pictures|subsidiary|label|broadcast|network|division|enterprise|animation|media|cinema|channel|streaming|service)/i;
@@ -1403,6 +1507,9 @@ async function refreshPics() {
   if (needShapes.length) try {
     const topo = await getJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json");
     for (const c of needShapes) { pics.shapes[c] = countryShape(topo, c); changed = true; }
+  } catch (_) {}
+  if (!readWorld()) try { // the map on Stats (made once)
+    fs.writeFileSync(WORLD_JSON, JSON.stringify(worldMap(await getJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json"))) + "\n");
   } catch (_) {}
   const now = Date.now(), jobs = [];
   const own = { person: site.photos || {}, studio: site.logos || {} };

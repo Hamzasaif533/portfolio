@@ -1,3 +1,6 @@
+/* Geist Mono (SIL Open Font License, assets/fonts/OFL.txt), one variable file for 400 and 500 */
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url(assets/fonts/geist-mono-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url(assets/fonts/geist-mono-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 /* Inlined + minified into every page at build time.
    Style: black, monospace, white primary text, grey secondary, grey capitals for emphasis. */
 :root {
@@ -37,7 +40,7 @@ button { font: inherit; color: inherit; }
 .duo .tile-cap { display: block; padding: 8px 2px 4px; font-size: 12px; line-height: 1.5; color: var(--mute); background: var(--bg); }
 .duo .tile-cap b { font-weight: 400; color: var(--fg); margin-right: 8px; }
 .duo .tile { background: none; border-radius: 0; margin-bottom: 14px; }
-.duo .tile .media { border-radius: 4px; }
+.duo .tile .media { border-radius: 8px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dim { color: var(--mute); }
 
@@ -105,7 +108,7 @@ button { font: inherit; color: inherit; }
 .masonry { columns: 3; column-gap: 6px; }
 .duo { columns: 3; column-gap: 14px; max-width: 1400px; margin: 0 auto; padding: 0 8px; }
 @media (min-width: 1700px) { .duo { columns: 4; max-width: 1800px; } }
-.tile { position: relative; display: block; break-inside: avoid; margin-bottom: 6px; border-radius: 4px; overflow: hidden; background: #0b0b0b; }
+.tile { position: relative; display: block; break-inside: avoid; margin-bottom: 6px; border-radius: 8px; overflow: hidden; background: #0b0b0b; }
 .tile .media { display: block; width: 100%; height: auto; opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
 .tile.ld.seen .media { opacity: 1; transform: none; }
 .tile-cap { display: none; }
@@ -146,7 +149,7 @@ button { font: inherit; color: inherit; }
 .wl a { display: grid; grid-template-columns: minmax(0, 1fr) 4em 4em; gap: 14px; align-items: baseline; padding: 7px 0; }
 .wl .y, .wl .r { text-align: right; }
 .wl .r i { font-style: normal; font-size: .85em; margin-left: 2px; color: var(--dim); }
-.wl-note { padding: 0 0 10px; font-size: 12px; color: var(--dim); text-align: right; }
+.wl-note { padding: 0; font-size: 12px; color: var(--dim); text-align: right; }
 @media (hover: hover) { .wl a:hover .t { color: var(--mute); } }
 
 /* stats: Top 4, headline tiles, one-hue charts; everything that counts films is a button */
@@ -157,11 +160,11 @@ button { font: inherit; color: inherit; }
 .top4-wrap { max-width: 760px; margin: 0 auto 36px; }
 .top4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .top4 a { display: block; }
-.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 4px; background: #0b0b0b; border: 1px solid var(--chip-line); }
+.top4 img, .top4 .ph { display: block; width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover; border-radius: 8px; background: #0b0b0b; border: 1px solid var(--chip-line); }
 .top4 .ph { display: grid; place-items: center; padding: 8px; font-size: 11px; color: var(--mute); text-align: center; }
 .cap4 { display: block; margin-top: 8px; font-size: 12px; line-height: 1.4; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cap4 i { font-style: normal; color: var(--dim); }
-.tiles-stat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
+.tiles-stat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 40px; }
 .stats .tile-stat { display: block; background: var(--bg); padding: 16px 16px 14px; text-align: left; transition: background .15s; }
 .tile-stat b { display: block; font-size: 24px; font-weight: 400; line-height: 1.3; }
 .tile-stat span { font-size: 11px; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
@@ -210,11 +213,11 @@ button { font: inherit; color: inherit; }
 .dh b { display: block; font-weight: 400; font-size: 18px; }
 .dh span { font-size: 12px; color: var(--mute); }
 .thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.thumbs img, .thumbs .ph { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; background: #0b0b0b; }
+.thumbs img, .thumbs .ph { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: #0b0b0b; }
 .thumbs .ph { display: grid; place-items: center; font-size: 9px; color: var(--dim); overflow: hidden; padding: 2px; text-align: center; }
 @media (hover: hover) { .stats .decades button:hover .dh b { color: var(--mute); } }
 /* the "which films?" list */
-dialog.filmlist { width: min(520px, 100% - 32px); max-height: min(70vh, 640px); margin: auto; padding: 0; color: var(--fg); background: rgba(18, 18, 18, .97); border: 1px solid var(--chip-line); border-radius: 18px; overflow: hidden; }
+dialog.filmlist { width: min(520px, 100% - 32px); max-height: min(70vh, 640px); margin: auto; padding: 0; color: var(--fg); background: rgba(18, 18, 18, .97); border: 1px solid var(--chip-line); border-radius: 16px; overflow: hidden; }
 dialog.filmlist[open] { display: flex; flex-direction: column; }
 dialog.filmlist::backdrop { background: rgba(0, 0, 0, .7); }
 .fl-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
@@ -347,7 +350,7 @@ button.tile { display: block; width: 100%; padding: 0; border: 0; font: inherit;
 .vw-next { right: 16px; }
 
 /* ---------- search + shortcut list ---------- */
-dialog.palette, dialog.help { color: var(--fg); background: rgba(18, 18, 18, .96); border: 1px solid var(--chip-line); border-radius: 18px; padding: 0; }
+dialog.palette, dialog.help { color: var(--fg); background: rgba(18, 18, 18, .96); border: 1px solid var(--chip-line); border-radius: 16px; padding: 0; }
 dialog.palette::backdrop, dialog.help::backdrop { background: rgba(0, 0, 0, .7); }
 .palette { width: min(560px, 100% - 32px); margin: 14vh auto auto; overflow: hidden; }
 .palette input { width: 100%; padding: 16px 18px; background: none; border: 0; border-bottom: 1px solid var(--line); outline: none; color: var(--fg); font: 16px var(--mono); }
@@ -478,7 +481,7 @@ html:has(dialog[open]) { overflow: hidden; }
 /* Movies: a grid of poster cards */
 .shelf .list.pl { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 36px 20px; padding-top: 10px; }
 .shelf .list.pl li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "p p" "t t" "y r" "b b"; gap: 0 8px; align-items: baseline; padding: 0; border: 0; background: none; }
-.shelf .list.pl .p { grid-area: p; position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; margin-bottom: 12px; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 12px 28px -14px rgba(0, 0, 0, .9); }
+.shelf .list.pl .p { grid-area: p; position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; margin-bottom: 12px; border-radius: 8px; overflow: hidden; background: #111; box-shadow: 0 12px 28px -14px rgba(0, 0, 0, .9); }
 .shelf .list.pl .p img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .shelf .list.pl .p > span { display: grid; place-items: center; height: 100%; padding: 12px; font-size: 12px; line-height: 1.5; color: var(--mute); text-align: center; }
 .shelf .list.pl li.now .t::before { content: none; }
@@ -486,7 +489,7 @@ html:has(dialog[open]) { overflow: hidden; }
 .shelf .list.pl .y { grid-area: y; font-size: 12px; }
 .shelf .list.pl .r { grid-area: r; font-size: 12px; }
 .shelf .list.pl .b { grid-area: b; margin-top: 2px; font-size: 11px; color: var(--dim); opacity: 1; }
-.shelf .list.pl .n { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 2 / 3; margin: 0; display: flex; align-items: flex-end; padding: 14px; border-radius: 6px; overflow: hidden; background: linear-gradient(to top, rgba(0, 0, 0, .94), rgba(0, 0, 0, .65) 45%, transparent 80%); color: var(--fg); font-size: 12px; line-height: 1.55; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+.shelf .list.pl .n { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 2 / 3; margin: 0; display: flex; align-items: flex-end; padding: 14px; border-radius: 8px; overflow: hidden; background: linear-gradient(to top, rgba(0, 0, 0, .94), rgba(0, 0, 0, .65) 45%, transparent 80%); color: var(--fg); font-size: 12px; line-height: 1.55; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 .shelf .list.pl li.flash { background: none; }
 .shelf .list.pl li.flash .p { box-shadow: 0 0 0 2px var(--fg); }
 @media (hover: hover) {
@@ -494,7 +497,7 @@ html:has(dialog[open]) { overflow: hidden; }
 }
 @media (max-width: 700px) {
   .shelf .list.pl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 10px; }
-  .shelf .list.pl .p { margin-bottom: 8px; border-radius: 5px; }
+  .shelf .list.pl .p { margin-bottom: 8px; border-radius: 7px; }
   .shelf .list.pl .t { font-size: 12px; white-space: nowrap; }
   .shelf .list.pl .y, .shelf .list.pl .r { font-size: 11px; }
   .shelf .list.pl .b, .shelf .list.pl .n { display: none; }
@@ -519,20 +522,19 @@ html:has(dialog[open]) { overflow: hidden; }
 .sub-tabs ~ .panel { padding-top: 10px; }
 @media (max-width: 700px) { .sub-tabs { gap: 20px; } .sub-tabs button { font-size: 12px; } }
 /* popups: sharp, see-through dark, no blur (the page behind is darkened so text stays easy to read) */
-dialog.filmlist, dialog.palette, dialog.help { border-radius: 0; background: rgba(10, 10, 10, .94); border: 1px solid rgba(255, 255, 255, .16); box-shadow: 0 30px 80px -20px #000; backdrop-filter: none; -webkit-backdrop-filter: none; }
+dialog.filmlist, dialog.palette, dialog.help { border-radius: 16px; background: rgba(10, 10, 10, .94); border: 1px solid rgba(255, 255, 255, .16); box-shadow: 0 30px 80px -20px #000; backdrop-filter: none; -webkit-backdrop-filter: none; }
 dialog.filmlist::backdrop, dialog.palette::backdrop, dialog.help::backdrop { background: rgba(0, 0, 0, .72); backdrop-filter: none; -webkit-backdrop-filter: none; }
-dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important; }
 .fl-list a:hover, .fl-list a:focus-visible { background: rgba(255, 255, 255, .08); }
 /* small posters in the "which films?" list */
 .fl-list a { grid-template-columns: 28px minmax(0, 1fr) 3em auto; align-items: center; padding: 6px 12px; }
-.fl-list .fp { width: 28px; height: 42px; background: #151515; overflow: hidden; }
+.fl-list .fp { width: 28px; height: 42px; background: #151515; overflow: hidden; border-radius: 4px; }
 .fl-list .fp img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* small pictures beside names in Stats: country outline, photo, studio logo */
 .hbars .nm { display: flex; align-items: center; gap: 10px; }
 .hbars .nm > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .ic { flex: none; width: 26px; height: 26px; }
 .ic.person { border-radius: 50%; object-fit: cover; object-position: 50% 22%; background: #151515; }
-.ic.studio { border-radius: 4px; object-fit: contain; background: #e9e9e9; padding: 3px; box-sizing: border-box; }
+.ic.studio { border-radius: 6px; object-fit: contain; background: #e9e9e9; padding: 3px; box-sizing: border-box; }
 .ic.none { display: inline-grid; place-items: center; font-size: 9px; letter-spacing: .02em; color: var(--mute); background: #141414; border: 1px solid #222; box-sizing: border-box; }
 .ic.person.none { border-radius: 50%; }
 .ic.shape { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.1; stroke-linejoin: round; color: var(--mute); }
@@ -554,10 +556,10 @@ dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important
 }
 /* genre icons, language codes, posters beside film names */
 .ic.genre { width: 20px; height: 20px; margin: -1px 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--mute); }
-.ic.lang { display: inline-grid; place-items: center; width: 22px; height: 20px; margin: -1px 0; font-size: 9px; letter-spacing: .03em; color: var(--mute); border: 1px solid #2a2a2a; border-radius: 3px; box-sizing: border-box; }
+.ic.lang { display: inline-grid; place-items: center; width: 22px; height: 20px; margin: -1px 0; font-size: 9px; letter-spacing: .03em; color: var(--mute); border: 1px solid #2a2a2a; border-radius: 5px; box-sizing: border-box; }
 .difflist .nm { display: flex; align-items: center; gap: 10px; }
 .difflist .nm > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-.ic.poster { width: 20px; height: 30px; background: #151515; overflow: hidden; border-radius: 2px; }
+.ic.poster { width: 20px; height: 30px; background: #151515; overflow: hidden; border-radius: 4px; }
 .ic.poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .difflist.with-ic button { padding: 4px 0; }
 .tiles-stat { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -565,3 +567,60 @@ dialog.filmlist *, dialog.palette *, dialog.help * { border-radius: 0 !important
 @media (hover: hover) { .stats .hbars button:hover .ic.genre, .stats .hbars button:hover .ic.lang { color: var(--fg); } }
 .mb { filter: url(#mblur-card); }
 html:has(main.shelf) { overflow-x: clip; } /* the year chart's hover labels can reach past the right edge */
+/* film popup */
+dialog.film-dlg { position: relative; width: min(620px, 100% - 24px); max-height: min(88vh, 860px); margin: auto; padding: 22px; overflow-y: auto; color: var(--fg); background: rgba(10, 10, 10, .96); border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; box-shadow: 0 30px 80px -20px #000; scrollbar-width: thin; scrollbar-color: #222 transparent; }
+dialog.film-dlg::backdrop { background: rgba(0, 0, 0, .72); }
+.fd-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border: 1px solid var(--chip-line); border-radius: 50%; background: var(--chip); color: var(--mute); font-size: 18px; line-height: 1; cursor: pointer; }
+.fd-close:hover { color: var(--fg); }
+.fd-top { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; align-items: start; }
+.fd-poster { display: block; width: 150px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 8px; background: #111; box-shadow: 0 12px 28px -14px rgba(0, 0, 0, .9); }
+.fd-poster.none { display: grid; place-items: center; padding: 10px; font-size: 12px; color: var(--mute); text-align: center; }
+.fd-head { display: grid; gap: 10px; padding-right: 36px; min-width: 0; }
+.fd-head h2 { margin: 0; font-size: 20px; font-weight: 500; line-height: 1.3; }
+.fd-year { color: var(--dim); font-weight: 400; font-size: 15px; }
+.fd-rating { margin: 0; font-size: 15px; letter-spacing: .04em; }
+.fd-facts { margin: 0; font-size: 12px; color: var(--mute); }
+.fd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.fd-tags li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 7px; border: 1px solid var(--chip-line); border-radius: 999px; background: var(--chip); font-size: 12px; color: #bdbdbd; }
+.fd-ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--mute); }
+.fd-ic.shape { stroke-width: 1.1; }
+.fd-ic.shape circle { fill: currentColor; stroke: none; }
+.fd-note { margin: 18px 0 0; padding: 12px 14px; border-radius: 10px; background: var(--chip); font-size: 13px; line-height: 1.7; color: #cfcfcf; }
+.fd-frame { display: block; margin-top: 18px; border-radius: 8px; overflow: hidden; background: #111; }
+.fd-frame img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.fd-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.fd-person { display: grid; justify-items: center; gap: 6px; text-align: center; min-width: 0; }
+.fd-person b { max-width: 100%; font-weight: 400; font-size: 12px; line-height: 1.35; }
+.fd-person small { margin-top: -4px; font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
+.fd-face { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: 50% 22%; background: #141414; }
+.fd-face.none { display: grid; place-items: center; font-size: 13px; color: var(--mute); border: 1px solid #222; box-sizing: border-box; }
+.fd-lb { display: inline-flex; margin-top: 20px; padding: 8px 14px; border: 1px solid var(--chip-line); border-radius: 999px; background: var(--chip); font-size: 12px; color: var(--mute); }
+.fd-lb:hover { color: var(--fg); }
+#films .list.pl > li { cursor: pointer; }
+@media (max-width: 700px) {
+  dialog.film-dlg { padding: 18px; }
+  .fd-top { grid-template-columns: 104px minmax(0, 1fr); gap: 14px; }
+  .fd-poster { width: 104px; }
+  .fd-head h2 { font-size: 17px; }
+  .fd-people { gap: 8px; }
+  .fd-face { width: 48px; height: 48px; }
+}
+/* countries map */
+#st-map { grid-column: 1 / -1; }
+.worldmap { display: block; width: 100%; height: auto; margin-top: 6px; }
+.worldmap path { fill: #161616; stroke: #000; stroke-width: .6; stroke-linejoin: round; }
+.worldmap path.on { cursor: pointer; transition: opacity .15s; }
+@media (hover: hover) { .worldmap:hover path.on { opacity: .75; } .worldmap path.on:hover { opacity: 1; stroke: var(--fg); stroke-width: 1; } }
+.worldmap path.on:focus-visible { outline: none; stroke: var(--fg); stroke-width: 1.4; }
+.map-key { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 10px; font-size: 11px; color: var(--mute); }
+.map-key span { display: inline-flex; align-items: center; gap: 6px; }
+.map-key i { width: 12px; height: 12px; border-radius: 3px; }
+.map-key .films { color: var(--dim); }
+/* watchlist: pick one for me */
+.wl-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
+.wl-pick { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 1px solid var(--chip-line); border-radius: 999px; background: var(--chip); color: var(--fg); font: 13px var(--mono); cursor: pointer; max-width: 100%; }
+.wl-pick span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wl-pick:hover { border-color: rgba(255, 255, 255, .25); }
+.wl li.picked .p { outline: 2px solid var(--fg); outline-offset: 3px; }
+.wl li.dimmed { opacity: .35; transition: opacity .3s; }
+.wl li { transition: opacity .3s; }

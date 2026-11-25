@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com https://upload.wikimedia.org https://thumb.wikimedia.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
 <title>Editor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,8 +116,26 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .pg-cell.own img { border-color: var(--fg); }
 .pg-cell span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pg-cell:hover span:last-child { color: var(--fg); }
-dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: auto; padding: 16px; color: var(--fg); background: rgba(8, 8, 8, .82); border: 1px solid rgba(255, 255, 255, .14); border-radius: 0; box-shadow: 0 30px 80px -20px #000; }
-dialog.poster-dlg::backdrop { background: rgba(0, 0, 0, .62); }
+dialog.poster-dlg { width: min(1100px, 100% - 24px); max-height: 90vh; margin: auto; padding: 16px; color: var(--fg); background: rgba(10, 10, 10, .95); border: 1px solid rgba(255, 255, 255, .16); border-radius: 0; box-shadow: 0 30px 80px -20px #000; }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 12px; }
+.ph-cell { display: grid; justify-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--mute); font: inherit; font-size: 11px; cursor: pointer; min-width: 0; }
+.ph-cell > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ph-cell:hover > span:last-child { color: var(--fg); }
+.pic { display: grid; place-items: center; width: 72px; height: 72px; object-fit: cover; object-position: 50% 22%; border: 2px solid transparent; background: #141414; color: var(--dim); font-size: 10px; box-sizing: border-box; }
+.pic.person { border-radius: 50%; }
+.pic.studio { border-radius: 8px; object-fit: contain; background: #e9e9e9; padding: 6px; }
+.ph-cell.own .pic { border-color: var(--fg); }
+.photo-row { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 16px; align-items: start; }
+.photo-now { display: grid; justify-items: center; gap: 8px; }
+.photo-now .pic { width: 120px; height: 120px; }
+.photo-now small { color: var(--mute); font-size: 11px; }
+.strip-h { margin: 0 0 8px; font-size: 11px; font-weight: 400; color: var(--mute); }
+.strip.photos { margin-bottom: 16px; }
+.still.photo { width: 120px; aspect-ratio: 2 / 3; }
+.still.photo.studio { aspect-ratio: 3 / 2; background: #e9e9e9; }
+.still.photo.studio img { object-fit: contain; padding: 8px; box-sizing: border-box; }
+@media (max-width: 760px) { .photo-row { grid-template-columns: 1fr; } .still.photo { width: 96px; } .photo-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); } .pic { width: 60px; height: 60px; } }
+dialog.poster-dlg::backdrop { background: rgba(0, 0, 0, .72); }
 .poster-dlg header { display: flex; align-items: baseline; gap: 4px; margin-bottom: 12px; }
 .poster-dlg header b { font-weight: 500; }
 .poster-dlg header small { color: var(--mute); }
@@ -1054,14 +1072,14 @@ async function findPosters(m) {
   return job;
 }
 // posters are resized in the browser before they're uploaded, so the site stays light
-async function shrinkPoster(blob, w, q = .84) {
+async function shrinkPoster(blob, w, q = .84, type = "image/jpeg") {
   try {
     const bmp = await createImageBitmap(blob);
     if (bmp.width <= w) return blob;
     const c = document.createElement("canvas");
     c.width = w; c.height = Math.round(bmp.height * w / bmp.width);
     c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-    return await new Promise(r => c.toBlob(b => r(b || blob), "image/jpeg", q));
+    return await new Promise(r => c.toBlob(b => r(b || blob), type, q));
   } catch (_) { return blob; }
 }
 const coverPath = (kind, m) => `assets/posters/${kind}/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // found by the build (Letterboxd, Steam, Wikipedia, Open Library)
@@ -1201,7 +1219,126 @@ function footText() {
     ? ["Editing on this computer. Saving rebuilds the site instantly. Backups: content/.backup"]
     : [h("span", {}, `Connected to ${gh.repo}. Saving commits to GitHub; the site updates in about a minute.`), h("button", { class: "btn small", onclick: signOut }, "Sign out of this device")];
 }
-const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["posters", "Posters"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
+/* ---------- Photos: the picture beside each director, actor and studio on Stats ----------
+   The build lists who Stats shows (admin/people.json) and finds a picture for each on Wikimedia.
+   Here you can choose another one: from TMDB (photos and company logos), Wikimedia Commons, or your own upload.
+   Your choices are kept in site.photos / site.logos (name → file). */
+const PIC_KINDS = { person: { key: "photos", folder: "people", width: 160, type: "image/jpeg" }, studio: { key: "logos", folder: "studios", width: 200, type: "image/png" } };
+const picCache = new Map();
+const cached = (k, job) => { if (!picCache.has(k)) { const p = job(); picCache.set(k, p); p.catch(() => picCache.delete(k)); } return picCache.get(k); };
+// TMDB: a person's profile photos (directors and actors), or a company's logos
+const tmdbPics = (kind, name, role) => cached(`t|${kind}|${name}`, async () => {
+  if (kind === "person") {
+    const r = await tmdb("/search/person", { query: name });
+    const want = role === "director" ? "Directing" : "Acting";
+    const hit = (r.results || []).find(p => p.name === name && p.known_for_department === want) || (r.results || []).find(p => p.name === name) || (r.results || [])[0];
+    if (!hit) return [];
+    const imgs = await tmdb(`/person/${hit.id}/images`);
+    return (imgs.profiles || []).sort((a, b) => b.vote_average - a.vote_average).slice(0, 30)
+      .map(p => ({ thumb: `https://image.tmdb.org/t/p/w185${p.file_path}`, full: `https://image.tmdb.org/t/p/h632${p.file_path}`, from: "TMDB" }));
+  }
+  const r = await tmdb("/search/company", { query: name });
+  const hit = (r.results || []).find(c => c.name === name) || (r.results || [])[0];
+  if (!hit) return [];
+  const imgs = await tmdb(`/company/${hit.id}/images`);
+  return (imgs.logos || []).slice(0, 20).map(p => ({ thumb: `https://image.tmdb.org/t/p/w185${p.file_path}`, full: `https://image.tmdb.org/t/p/w300${p.file_path}`, from: "TMDB" }));
+});
+// Wikimedia Commons: free pictures, found by name
+const commonsPics = (kind, name) => cached(`c|${kind}|${name}`, async () => {
+  const q = kind === "person" ? `"${name}" filetype:bitmap` : `"${name}" logo`;
+  const url = `https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=30&gsrsearch=${encodeURIComponent(q)}&prop=imageinfo&iiprop=url|mime&iiurlwidth=${kind === "person" ? 360 : 400}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Wikimedia error ${res.status}`);
+  const pages = Object.values(((await res.json()).query || {}).pages || {}).sort((a, b) => a.index - b.index);
+  return pages.map(p => (p.imageinfo || [])[0]).filter(i => i && i.thumburl && /^image\/(jpeg|png|svg|webp)/.test(i.mime || ""))
+    .map(i => ({ thumb: i.thumburl, full: i.thumburl, from: "Wikimedia Commons" }));
+});
+
+function viewPhotos() {
+  const main = $("#main"); main.textContent = "";
+  const box = h("div", {}, h("p", { class: "status" }, "Loading…"));
+  main.append(header("Photos"),
+    h("p", { class: "status", style: "margin:4px 0 14px" }, "The small pictures beside directors, cast and studios on Stats. Tap one to choose another: from TMDB, Wikimedia Commons, or your own. Press Save when you're done."),
+    tmdbKey() ? null : h("p", { class: "note", style: "margin:0 0 14px" }, "To see TMDB photos too, add your TMDB key in ", h("button", { class: "btn small", onclick: () => go("frames") }, "Frame picker"), " first. Wikimedia and uploading work without it."),
+    box,
+    h("p", { class: "note", style: "margin-top:30px;font-size:11px;color:var(--dim)" }, "Photos and logos from TMDB and Wikimedia Commons. Wikimedia pictures are free to use with credit to their authors. This product uses the TMDB API but is not endorsed or certified by TMDB."),
+    mobileFoot());
+  const dlg = h("dialog", { class: "poster-dlg", onclick: e => { if (e.target === dlg) dlg.close(); } });
+  main.append(dlg);
+
+  fetch("/admin/people.json", { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(); return r.json(); }).then(list => {
+    box.textContent = "";
+    const groups = [["Directors", "person", list.person.filter(p => p.role === "director")], ["Cast", "person", list.person.filter(p => p.role === "cast")], ["Studios", "studio", list.studio]];
+    for (const [title, kind, people] of groups) {
+      if (!people.length) continue;
+      const grid = h("div", { class: "photo-grid" });
+      box.append(h("h3", { class: "sub" }, title, h("small", {}, ` ${people.length}`)), grid);
+      people.forEach(p => grid.append(photoCell(kind, p, dlg)));
+    }
+    if (!box.children.length) box.append(h("p", { class: "status" }, "Nobody on Stats yet."));
+  }).catch(() => { box.textContent = ""; box.append(h("p", { class: "status" }, "The list appears once the site has been built (your next save does it).")); });
+}
+
+function photoCell(kind, p, dlg) {
+  const K = PIC_KINDS[kind];
+  site[K.key] = site[K.key] && typeof site[K.key] === "object" ? site[K.key] : {};
+  const own = () => site[K.key][p.name] || "";
+  const src = () => own() ? thumbUrl(own()) : p.found ? "/" + p.found : "";
+  const pic = () => src() ? h("img", { class: `pic ${kind}`, src: src(), alt: "", loading: "lazy", onerror: e => e.target.replaceWith(h("span", { class: `pic ${kind} ph` }, "—")) }) : h("span", { class: `pic ${kind} ph` }, "none");
+  const cell = h("button", { class: "ph-cell" + (own() ? " own" : ""), title: p.name, onclick: () => openPhotoPicker(kind, p, dlg, () => { cell.classList.toggle("own", !!own()); cell.firstChild.replaceWith(pic()); }) }, pic(), h("span", {}, p.name));
+  return cell;
+}
+
+function openPhotoPicker(kind, p, dlg, changed) {
+  const K = PIC_KINDS[kind];
+  const own = () => site[K.key][p.name] || "";
+  const now = h("div", { class: "photo-now" });
+  const showNow = () => {
+    now.textContent = "";
+    const src = own() ? thumbUrl(own()) : p.found ? "/" + p.found : "";
+    now.append(src ? h("img", { class: `pic ${kind}`, src, alt: "" }) : h("span", { class: `pic ${kind} ph` }, "none"), h("small", {}, own() ? "Your choice" : p.found ? "Found on Wikimedia" : "Initials"));
+  };
+  const done = () => { markDirty(); showNow(); changed(); };
+  const choose = async (blob, label) => {
+    try {
+      const small = await shrinkPoster(blob, K.width, .86, K.type);
+      const ext = (small.type || "").includes("png") ? ".png" : (small.type || "").includes("webp") ? ".webp" : ".jpg";
+      site[K.key][p.name] = await upload(new File([small], `${slugify(p.name) || "pic"}-own${ext}`, { type: small.type || K.type }), K.folder);
+      done(); toast(`${label} chosen · press Save`);
+    } catch (e) { toast(e.message, true); }
+  };
+  const strip = (title, find) => {
+    const row = h("div", { class: "strip photos" }, h("span", { class: "status" }, "…"));
+    find().then(list => {
+      row.textContent = "";
+      if (!list.length) return row.append(h("span", { class: "status" }, "Nothing found."));
+      list.forEach(c => row.append(h("button", { class: `still photo ${kind}`, title: c.from, "aria-label": `Use this picture for ${p.name}`, onclick: async e => {
+        const b = e.currentTarget; b.disabled = true;
+        try {
+          const res = await fetch(c.full);
+          if (!res.ok) throw new Error("Couldn't download that picture");
+          dlg.querySelectorAll(".still").forEach(x => x.classList.toggle("on", x === b));
+          await choose(await res.blob(), "Picture");
+        } catch (err) { toast(err.message, true); } finally { b.disabled = false; }
+      } }, h("img", { src: c.thumb, alt: "", loading: "lazy" }))));
+    }).catch(e => { row.textContent = ""; row.append(h("span", { class: "status" }, e.message)); });
+    return [h("h4", { class: "strip-h" }, title), row];
+  };
+  const fileIn = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp", style: "display:none", onchange: () => { const f = fileIn.files[0]; if (f) choose(f, "Your picture"); fileIn.value = ""; } });
+  dlg.textContent = "";
+  dlg.append(
+    h("header", {}, h("b", {}, p.name), h("small", {}, ` ${p.role === "director" ? "director" : p.role === "cast" ? "cast" : "studio"}`), h("button", { class: "btn small x", "aria-label": "Close", onclick: () => dlg.close() }, "×")),
+    h("div", { class: "pd-tools" },
+      h("button", { class: "btn small", onclick: () => fileIn.click() }, "Upload your own"), fileIn,
+      h("button", { class: "btn small", onclick: () => { if (own()) { delete site[K.key][p.name]; dlg.querySelectorAll(".still").forEach(x => x.classList.remove("on")); done(); } } }, p.found ? "Use the Wikimedia one" : "Use initials")),
+    h("div", { class: "photo-row" }, now, h("div", { class: "photo-choices" },
+      ...(tmdbKey() ? strip("TMDB", () => tmdbPics(kind, p.name, p.role)) : []),
+      ...strip("Wikimedia Commons", () => commonsPics(kind, p.name)))));
+  showNow();
+  dlg.showModal();
+}
+
+const SECTIONS = [["profile", "Profile & home"], "-", ["movies"], ["frames", "Frame picker"], ["posters", "Posters"], ["photos", "Photos"], ["books"], ["games"], "-", ["projects"], ["designs"], "-", ["qa"], ["experience"], ["socials"], "-", ["posts", "Writing"]];
 function drawNav() {
   const nav = $("#nav"); nav.textContent = "";
   nav.append(h("div", { class: "brand" }, h("b", {}, site.name), " · editor"));
@@ -1217,9 +1354,9 @@ function drawNav() {
 function go(id) {
   if (section === "posts" && id !== "posts" && $("#main textarea.body") && !confirm("Leave this post? Unsaved text will be lost.")) return;
   section = id; history.replaceState(null, "", "#" + id); drawNav();
-  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else if (id === "frames") viewFrames(); else if (id === "posters") viewPosters(); else viewList(id);
+  if (id === "profile") viewProfile(); else if (id === "posts") viewPosts(); else if (id === "frames") viewFrames(); else if (id === "posters") viewPosters(); else if (id === "photos") viewPhotos(); else viewList(id);
 }
-const valid = id => id === "profile" || id === "posts" || id === "frames" || id === "posters" || !!LISTS[id];
+const valid = id => id === "profile" || id === "posts" || id === "frames" || id === "posters" || id === "photos" || !!LISTS[id];
 addEventListener("hashchange", () => { const id = location.hash.slice(1); if (site && valid(id) && id !== section) go(id); });
 
 /* ---------- GitHub sign-in (only on the live site) ---------- */

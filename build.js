@@ -525,10 +525,14 @@ function statsPanel(site) {
   const asRows = list => list.map(([k, l]) => [k, ids(l), avgStr(l)]);
 
   // small pictures beside names; the names asked for here are the ones the build fetches pictures for
-  const pics = readPics(), want = statsPanel.wanted = { country: new Set(), person: new Set(), studio: new Set() };
+  const pics = readPics(), want = statsPanel.wanted = { country: new Set(), person: new Set(), studio: new Set(), role: {} };
+  // a photo or logo you chose in the editor (Photos) wins over the one found on Wikimedia
+  const chosen = { person: site.photos || {}, studio: site.logos || {} };
   const initials = n => esc(String(n).split(/\s+/).filter(w => /^\p{L}/u.test(w)).slice(0, 2).map(w => w[0]).join("").toUpperCase());
-  const picIcon = kind => name => {
-    want[kind].add(name);
+  const picIcon = (kind, role) => name => {
+    want[kind].add(name); want.role[name] = want.role[name] || role;
+    const own = chosen[kind][name];
+    if (localFile(own)) return `<img class="ic ${kind}" src="${esc(own)}" alt="" loading="lazy" decoding="async" width="26" height="26">`;
     const e = (pics[kind] || {})[name];
     return e && e.img && localFile(e.img)
       ? `<img class="ic ${kind}" src="${esc(e.img)}" title="${esc(name)} · picture: ${esc(e.file)}, Wikimedia Commons" alt="" loading="lazy" decoding="async" width="26" height="26">`
@@ -628,16 +632,16 @@ function statsPanel(site) {
   const cast = groupBy(m => meta(m).cast);
   const studios = groupBy(m => meta(m).studios);
   const castBox = cast.size ? switchable("Cast", "", [
-    ["Most watched", listOf(cast, false, picIcon("person"))],
-    ["Highest rated", listOf(cast, true, picIcon("person"))],
+    ["Most watched", listOf(cast, false, picIcon("person", "cast"))],
+    ["Highest rated", listOf(cast, true, picIcon("person", "cast"))],
   ]) : "";
   const dirBox = `<div id="st-directors">${switchable("Directors", "", [
-    ["Most watched", listOf(directors, false, picIcon("person"))],
-    ["Highest rated", listOf(directors, true, picIcon("person"))],
+    ["Most watched", listOf(directors, false, picIcon("person", "director"))],
+    ["Highest rated", listOf(directors, true, picIcon("person", "director"))],
   ])}</div>`;
   const studioBox = studios.size ? switchable("Studios", "", [
-    ["Most watched", listOf(studios, false, picIcon("studio"))],
-    ["Highest rated", listOf(studios, true, picIcon("studio"))],
+    ["Most watched", listOf(studios, false, picIcon("studio", "studio"))],
+    ["Highest rated", listOf(studios, true, picIcon("studio", "studio"))],
   ]) : "";
 
   /* ---- when you watch ---- */
@@ -1062,6 +1066,11 @@ function build() {
   try { new Function(adminHtml.match(/<script>([\s\S]*?)<\/script>/)[1]); }
   catch (e) { throw new Error("src/admin.html has a script error: " + e.message); }
   write("admin/index.html", adminHtml);
+  { // for the editor's Photos page: who Stats shows, and the picture found for each (your own choices are in site.json)
+    const w = statsPanel.wanted || { person: new Set(), studio: new Set(), role: {} }, pics = readPics();
+    const entry = kind => name => { const e = (pics[kind] || {})[name] || {}; return { name, role: w.role[name], found: e.img && localFile(e.img) ? e.img : "" }; };
+    write("admin/people.json", JSON.stringify({ person: [...w.person].map(entry("person")), studio: [...w.studio].map(entry("studio")) }));
+  }
   write("robots.txt", "User-agent: *\nDisallow: /admin/\n");
   // host settings (Netlify + Cloudflare Pages both read this file)
   write("_headers", [
@@ -1091,7 +1100,7 @@ function dev() {
   };
   const POSTS = path.join(ROOT, "content/posts");
   const SLUG = /^[a-z0-9][a-z0-9-]{0,80}$/;
-  const FOLDERS = ["frames", "frames-sm", "code", "designs", "posts", "me", "posters"];
+  const FOLDERS = ["frames", "frames-sm", "people", "studios", "code", "designs", "posts", "me", "posters"];
   const MEDIA_EXT = /\.(jpe?g|png|webp|avif|gif|svg|mp4|webm|mov)$/i;
 
   const send = (res, code, body, type = "application/json") => {
@@ -1396,7 +1405,9 @@ async function refreshPics() {
     for (const c of needShapes) { pics.shapes[c] = countryShape(topo, c); changed = true; }
   } catch (_) {}
   const now = Date.now(), jobs = [];
+  const own = { person: site.photos || {}, studio: site.logos || {} };
   for (const kind of ["person", "studio"]) for (const name of want[kind] || []) {
+    if (localFile(own[kind][name])) continue; // you chose one in the editor
     const e = pics[kind][name];
     if (e && (e.img ? localFile(e.img) : now - new Date(e.miss) < 30 * 864e5)) continue;
     jobs.push({ kind, name });

@@ -78,9 +78,17 @@
   },
   "movies": [
     {
+      "title": "You Can See Everything",
+      "watched": "2026-11-26",
+      "year": 2026,
+      "tmdb": 1765072,
+      "rating": 3.5,
+      "by": "Nathan Fielder & Lance Oppenheim"
+    },
+    {
       "title": "Whiplash",
       "tmdb": 244786,
-      "watched": "2026-11-23",
+      "watched": "2026-11-25",
       "year": 2014,
       "by": "Damien Chazelle",
       "frame": "assets/frames/whiplash-ttnlkfaihf.jpg",
@@ -861,7 +869,7 @@
       "year": 1907,
       "rating": 3,
       "frame": "assets/frames/le-cochon-danseur-kv7kocn92m.jpg",
-      "watched": "2026-06-11",
+      "watched": "2026-08-15",
       "tmdb": 142026,
       "by": " Millard Mercury"
     }

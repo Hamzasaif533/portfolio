@@ -412,4 +412,104 @@
     }, { passive: true });
     document.addEventListener("pointerleave", () => { active = null; cap.classList.remove("on"); });
   }
+
+  /* ---------- background: graph paper, with a few streams of glyph tiles swimming across it ----------
+     One fixed canvas behind everything. ~24 frames a second, pauses when the tab is hidden,
+     and draws a single still frame if you prefer reduced motion. */
+  (() => {
+    const cv = document.createElement("canvas");
+    cv.className = "bg-grid"; cv.setAttribute("aria-hidden", "true");
+    document.body.prepend(cv);
+    const ctx = cv.getContext("2d", { alpha: false });
+    const GLYPHS = "HAM7a*#%&+=<>/01xo".split("");
+    const PAL = [[154, 167, 199], [110, 124, 156], [201, 183, 156], [214, 214, 214], [74, 82, 102], [160, 160, 160]];
+    const pick = a => a[(Math.random() * a.length) | 0];
+    let W = 0, H = 0, C = 22, cols = 0, rows = 0, grid = null, streams = [], dust = [];
+
+    function makeStream(i) {
+      const fromLeft = Math.random() < .5;
+      return {
+        x: fromLeft ? -C * 4 : W + C * 4, y: H * (.15 + Math.random() * .7),
+        a: fromLeft ? (Math.random() - .5) * .6 : Math.PI + (Math.random() - .5) * .6,
+        v: 26 + Math.random() * 22, // px per second
+        t: Math.random() * 100, len: 26 + ((Math.random() * 22) | 0), wide: 1.6 + Math.random() * 1.6,
+        col: PAL[i % PAL.length], trail: [], last: "",
+      };
+    }
+    function size() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight; C = W < 700 ? 18 : 22;
+      cols = Math.ceil(W / C) + 1; rows = Math.ceil(H / C) + 1;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // the grid is drawn once and copied each frame
+      grid = document.createElement("canvas"); grid.width = cv.width; grid.height = cv.height;
+      const g = grid.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.fillStyle = "#000"; g.fillRect(0, 0, W, H);
+      g.strokeStyle = "rgba(255,255,255,.045)"; g.lineWidth = 1; g.beginPath();
+      for (let x = 0; x <= W; x += C) { g.moveTo(x + .5, 0); g.lineTo(x + .5, H); }
+      for (let y = 0; y <= H; y += C) { g.moveTo(0, y + .5); g.lineTo(W, y + .5); }
+      g.stroke();
+      streams = Array.from({ length: W < 700 ? 2 : 3 }, (_, i) => makeStream(i));
+      dust = Array.from({ length: Math.round(cols * rows / 60) }, () => ({ c: (Math.random() * cols) | 0, r: (Math.random() * rows) | 0, ch: pick("-·._:".split("")), p: Math.random() * 6.28 }));
+    }
+    function step(dt) {
+      for (const s of streams) {
+        s.t += dt;
+        s.a += Math.sin(s.t * .7) * .35 * dt + Math.sin(s.t * .23 + 1.7) * .25 * dt; // a lazy wiggle
+        s.x += Math.cos(s.a) * s.v * dt; s.y += Math.sin(s.a) * s.v * dt;
+        if (s.y < H * .08) s.a += .6 * dt; if (s.y > H * .92) s.a -= .6 * dt; // stay on screen vertically
+        const c = Math.round(s.x / C), r = Math.round(s.y / C), key = c + "," + r;
+        if (key !== s.last) {
+          const len = Math.hypot(Math.cos(s.a), Math.sin(s.a)) || 1;
+          s.trail.unshift({ c, r, px: -Math.sin(s.a) / len, py: Math.cos(s.a) / len, cells: [] });
+          s.last = key;
+          if (s.trail.length > s.len) s.trail.length = s.len;
+        }
+        const tail = s.trail[s.trail.length - 1];
+        if (tail && (tail.c < -6 || tail.c > cols + 6) && (s.x < -C * 8 || s.x > W + C * 8)) Object.assign(s, makeStream(streams.indexOf(s)));
+      }
+    }
+    function draw(now) {
+      ctx.drawImage(grid, 0, 0, W, H);
+      ctx.font = `${Math.round(C * .48)}px "Geist Mono", ui-monospace, monospace`;
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      for (const d of dust) { // faint specks, slowly breathing
+        const a = .05 + .05 * Math.sin(now / 1400 + d.p);
+        ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillText(d.ch, d.c * C + C / 2, d.r * C + C / 2);
+      }
+      const seen = new Set();
+      for (const s of streams) {
+        const n = s.trail.length;
+        s.trail.forEach((p, i) => {
+          const f = i / s.len, w = Math.round(Math.sin(Math.min(1, f * 1.25) * Math.PI) * s.wide); // thin head and tail, fuller body
+          if (!p.cells.length) for (let k = -w; k <= w; k++) p.cells.push({ c: p.c + Math.round(k * p.px), r: p.r + Math.round(k * p.py), ch: pick(GLYPHS), col: Math.random() < .25 ? pick(PAL) : s.col, k });
+          const fade = Math.pow(1 - f, .8);
+          for (const q of p.cells) {
+            const id = q.c + "," + q.r;
+            if (seen.has(id)) continue; seen.add(id);
+            if (Math.random() < .015) q.ch = pick(GLYPHS); // flicker
+            const a = fade * (.78 - Math.abs(q.k) * .08), [R, G, B] = q.col, x = q.c * C, y = q.r * C;
+            ctx.fillStyle = `rgba(${R},${G},${B},${a * .72})`; ctx.fillRect(x + 2, y + 2, C - 3, C - 3);
+            ctx.strokeStyle = `rgba(${R},${G},${B},${a})`; ctx.strokeRect(x + 2.5, y + 2.5, C - 4, C - 4);
+            ctx.fillStyle = `rgba(0,0,0,${Math.min(.9, a * 1.3)})`; ctx.fillText(q.ch, x + C / 2 + .5, y + C / 2 + 1);
+          }
+        });
+        if (!n) continue;
+      }
+    }
+    size();
+    addEventListener("resize", () => { size(); draw(performance.now()); });
+    if (reduce) { for (let i = 0; i < 900; i++) step(1 / 24); draw(0); return; }
+    for (let i = 0; i < 240; i++) step(1 / 24); // start mid-swim, not empty
+    let last = 0, acc = 0, raf = 0;
+    const loop = now => {
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min(.1, (now - (last || now)) / 1000); last = now; acc += dt;
+      if (acc < 1 / 24) return;
+      step(acc); acc = 0; draw(now);
+    };
+    raf = requestAnimationFrame(loop);
+    document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else if (!raf) { last = 0; raf = requestAnimationFrame(loop); } });
+  })();
 })();

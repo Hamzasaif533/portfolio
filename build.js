@@ -225,7 +225,7 @@ const TABS = [
 ];
 
 const fontsUrl = arabic =>
-  `https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500${arabic ? "&family=Firjar:wght@400;600" : ""}&display=swap`;
+  `https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@200;300${arabic ? "&family=Firjar:wght@400;600" : ""}&display=swap`;
 
 /* shared dialogs: search, shortcut list (opened with ?), media viewer */
 const DIALOGS = `

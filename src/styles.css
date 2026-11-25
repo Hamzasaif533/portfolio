@@ -532,3 +532,12 @@ dialog.filmlist { background: rgba(20, 20, 20, .62); backdrop-filter: blur(24px)
 dialog.filmlist::backdrop { background: rgba(0, 0, 0, .45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 html:has(.shelf-head) { overflow-x: clip; }
 .fl-list .t, .fl-list .y, .fl-list .r { grid-area: auto; } .fl-list .t { white-space: nowrap; font-size: 14px; line-height: inherit; }
+/* inspired by haj.trading: graph paper behind everything, swimming glyph tiles (app.js), big thin headlines */
+:root { --thin: "Geist", "Helvetica Neue", system-ui, sans-serif; }
+body { background: transparent; }
+.bg-grid { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+.s-lead { margin-bottom: 18px; font-size: 13px; color: var(--mute); letter-spacing: .04em; }
+.s-big, .s-tail { font-family: var(--thin); font-weight: 200; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; letter-spacing: -.035em; text-transform: lowercase; color: var(--fg); }
+.s-tail { color: var(--mute); }
+.s-note { margin-top: 30px; }
+.page-head h1 { font-family: var(--thin); font-weight: 200; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.1; letter-spacing: -.03em; }

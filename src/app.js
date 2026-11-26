@@ -145,6 +145,8 @@
   const fdlg = document.createElement("dialog");
   fdlg.className = "film-dlg"; fdlg.setAttribute("aria-label", "Film");
   fdlg.addEventListener("click", e => { if (e.target === fdlg || e.target.closest(".fd-close")) fdlg.close(); });
+  // closing goes back to exactly where you were in the list (iPhone can jump to the top otherwise)
+  fdlg.addEventListener("close", () => { const y = fdlg._y; if (y != null) requestAnimationFrame(() => { if (Math.abs(scrollY - y) > 2) scrollTo({ top: y, behavior: "instant" }); }); });
   const H = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
   const img = (src, cls) => { const im = new Image(); im.src = root + src; im.alt = ""; im.decoding = "async"; if (cls) im.className = cls; return im; };
   const svg = (inner, cls) => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("class", cls); s.setAttribute("aria-hidden", "true"); s.innerHTML = inner; return s; };
@@ -180,7 +182,9 @@
     }
     if (f.lb) { const a = H("a", "fd-lb", "Letterboxd ↗"); a.href = f.lb; a.target = "_blank"; a.rel = "noopener"; fdlg.append(a); }
     if (!fdlg.isConnected) document.body.append(fdlg);
+    fdlg._y = scrollY;
     openDialog(fdlg);
+    fdlg.scrollTop = 0; // each film starts at its top
     close.focus({ preventScroll: true });
     return true;
   }
@@ -406,16 +410,16 @@
     else if (k === "Escape") { if (item) item.blur(); else if ($(".post-list")) toggleList(); }
   });
 
-  /* ---------- swipe: pages, or frames when the viewer is open ---------- */
+  /* ---------- swipe inside the picture viewer only: left/right for the next frame, down to close
+     (swiping no longer changes page) ---------- */
   let sx = 0, sy = 0, st = 0;
   addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
   addEventListener("touchend", e => {
+    if (!viewer || !viewer.open) return;
     const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-    if (viewer && viewer.open && dy > 90 && dy > Math.abs(dx) * 1.5 && Date.now() - st < 600) { viewer.close(); return; } // swipe down closes
+    if (dy > 90 && dy > Math.abs(dx) * 1.5 && Date.now() - st < 600) { viewer.close(); return; } // swipe down closes
     if (Date.now() - st > 600 || Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
-    if (viewer && viewer.open) { show(cur + (dx < 0 ? 1 : -1)); return; }
-    if ($("dialog[open]") || e.target.closest("pre, .gallery, .shelf-tabs, .sub-tabs, .sort, .tabs")) return;
-    location.href = dx < 0 ? d.next : d.prev;
+    show(cur + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
   /* ---------- scrambling words (home) ---------- */

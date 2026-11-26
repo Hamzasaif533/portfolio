@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<title>Which is better?</title>
+<link rel="preload" href="/assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* A page of its own (not linked from the site): pick the better of two films, again and again,
+   then compare the ranking your answers make with the ratings you gave. Progress stays on this device. */
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+:root { --bg: #000; --panel: #0a0a0a; --raised: #121212; --hover: #191919; --fg: #f2f2f2; --soft: #c9c9c9; --mute: #8b8b8b; --dim: #555; --line: #1c1c1c; --line-2: #2a2a2a; --up: #8fd19e; --down: #ff9b8a; --r: 8px; --r-lg: 16px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--bg); }
+body { min-height: 100dvh; background: var(--bg); color: var(--fg); font: 14px/1.6 "Geist Mono", ui-monospace, Consolas, monospace; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; }
+.wrap { width: min(760px, 100% - 32px); margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 0 calc(48px + env(safe-area-inset-bottom)); }
+header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+header.top a.home { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r); background: var(--raised); border: 1px solid var(--line-2); color: #d8d8d8; }
+header.top a.home svg { width: 22px; height: 22px; }
+header.top h1 { font-size: 15px; font-weight: 500; }
+header.top p { font-size: 12px; color: var(--mute); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: var(--r); border: 1px solid var(--line-2); background: var(--raised); cursor: pointer; white-space: nowrap; transition: background .12s, border-color .12s; }
+.btn:hover { background: var(--hover); border-color: #3a3a3a; }
+.btn.primary { background: var(--fg); color: #000; border-color: var(--fg); font-weight: 500; }
+.btn.primary:hover { background: #fff; }
+.btn:disabled { opacity: .35; cursor: default; }
+.muted { color: var(--mute); }
+.hidden { display: none !important; }
+
+/* setup */
+.card { padding: 22px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--panel); }
+.card h2 { font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+.card > p { color: var(--mute); font-size: 13px; margin-bottom: 20px; }
+.opt { margin-bottom: 18px; }
+.opt > span { display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { flex: 1 1 0; min-width: 110px; display: grid; gap: 2px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r); background: var(--bg); cursor: pointer; text-align: left; }
+.seg button small { font-size: 11px; color: var(--dim); }
+.seg button[aria-pressed=true] { border-color: var(--fg); background: var(--raised); }
+.seg button[aria-pressed=true] small { color: var(--mute); }
+.check { display: flex; align-items: center; gap: 10px; margin: 4px 0 20px; font-size: 13px; color: var(--soft); cursor: pointer; }
+.check input { appearance: none; -webkit-appearance: none; flex: none; position: relative; width: 32px; height: 18px; border-radius: 6px; background: var(--line-2); cursor: pointer; }
+.check input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 4px; background: #8b8b8b; transition: transform .15s; }
+.check input:checked { background: var(--fg); }
+.check input:checked::after { transform: translateX(14px); background: #000; }
+.go { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.go .muted { font-size: 12px; }
+
+/* the duel */
+.bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 12px; color: var(--mute); }
+.bar .track { flex: 1; height: 2px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
+.bar .track i { display: block; height: 100%; background: var(--fg); transform-origin: left; transform: scaleX(0); transition: transform .25s; }
+.q { margin: 0 0 16px; font-size: 18px; font-weight: 500; text-align: center; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.film { display: grid; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--panel); cursor: pointer; text-align: left; transition: border-color .15s, transform .15s, background .15s; }
+.film:hover { border-color: #444; background: #0e0e0e; }
+.film:active { transform: scale(.985); }
+.film.won { border-color: var(--fg); }
+.film .p { position: relative; width: 100%; aspect-ratio: 2 / 3; border-radius: var(--r); overflow: hidden; background: #111; }
+.film .p img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.film .p .ph { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; text-align: center; color: var(--mute); font-size: 13px; }
+.film .k { position: absolute; top: 8px; left: 8px; }
+.film b { display: block; font-weight: 500; font-size: 14px; line-height: 1.35; }
+.film small { color: var(--mute); font-size: 12px; }
+kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,.25); background: rgba(0,0,0,.6); color: #ddd; font: 11px/1 "Geist Mono", monospace; }
+.under { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+@media (hover: none) { .film .k, .under kbd { display: none; } }
+
+/* results */
+.score { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: var(--line); }
+.score div { padding: 16px; background: var(--panel); }
+.score b { display: block; font-size: 22px; font-weight: 500; }
+.score span { font-size: 11px; color: var(--mute); }
+.sum { margin: 0 0 16px; font-size: 13px; line-height: 1.7; color: var(--soft); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.filters button { padding: 6px 12px; border: 1px solid var(--line-2); border-radius: var(--r); background: none; cursor: pointer; font-size: 12px; color: var(--mute); }
+.filters button[aria-pressed=true] { color: var(--fg); border-color: var(--fg); }
+.rows { list-style: none; display: grid; gap: 4px; }
+.row { display: grid; grid-template-columns: 2.2em 34px minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 6px 10px 6px 8px; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); }
+.row .n { color: var(--dim); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+.row .tn { width: 34px; height: 51px; border-radius: 5px; object-fit: cover; background: #111; }
+.row .t { min-width: 0; }
+.row .t b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.row .t small { color: var(--dim); font-size: 11px; }
+.row .rt { text-align: right; font-size: 12px; line-height: 1.5; white-space: nowrap; }
+.row .rt span { display: block; color: var(--dim); font-size: 10.5px; }
+.row .vd { min-width: 7.2em; padding: 4px 8px; border-radius: 6px; font-size: 11px; text-align: center; white-space: nowrap; }
+.vd.ok { color: var(--mute); background: var(--raised); }
+.vd.up { color: var(--up); background: rgba(143,209,158,.08); }
+.vd.down { color: var(--down); background: rgba(255,155,138,.08); }
+.vd.none { color: var(--dim); }
+.after { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+@media (max-width: 560px) {
+  .pair { gap: 8px; }
+  .film { padding: 6px; border-radius: 12px; gap: 8px; }
+  .film b { font-size: 13px; }
+  .q { font-size: 16px; }
+  .row { grid-template-columns: 1.8em 30px minmax(0, 1fr) auto; gap: 10px; }
+  .row .tn { width: 30px; height: 45px; }
+  .row .vd { grid-column: 3 / -1; justify-self: start; min-width: 0; margin-top: -2px; }
+  .score b { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="home" href="/" aria-label="Back to the site"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 6v20M7 16h14M13 6h12l-8 20"/></svg></a>
+    <div><h1>Which is better?</h1><p>Rank your films by choosing, then see if it matches your ratings</p></div>
+  </header>
+
+  <section id="setup" class="card hidden">
+    <h2>Rank your films</h2>
+    <p>You'll see two films at a time. Tap the one you think is better. The more questions you answer, the sharper the ranking gets. You can stop and come back: your answers stay on this device.</p>
+    <div class="opt"><span>How many films</span><div class="seg" id="optN"></div></div>
+    <div class="opt"><span>How thorough</span><div class="seg" id="optD"></div></div>
+    <label class="check"><input type="checkbox" id="onlyRated" checked> Only films I've rated</label>
+    <div class="go"><button class="btn primary" id="start">Start</button><span class="muted" id="est"></span></div>
+  </section>
+
+  <section id="duel" class="hidden">
+    <div class="bar"><span id="prog">0 / 0</span><div class="track"><i id="track"></i></div><button class="btn" id="finish" style="min-height:30px;padding:3px 10px;font-size:12px">See results</button></div>
+    <p class="q">Which is the better film?</p>
+    <div class="pair" id="pair"></div>
+    <div class="under">
+      <button class="btn" id="undo">Undo</button>
+      <button class="btn" id="tie">Can't decide <kbd>↓</kbd></button>
+    </div>
+  </section>
+
+  <section id="results" class="hidden">
+    <div class="score" id="score"></div>
+    <p class="sum" id="sumtext"></p>
+    <div class="filters" id="filters"></div>
+    <ol class="rows" id="rows"></ol>
+    <div class="after">
+      <button class="btn primary" id="more">Answer more questions</button>
+      <button class="btn" id="restart">Start over</button>
+    </div>
+  </section>
+  <noscript><p class="muted">This page needs JavaScript.</p></noscript>
+</div>
+
+<script>
+"use strict";
+(() => {
+  const $ = s => document.querySelector(s);
+  const KEY = "rank-films-v1";
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const starsOf = s => s ? (s.match(/★/g) || []).length + (s.includes("½") ? .5 : 0) : null;
+  const starText = r => r == null ? "—" : "★".repeat(Math.floor(r)) + (r % 1 ? "½" : "");
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  let films = {};       // id -> { id, t, y, p, r }
+  let state = null;     // { ids, target, answers: [[a, b, result]] }  result: 1 = a better, 0 = b better, .5 = can't decide
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {} };
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (_) { return null; } };
+
+  /* ---------- scores: Elo replayed from every answer (so Undo is exact). Ratings never feed in. ---------- */
+  function scores() {
+    const s = {}, n = {};
+    state.ids.forEach(id => { s[id] = 1500; n[id] = 0; });
+    state.answers.forEach(([a, b, res], i) => {
+      if (!(a in s) || !(b in s)) return;
+      const ea = 1 / (1 + 10 ** ((s[b] - s[a]) / 400));
+      const k = Math.max(16, 48 - 2 * Math.min(n[a], n[b])); // big steps at first, finer later
+      s[a] += k * (res - ea); s[b] -= k * (res - ea); n[a]++; n[b]++;
+    });
+    return { s, n };
+  }
+
+  /* ---------- the next pair: a film with few answers, against one the answers put near it ---------- */
+  function nextPair() {
+    const { s, n } = scores();
+    const seen = new Set(state.answers.map(([a, b]) => [a, b].sort().join("|")));
+    const last = state.answers.length ? state.answers[state.answers.length - 1] : [];
+    const ids = state.ids.slice();
+    const minN = Math.min(...ids.map(id => n[id]));
+    const pool = shuffle(ids.filter(id => n[id] <= minN + 1 && !last.includes(id)));
+    const a = pool[0] || shuffle(ids)[0];
+    const byClose = ids.filter(id => id !== a && !seen.has([a, id].sort().join("|"))).sort((x, y) => Math.abs(s[x] - s[a]) - Math.abs(s[y] - s[a]));
+    // early on pick widely so every film gets placed; later compare near neighbours
+    const reach = state.answers.length < state.ids.length ? byClose.length : Math.min(5, byClose.length);
+    const b = byClose[Math.random() * Math.max(1, reach) | 0] || ids.find(id => id !== a);
+    return Math.random() < .5 ? [a, b] : [b, a];
+  }
+
+  /* ---------- screens ---------- */
+  const show = id => ["setup", "duel", "results"].forEach(s => $("#" + s).classList.toggle("hidden", s !== id));
+
+  const SIZES = [[20, "20 films", "a quick taste"], [40, "40 films", ""], [0, "All", ""]];
+  const DEPTH = [[3, "Quick", "about 3 per film"], [5, "Better", "about 5 per film"], [8, "Best", "about 8 per film"]];
+  let pickN = 40, pickD = 5;
+  function setup() {
+    const rated = $("#onlyRated").checked;
+    const pool = Object.values(films).filter(f => !rated || f.r != null);
+    const segs = (box, list, cur, set) => {
+      box.textContent = "";
+      list.forEach(([v, label, hint]) => {
+        const all = v === 0, count = all ? pool.length : v;
+        if (!all && count >= pool.length) return; // "All" covers it
+        const b = el("button"); b.type = "button"; b.setAttribute("aria-pressed", String(cur === v));
+        b.append(el("span", null, all ? `All ${pool.length}` : label), el("small", null, hint || (all ? "every film" : "picked at random")));
+        b.onclick = () => { set(v); setup(); }; box.append(b);
+      });
+    };
+    if (pickN && pickN >= pool.length) pickN = 0;
+    segs($("#optN"), SIZES, pickN, v => (pickN = v));
+    segs($("#optD"), DEPTH, pickD, v => (pickD = v));
+    const count = pickN || pool.length;
+    $("#est").textContent = `${Math.round(count * pickD / 2)} questions · about ${Math.max(1, Math.round(count * pickD / 2 * 4 / 60))} min`;
+    $("#start").onclick = () => {
+      const ids = shuffle(pool.map(f => f.id)).slice(0, count);
+      state = { ids, target: Math.round(count * pickD / 2), answers: [] };
+      save(); duel();
+    };
+    show("setup");
+  }
+  $("#onlyRated").addEventListener("change", setup);
+
+  let current = null, busy = false;
+  function card(id, key) {
+    const f = films[id], b = el("button", "film"); b.type = "button";
+    const p = el("span", "p");
+    if (f.p) { const img = el("img"); img.src = "/" + f.p; img.alt = ""; img.decoding = "async"; p.append(img); } else p.append(el("span", "ph", f.t));
+    const k = el("kbd", "k", key); p.append(k);
+    b.append(p, el("span", null, ""));
+    b.lastChild.append(el("b", null, f.t), el("small", null, f.y || ""));
+    return b;
+  }
+  function duel() {
+    if (state.answers.length >= state.target) return results();
+    current = nextPair();
+    const pair = $("#pair"); pair.textContent = "";
+    const [a, b] = current;
+    const ca = card(a, "←"), cb = card(b, "→");
+    ca.onclick = () => answer(1, ca); cb.onclick = () => answer(0, cb);
+    pair.append(ca, cb);
+    // the next pair's posters start loading now
+    const done = state.answers.length, total = state.target;
+    $("#prog").textContent = `${done + 1} / ${total}`;
+    $("#track").style.transform = `scaleX(${done / total})`;
+    $("#undo").disabled = !done;
+    show("duel"); busy = false;
+  }
+  function answer(res, winner) {
+    if (busy || !current) return; busy = true;
+    if (winner) winner.classList.add("won");
+    state.answers.push([current[0], current[1], res]); save();
+    setTimeout(duel, winner ? 160 : 0);
+  }
+  $("#tie").onclick = () => answer(.5);
+  $("#undo").onclick = () => { if (state.answers.length) { state.answers.pop(); save(); duel(); } };
+  $("#finish").onclick = () => results();
+  addEventListener("keydown", e => {
+    if ($("#duel").classList.contains("hidden") || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === "ArrowLeft") { e.preventDefault(); $("#pair").children[0].click(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); $("#pair").children[1].click(); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); answer(.5); }
+    else if (e.key === "Backspace" || (e.key === "z")) { e.preventDefault(); $("#undo").click(); }
+  });
+
+  /* ---------- results: your ranking next to your ratings ----------
+     "Deserves": the n-th film in your ranking gets your n-th highest rating, so it's on the same scale as
+     your ratings. A film you rated higher than its place in the ranking shows ↓, lower shows ↑. */
+  let filter = "all";
+  function results() {
+    const { s, n } = scores();
+    const order = state.ids.slice().sort((a, b) => s[b] - s[a]);
+    const ratings = order.map(id => films[id].r).filter(r => r != null).sort((a, b) => b - a);
+    let ri = 0;
+    const rows = order.map((id, i) => {
+      const f = films[id], deserve = f.r != null ? ratings[ri++] : null;
+      return { id, f, rank: i + 1, n: n[id], deserve, diff: f.r != null ? deserve - f.r : null };
+    });
+    // how well they agree: Spearman's rank correlation between ranking and rating
+    const rated = rows.filter(x => x.f.r != null);
+    const avgRank = vals => { const sorted = vals.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]), out = []; for (let i = 0; i < sorted.length;) { let j = i; while (j < sorted.length && sorted[j][0] === sorted[i][0]) j++; for (let k = i; k < j; k++) out[sorted[k][1]] = (i + j + 1) / 2; i = j; } return out; };
+    const ra = avgRank(rated.map(x => -x.rank)), rb = avgRank(rated.map(x => x.f.r));
+    const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+    const ma = mean(ra), mb = mean(rb);
+    let num = 0, da = 0, db = 0; ra.forEach((v, i) => { num += (v - ma) * (rb[i] - mb); da += (v - ma) ** 2; db += (rb[i] - mb) ** 2; });
+    const rho = da && db ? num / Math.sqrt(da * db) : 0;
+    const matched = rated.filter(x => Math.abs(x.diff) <= .5).length;
+    const score = $("#score"); score.textContent = "";
+    [[`${Math.max(0, Math.round(rho * 100))}%`, "match between ranking and rating"], [`${matched}/${rated.length}`, "within ½★ of your rating"], [`${state.answers.length}`, "questions answered"]]
+      .forEach(([b, t]) => { const d = el("div"); d.append(el("b", null, b), el("span", null, t)); score.append(d); });
+    const few = state.answers.length < state.ids.length * 2;
+    $("#sumtext").textContent = (rho >= .8 ? "Your ratings and your choices mostly agree." : rho >= .5 ? "Your ratings and your choices agree in broad strokes, with some surprises below." : "Your choices tell a different story than your ratings.")
+      + " “Deserves” is the rating that matches each film's place in your ranking." + (few ? " Answer more questions for a sharper ranking." : "");
+    const fl = $("#filters"); fl.textContent = "";
+    [["all", "All"], ["up", "Rated too low"], ["down", "Rated too high"], ["ok", "Matches"]].forEach(([k, t]) => {
+      const b = el("button", null, t); b.type = "button"; b.setAttribute("aria-pressed", String(filter === k));
+      b.onclick = () => { filter = k; results(); }; fl.append(b);
+    });
+    const list = $("#rows"); list.textContent = "";
+    rows.filter(x => filter === "all" || (filter === "ok" ? x.diff != null && Math.abs(x.diff) <= .5 : filter === "up" ? x.diff > .5 : x.diff < -.5)).forEach(x => {
+      const li = el("li", "row");
+      li.append(el("span", "n", String(x.rank)));
+      if (x.f.p) { const img = el("img", "tn"); img.src = "/" + x.f.p; img.alt = ""; img.loading = "lazy"; li.append(img); } else li.append(el("span", "tn"));
+      const t = el("span", "t"); t.append(el("b", null, x.f.t), el("small", null, `${x.f.y || ""}${x.n ? ` · ${x.n} answers` : ""}`)); li.append(t);
+      const rt = el("span", "rt"); rt.append(document.createTextNode(starText(x.f.r)), el("span", null, x.deserve != null ? `deserves ${starText(x.deserve)}` : "not rated")); li.append(rt);
+      const d = x.diff;
+      li.append(d == null ? el("span", "vd none", "—") : Math.abs(d) <= .5 ? el("span", "vd ok", d === 0 ? "✓ matches" : "≈ close") : d > 0 ? el("span", "vd up", `↑ ${d}★ higher`) : el("span", "vd down", `↓ ${-d}★ lower`));
+      list.append(li);
+    });
+    show("results"); scrollTo({ top: 0 });
+  }
+  $("#more").onclick = () => { state.target = state.answers.length + Math.max(10, Math.round(state.ids.length * 1.5)); save(); duel(); };
+  $("#restart").onclick = () => { if (!confirm("Start over? Your answers will be cleared.")) return; state = null; try { localStorage.removeItem(KEY); } catch (_) {} setup(); };
+
+  /* ---------- start ---------- */
+  fetch("/parts/films.json").then(r => r.json()).then(data => {
+    for (const [id, f] of Object.entries(data.films || {})) films[id] = { id, t: f.t, y: f.y, p: f.p, r: starsOf(f.r) };
+    state = load();
+    if (state && state.ids && state.ids.every(id => films[id])) { state.answers.length >= state.target ? results() : duel(); }
+    else { state = null; setup(); }
+  }).catch(() => { document.querySelector(".wrap").append(el("p", "muted", "Couldn't load your films. Try again in a moment.")); });
+})();
+</script>
+</body>
+</html>

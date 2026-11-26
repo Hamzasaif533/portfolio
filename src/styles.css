@@ -205,8 +205,10 @@ html.booting body { overflow: hidden; }
 .cb.zero i { background: #222; }
 .stats .cb:disabled { cursor: default; }
 .cb::after { content: attr(data-tip); position: absolute; z-index: 2; bottom: calc(var(--v) * 100% + 8px); left: 50%; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; background: #1a1a1a; border: 1px solid var(--chip-line); color: var(--fg); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
-.cb:first-child::after, .cb:nth-child(2)::after, .cb:nth-child(3)::after { left: 0; transform: none; }
-.cb:last-child::after, .cb:nth-last-child(2)::after, .cb:nth-last-child(3)::after { left: auto; right: 0; transform: none; }
+/* near the ends the label lines up with the chart's edge; a label that isn't showing takes no room (it used to make phones scroll sideways) */
+.cb:nth-child(-n+8)::after { left: 0; transform: none; }
+.cb:nth-last-child(-n+8)::after { left: auto; right: 0; transform: none; }
+.cb:not(:hover):not(:focus-visible)::after { display: none; }
 .cb:not(:disabled):hover i, .cb:focus-visible i { background: var(--fg); }
 .cb:hover::after, .cb:focus-visible::after { opacity: 1; }
 .cb:focus-visible { outline: none; }
@@ -588,7 +590,7 @@ dialog.filmlist::backdrop, dialog.palette::backdrop, dialog.help::backdrop { bac
 .mb { filter: url(#mblur-card); }
 html:has(main.shelf) { overflow-x: clip; } /* the year chart's hover labels can reach past the right edge */
 /* film popup */
-dialog.film-dlg { position: relative; width: min(620px, 100% - 24px); max-height: min(88vh, 860px); margin: auto; padding: 22px; overflow-y: auto; color: var(--fg); background: rgba(10, 10, 10, .96); border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; box-shadow: 0 30px 80px -20px #000; scrollbar-width: thin; scrollbar-color: #222 transparent; }
+dialog.film-dlg { width: min(620px, 100% - 24px); max-height: min(88dvh, 860px); margin: auto; padding: 22px; overflow-y: auto; color: var(--fg); background: rgba(10, 10, 10, .96); border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; box-shadow: 0 30px 80px -20px #000; scrollbar-width: thin; scrollbar-color: #222 transparent; }
 dialog.film-dlg::backdrop { background: rgba(0, 0, 0, .72); }
 .fd-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border: 1px solid var(--chip-line); border-radius: 8px; background: var(--chip); color: var(--mute); font-size: 18px; line-height: 1; cursor: pointer; }
 .fd-close:hover { color: var(--fg); }
@@ -622,15 +624,6 @@ dialog.film-dlg::backdrop { background: rgba(0, 0, 0, .72); }
 }
 /* countries map */
 #st-map { grid-column: 1 / -1; }
-.worldmap { display: block; width: 100%; height: auto; margin-top: 6px; }
-.worldmap path { fill: #1d1d1d; stroke: #000; stroke-width: .6; stroke-linejoin: round; }
-.worldmap path.on { cursor: pointer; transition: opacity .15s; }
-@media (hover: hover) { .worldmap:hover path.on { opacity: .75; } .worldmap path.on:hover { opacity: 1; stroke: var(--fg); stroke-width: 1; } }
-.worldmap path.on:focus-visible { outline: none; stroke: var(--fg); stroke-width: 1.4; }
-.map-key { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 10px; font-size: 11px; color: var(--mute); }
-.map-key span { display: inline-flex; align-items: center; gap: 6px; }
-.map-key i { width: 12px; height: 12px; border-radius: 3px; }
-.map-key .films { color: var(--dim); }
 /* watchlist: pick one for me */
 .wl-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
 .wl-pick { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 1px solid var(--chip-line); border-radius: 8px; background: var(--chip); color: var(--fg); font: 13px var(--mono); cursor: pointer; max-width: 100%; }

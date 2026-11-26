@@ -630,26 +630,6 @@ function statsPanel(site) {
     ["Highest rated", `<div class="gcl">${gclCol("Genres", genres, "rated")}${gclCol("Countries", countries, "rated")}${gclCol("Languages", languages, "rated")}</div>`],
   ])}</div>`;
 
-  /* ---- world map: countries you've watched films from (lighter = more films); tap one to list them ---- */
-  const world = readWorld();
-  const MAP_STEPS = [[20, "#ffffff", "20+"], [5, "#dcdcdc", "5–19"], [2, "#b4b4b4", "2–4"], [1, "#8e8e8e", "1"]]; // countries you have films from are white; more films, whiter
-  const mapBox = world && countries.size ? (() => {
-    const byAtlas = new Map(); // atlas name -> [your name, films]
-    for (const [n, l] of countries) byAtlas.set(COUNTRY_ALIAS[n] || n, [n, l]);
-    const land = Object.entries(world.countries).map(([atlas, d]) => {
-      const hit = byAtlas.get(atlas);
-      if (!hit) return `<path d="${d}"/>`;
-      const [n, l] = hit, fill = MAP_STEPS.find(([min]) => l.length >= min)[1];
-      return `<path class="on" d="${d}" fill="${fill}"${pick(ids(l), n).replace(' type="button"', "")} tabindex="0" role="button" aria-label="${esc(n)}: ${plural(l.length, "film")}"><title>${esc(n)} · ${plural(l.length, "film")}</title></path>`;
-    }).join("");
-    const missing = [...countries.keys()].filter(n => !world.countries[COUNTRY_ALIAS[n] || n]);
-    return `<div id="st-map"><figure class="chart wide"><figcaption><span>Countries</span><span>${fmtN(countries.size)} ${countries.size === 1 ? "country" : "countries"}</span></figcaption>
-      <svg class="worldmap" viewBox="0 0 ${world.w} ${world.h}" role="group" aria-label="World map of the countries your films are from">${land}</svg>
-      <p class="map-key" aria-hidden="true">${MAP_STEPS.slice().reverse().map(([, c, t]) => `<span><i style="background:${c}"></i>${t}</span>`).join("")}<span class="films">films</span></p>
-      ${missing.length ? `<p class="chart-note">Too small for the map: ${missing.map(esc).join(", ")}</p>` : ""}
-    </figure></div>`;
-  })() : "";
-
   /* ---- rated higher / lower than the Letterboxd average ---- */
   const diffs = rated.filter(m => meta(m).rating).map(m => ({ m, d: m.rating - meta(m).rating }));
   const diffList = list => list.length ? `<ol class="difflist with-ic">${list.map(({ m, d }) => `<li><button${pick(ids([m]), m.title)}><span class="nm"><span class="ic poster" aria-hidden="true">${posterOf(m) ? `<img src="${esc(posterOf(m))}" alt="" loading="lazy" decoding="async" width="20" height="30">` : ""}</span><span>${esc(m.title)}</span></span><span class="ct">${esc(m.year || "")}</span><span class="av">${stars(m.rating)}</span><span class="df">${d > 0 ? "+" : "−"}${Math.abs(d).toFixed(1)}</span></button></li>`).join("")}</ol>` : `<p class="empty-note">Nothing yet.</p>`;
@@ -691,7 +671,6 @@ function statsPanel(site) {
       ${decadesBest}
       ${vsAvg}
       ${gcl}
-      ${mapBox}
       ${dirBox}
       ${castBox}
       ${studioBox}
@@ -1135,6 +1114,12 @@ function build(draft) {
   try { new Function(adminHtml.match(/<script>([\s\S]*?)<\/script>/)[1]); }
   catch (e) { throw new Error("src/admin.html has a script error: " + e.message); }
   write("admin/index.html", adminHtml);
+  { // a page of its own, not linked from the site: pick the better of two films, then compare with your ratings (/rank)
+    const rankHtml = fs.readFileSync(path.join(ROOT, "src/rank.html"), "utf8");
+    try { new Function(rankHtml.match(/<script>([\s\S]*?)<\/script>/)[1]); }
+    catch (e) { throw new Error("src/rank.html has a script error: " + e.message); }
+    write("rank.html", rankHtml);
+  }
   { // for the editor's Photos page: who Stats shows, and the picture found for each (your own choices are in site.json)
     const w = statsPanel.wanted || { person: new Set(), studio: new Set(), role: {} }, pics = readPics();
     const entry = kind => name => { const e = (pics[kind] || {})[name] || {}; return { name, role: w.role[name], found: e.img && localFile(e.img) ? e.img : "", file: e.file || "" }; };
@@ -1149,7 +1134,7 @@ function build(draft) {
   }
   // a Cloudflare build of any branch but main (e.g. the editor's preview) is hidden from search engines
   const draftCopy = !!process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== "main";
-  write("robots.txt", draftCopy ? "User-agent: *\nDisallow: /\n" : "User-agent: *\nDisallow: /admin/\nDisallow: /parts/\n");
+  write("robots.txt", draftCopy ? "User-agent: *\nDisallow: /\n" : "User-agent: *\nDisallow: /admin/\nDisallow: /parts/\nDisallow: /rank\n");
   // host settings (Netlify + Cloudflare Pages both read this file)
   write("_headers", [
     "/admin/*", "  X-Robots-Tag: noindex, nofollow", "  Cache-Control: no-store", "  Referrer-Policy: no-referrer", "  X-Frame-Options: DENY", "",
@@ -1157,6 +1142,7 @@ function build(draft) {
     "/assets/fonts/*", "  Cache-Control: public, max-age=31536000, immutable", "",
     "/styles.*", "  Cache-Control: public, max-age=31536000, immutable", "",
     "/parts/*", "  X-Robots-Tag: noindex", "",
+    "/rank", "  X-Robots-Tag: noindex, nofollow", "", "/rank.html", "  X-Robots-Tag: noindex, nofollow", "",
     "/*", "  X-Content-Type-Options: nosniff", "  Referrer-Policy: strict-origin-when-cross-origin", ...(draftCopy ? ["  X-Robots-Tag: noindex, nofollow"] : []), "",
   ].join("\n"));
   if (fs.existsSync(path.join(ROOT, "assets"))) fs.cpSync(path.join(ROOT, "assets"), path.join(OUT, "assets"), { recursive: true });
@@ -1464,49 +1450,6 @@ function countryShape(topo, name) {
     return out.split("L").length > 3 ? out + "Z" : "";
   }).join("");
 }
-const WORLD_JSON = path.join(ROOT, "content/worldmap.json");
-const WORLD_V = 3; // bump to redraw content/worldmap.json
-const readWorld = () => { try { const w = JSON.parse(fs.readFileSync(WORLD_JSON, "utf8")); return w.v === WORLD_V ? w : null; } catch (_) { return null; } };
-/* Natural Earth projection: the far north and south are not stretched the way a flat lat/lon grid stretches them */
-function naturalEarth(lon, lat) {
-  const l = lon * Math.PI / 180, p = lat * Math.PI / 180, p2 = p * p, p4 = p2 * p2;
-  return [l * (0.8707 - 0.131979 * p2 + p4 * (-0.013791 + p4 * (0.003971 * p2 - 0.001529 * p4))),
-          p * (1.007226 + p2 * (0.015085 + p4 * (-0.044475 + 0.028874 * p2 - 0.005916 * p4)))];
-}
-// parts of a country far from it that would read as a different place (France's French Guiana)
-const OVERSEAS = { France: ([lon]) => lon < -30 };
-function worldMap(topo) {
-  const W = 1000, TOP = 84, BOTTOM = -57; // no Antarctica
-  const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
-  const arcs = topo.arcs.map(a => { let x = 0, y = 0; return a.map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]); });
-  const arc = i => (i < 0 ? arcs[~i].slice().reverse() : arcs[i]);
-  const ring = r => r.flatMap((i, k) => (k ? arc(i).slice(1) : arc(i)));
-  const x0 = naturalEarth(-180, 0)[0], x1 = naturalEarth(180, 0)[0], yT = naturalEarth(0, TOP)[1], yB = naturalEarth(0, BOTTOM)[1];
-  const k = W / (x1 - x0), H = Math.round((yT - yB) * k);
-  const out = {};
-  for (const g of topo.objects.countries.geometries) {
-    const name = g.properties && g.properties.name;
-    if (!name || name === "Antarctica") continue;
-    let polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
-    if (OVERSEAS[name]) polys = polys.filter(p => !OVERSEAS[name](ring(p[0])[0]));
-    const d = polys.map(p => p.map(r => {
-      let path = "", last = null, n = 0;
-      const pts = ring(r), lons = pts.map(q => q[0]);
-      // a shape crossing the date line (Fiji, the tip of Russia) would draw a stripe across the map: keep it on one side
-      const wrap = Math.max(...lons) - Math.min(...lons) > 180;
-      for (const [lon0, lat] of pts) {
-        const lon = wrap && lon0 < 0 ? lon0 + 360 : lon0;
-        const [x, y] = naturalEarth(lon, Math.max(BOTTOM, Math.min(TOP, lat)));
-        const pt = [Math.round((x - x0) * k), Math.round((yT - y) * k)];
-        if (last && Math.abs(pt[0] - last[0]) + Math.abs(pt[1] - last[1]) < 2) continue;
-        path += (last ? "L" : "M") + pt[0] + " " + pt[1]; last = pt; n++;
-      }
-      return n > 2 ? path + "Z" : "";
-    }).join("")).join("");
-    if (d) out[name] = d;
-  }
-  return { v: WORLD_V, w: W, h: H, countries: out };
-}
 const WD = "https://www.wikidata.org/w/api.php?format=json&origin=*";
 const PERSON_RE = /\b(actor|actress|director|film|screenwriter|comedian|performer|voice|singer|rapper|musician|model|producer|cinematographer|animator|writer|television|presenter|artist|dancer|stunt|youtuber|athlete|wrestler|player)/i;
 const STUDIO_RE = /\b(company|compan|studio|production|distribut|film|television|entertainment|pictures|subsidiary|label|broadcast|network|division|enterprise|animation|media|cinema|channel|streaming|service)/i;
@@ -1547,9 +1490,6 @@ async function refreshPics() {
   if (needShapes.length) try {
     const topo = await getJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json");
     for (const c of needShapes) { pics.shapes[c] = countryShape(topo, c); changed = true; }
-  } catch (_) {}
-  if (!readWorld()) try { // the map on Stats (made once)
-    fs.writeFileSync(WORLD_JSON, JSON.stringify(worldMap(await getJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json"))) + "\n");
   } catch (_) {}
   const now = Date.now(), jobs = [];
   const own = { person: site.photos || {}, studio: site.logos || {} };

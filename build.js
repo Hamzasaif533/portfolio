@@ -289,7 +289,7 @@ function layout({ site, css, title, description, root, active, body, bodyClass =
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#000"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(16 16) scale(.78) translate(-16 -16)">${LOGO_PATH}</g></svg>`)}">
 <link rel="preload" href="${root}assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${root}${css}">
-${hasArabic(body + title) ? `<link rel="preload" href="${root}assets/fonts/rubik-arabic.woff2" as="font" type="font/woff2" crossorigin>` : ""}
+${hasArabic(body + title) ? `<link rel="preload" href="${root}assets/fonts/el-messiri-arabic.woff2" as="font" type="font/woff2" crossorigin>` : ""}
 <noscript><style>.tile .media{opacity:1!important;transform:none!important}</style></noscript>
 <script>try{if(!sessionStorage.getItem("booted")){document.documentElement.classList.add("booting");setTimeout(()=>document.documentElement.classList.remove("booting"),15000)}}catch(e){}</script>
 <script type="speculationrules">${JSON.stringify(spec)}</script>
@@ -830,7 +830,7 @@ function cleanUrls(html) {
   return html.replace(/(\s(?:href|data-(?:prev|next|prevpost|nextpost)))="([^"]*)"/g, (_, attr, u) => `${attr}="${cleanUrl(u)}"`);
 }
 
-// Arabic words in the page get lang="ar", so they're set in Rubik with its own spaces (the monospace space is far too wide between Arabic words)
+// Arabic words in the page get lang="ar", so they're set in El Messiri with its own spaces (the monospace space is far too wide between Arabic words)
 function markArabic(html) {
   if (!hasArabic(html)) return html;
   let skip = 0; // inside <title>, <script>, <style>, <textarea>, <svg>, <option>: leave the text alone

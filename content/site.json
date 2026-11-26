@@ -1005,27 +1005,7 @@
       "by": "Naughty Dog"
     }
   ],
-  "books": [
-    {
-      "title": "Dune",
-      "year": 1965,
-      "by": "Frank Herbert",
-      "rating": 5,
-      "now": true
-    },
-    {
-      "title": "Project Hail Mary",
-      "year": 2021,
-      "by": "Andy Weir",
-      "rating": 4
-    },
-    {
-      "title": "The Pragmatic Programmer",
-      "year": 1999,
-      "by": "Hunt & Thomas",
-      "rating": 4
-    }
-  ],
+  "books": [],
   "projects": [
     {
       "name": "portfolio",

@@ -7,19 +7,20 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://cdn.cloudflare.steamstatic.com https://upload.wikimedia.org https://thumb.wikimedia.org; media-src 'self' blob:; connect-src 'self' https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' blob: data: https://image.tmdb.org https://covers.openlibrary.org https://archive.org https://*.archive.org https://cdn.cloudflare.steamstatic.com https://upload.wikimedia.org https://thumb.wikimedia.org; media-src 'self' blob:; connect-src 'self' https://covers.openlibrary.org https://archive.org https://*.archive.org https://api.github.com https://api.themoviedb.org https://image.tmdb.org https://www.wikidata.org https://openlibrary.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
 <title>Editor</title>
 
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Firjar:wght@400;600&display=swap">
 <style>
 @font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(/assets/fonts/geist-mono-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* Arabic letters come from Rubik (OFL, assets/fonts/OFL-Rubik.txt): rounded, like the look you picked */
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 300 900; font-display: swap; src: url(/assets/fonts/rubik-arabic.woff2) format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC; }
 /* surfaces get lighter as they come closer: page → panel → raised → hover */
 :root {
   --bg: #000; --panel: #0a0a0a; --raised: #111; --hover: #171717; --fg: #f2f2f2; --soft: #c9c9c9; --mute: #8b8b8b; --dim: #555;
   --line: #1c1c1c; --line-2: #2a2a2a; --chip: #141414; --chip-line: rgba(255,255,255,.08); --warn: #e8c66a; --bad: #ff8a8a; --ok: #8fd19e;
-  --r: 8px; --r-lg: 16px; --mono: "Geist Mono", Firjar, ui-monospace, Consolas, monospace;
+  --r: 8px; --r-lg: 16px; --mono: "Geist Mono", ui-monospace, Consolas, monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--bg); }
@@ -165,6 +166,9 @@ textarea.body { min-height: 60vh; font-size: 15px; }
 .poster-now span { padding: 8px; }
 .poster-now small { color: var(--mute); font-size: 11px; }
 .still.poster { width: 180px; aspect-ratio: 2 / 3; border-radius: var(--r); }
+.cover-field .poster-row { grid-template-columns: 140px minmax(0, 1fr); }
+.cover-field .still.poster { width: 110px; }
+.cover-field .pd-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .sub { margin: 26px 0 12px; font-size: 13px; font-weight: 500; }
 .sub small { color: var(--mute); font-weight: 400; }
 .poster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 18px 14px; }
@@ -1041,7 +1045,8 @@ function viewList(id) {
       const [title, sub] = def.sum(it), miss = missing(id, it);
       if (q && !JSON.stringify(it).toLowerCase().includes(q)) return;
       if (onlyMissing && !miss.length && i !== openIndex) return;
-      const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; drawWarn(); })));
+      const form = h("div", { class: "form" }, def.fields.map(f => input(f, it[f.key], v => { if (v === undefined) delete it[f.key]; else it[f.key] = v; drawWarn(); })),
+        id === "books" ? coverField(it, "book") : id === "games" ? coverField(it, "game") : null);
       const card = h("article", { class: "item" + (i === openIndex ? " open" : "") },
         h("header", { onclick: e => { if (!e.target.closest("button")) { card.classList.toggle("open"); if (!card.classList.contains("open")) draw(); } } },
           rowThumb(id, it),
@@ -1313,6 +1318,24 @@ function posterChooser(o) {
   const load = async () => {
     strip.textContent = "";
     const f = o.film();
+    if (o.findCovers && f) { // books: covers from Open Library to pick from
+      strip.append(h("span", { class: "status" }, "Looking for covers…"));
+      try {
+        const found = await o.findCovers(f);
+        strip.textContent = "";
+        if (!found.length) return strip.append(h("span", { class: "status" }, "No covers found on Open Library. Upload your own."));
+        found.forEach(c => strip.append(h("button", { class: "still poster", "aria-label": `Use this cover for ${f.title}`, onclick: async e => {
+          const b = e.currentTarget; b.disabled = true;
+          try {
+            const res = await fetch(c.full);
+            if (!res.ok) throw new Error("Couldn't download that cover");
+            strip.querySelectorAll(".still").forEach(x => x.classList.toggle("on", x === b));
+            await choose(await res.blob(), `${coverSlug(f.title) || "book"}-${c.id}.jpg`);
+          } catch (err) { toast(err.message, true); } finally { b.disabled = false; }
+        } }, h("img", { src: c.thumb, alt: "" })))); // (not lazy: lazy pictures in a sideways strip may never load)
+      } catch (e) { strip.textContent = ""; strip.append(h("span", { class: "status" }, e.message)); }
+      return;
+    }
     if (o.noTmdb) return strip.append(h("span", { class: "status" }, "Upload a cover image (portrait works best)."));
     if (!f) return strip.append(h("span", { class: "status" }, "Pick a film to see its posters."));
     if (!tmdbKey()) return strip.append(h("span", { class: "status" }, "Add a TMDB key (in Frame picker) to browse posters."));
@@ -1334,7 +1357,7 @@ function posterChooser(o) {
   };
   const fileIn = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp", style: "display:none", onchange: () => {
     const file = fileIn.files[0], f = o.film();
-    if (file && f) choose(file, `${slugify(f.title) || "film"}-own-${file.name}`); else if (file) toast("Pick a film first", true);
+    if (file && f) choose(file, `${coverSlug(f.title) || "film"}-own-${file.name}`); else if (file) toast("Pick a film first", true);
     fileIn.value = "";
   } });
   const tools = [
@@ -1343,6 +1366,29 @@ function posterChooser(o) {
   ];
   showNow();
   return { preview, strip, tools, load, showNow };
+}
+
+// covers on Open Library for a book: by title and author, then by title alone (each edition can have its own cover)
+async function findBookCovers(b) {
+  const author = String(b.by || "").split(/&| and /)[0].trim(), ids = [];
+  const q = async params => { const r = await getJSON(`https://openlibrary.org/search.json?limit=10&fields=cover_i,edition_count&${params}`); (r.docs || []).forEach(d => { if (d.cover_i && !ids.includes(d.cover_i)) ids.push(d.cover_i); }); };
+  if (author) await q(`title=${encodeURIComponent(b.title)}&author=${encodeURIComponent(author)}`).catch(() => {});
+  if (ids.length < 6) await q(`title=${encodeURIComponent(b.title)}`).catch(() => {});
+  if (b.olCover && !ids.includes(b.olCover)) ids.unshift(b.olCover);
+  return ids.slice(0, 12).map(id => ({ id, thumb: `https://covers.openlibrary.org/b/id/${id}-M.jpg`, full: `https://covers.openlibrary.org/b/id/${id}-L.jpg` }));
+}
+// the cover, right in a book's or game's form: what shows now, upload your own, or (books) pick one from Open Library
+function coverField(it, kind) {
+  const ch = posterChooser({
+    film: () => (it.title ? it : null), current: () => it.poster || "", fallback: () => (it.title ? coverPath(kind, it) : ""),
+    label: "found cover", noTmdb: true, findCovers: kind === "book" ? findBookCovers : null,
+    set: p => { it.poster = p; }, clear: () => { delete it.poster; }, width: 400,
+  });
+  const wrap = h("div", { class: "field wide cover-field" }, h("span", {}, "Cover"),
+    h("div", { class: "pd-tools" }, ...ch.tools, kind === "book" ? h("button", { type: "button", class: "btn small", onclick: () => ch.load() }, "Find covers") : null),
+    h("div", { class: "poster-row" }, ch.preview, ch.strip));
+  if (kind !== "book") ch.load();
+  return wrap;
 }
 
 function viewPosters() {
@@ -1397,7 +1443,7 @@ function viewPosters() {
     const b = h("button", { class: "pg-cell" + (m.poster ? " own" : ""), title: `${m.title}${m.year ? ` (${m.year})` : ""}`, onclick: () => {
       const ch = posterChooser({
         film: () => m, current: () => m.poster || "", fallback: () => coverPath(kind, m),
-        label: kind === "film" ? "Letterboxd poster" : "found cover", noTmdb: kind !== "film",
+        label: kind === "film" ? "Letterboxd poster" : "found cover", noTmdb: kind !== "film", findCovers: kind === "book" ? findBookCovers : null,
         set: p => { m.poster = p; }, clear: () => { delete m.poster; }, width: 400,
         changed: () => { b.classList.toggle("own", !!m.poster); b.firstChild.replaceWith(img()); },
       });

@@ -229,7 +229,6 @@ const TABS = [
   ["About", "about.html", "about"],
 ];
 
-const fontsUrl = () => "https://fonts.googleapis.com/css2?family=Firjar:wght@400;600&display=swap"; // Arabic only; Geist Mono is in assets/fonts
 
 /* shared dialogs: search, shortcut list (opened with ?), media viewer */
 const DIALOGS = `
@@ -290,8 +289,7 @@ function layout({ site, css, title, description, root, active, body, bodyClass =
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#000"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(16 16) scale(.78) translate(-16 -16)">${LOGO_PATH}</g></svg>`)}">
 <link rel="preload" href="${root}assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${root}${css}">
-${hasArabic(body + title) ? `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${fontsUrl()}">` : ""}
+${hasArabic(body + title) ? `<link rel="preload" href="${root}assets/fonts/rubik-arabic.woff2" as="font" type="font/woff2" crossorigin>` : ""}
 <noscript><style>.tile .media{opacity:1!important;transform:none!important}</style></noscript>
 <script>try{if(!sessionStorage.getItem("booted")){document.documentElement.classList.add("booting");setTimeout(()=>document.documentElement.classList.remove("booting"),15000)}}catch(e){}</script>
 <script type="speculationrules">${JSON.stringify(spec)}</script>
@@ -691,7 +689,7 @@ function shelfPage(site) {
     const own = localFile(it.poster), p = own ? it.poster : localFile(coverPath(kind, it)) ? coverPath(kind, it) : "";
     return `<span class="p" aria-hidden="true">${p ? `<img src="${esc(webp(p))}" alt="" width="300" height="450" loading="lazy" decoding="async">` : `<span>${esc(it.title)}</span>`}</span>`;
   };
-  const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${slug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
+  const row = (it, i, posters) => `<li${it.now ? ' class="now"' : ""} id="s-${coverSlug(it.title)}" tabindex="-1" data-item data-i="${i}" data-year="${Number(it.year) || 0}" data-score="${Number(it.rating) || 0}" data-liked="${it.liked ? 1 : 0}"${frameView(it)}>
       ${posters ? thumb(it, posters) : ""}<span class="t">${esc(it.title)}</span>
       <span class="y">${esc(it.year || "")}</span>
       <span class="b">${esc(it.by || "")}</span>
@@ -832,7 +830,17 @@ function cleanUrls(html) {
   return html.replace(/(\s(?:href|data-(?:prev|next|prevpost|nextpost)))="([^"]*)"/g, (_, attr, u) => `${attr}="${cleanUrl(u)}"`);
 }
 
+// Arabic words in the page get lang="ar", so they're set in Rubik with its own spaces (the monospace space is far too wide between Arabic words)
+function markArabic(html) {
+  if (!hasArabic(html)) return html;
+  let skip = 0; // inside <title>, <script>, <style>, <textarea>, <svg>, <option>: leave the text alone
+  return html.replace(/(<\/?([a-zA-Z][\w-]*)[^>]*>)|([^<]+)/g, (m, tag, name, text) => {
+    if (tag) { if (/^(title|script|style|textarea|svg|option)$/i.test(name)) if (!tag.endsWith("/>")) skip += tag[1] === "/" ? -1 : 1; return m; }
+    return !skip && hasArabic(text) ? text.replace(/^(\s*)([\s\S]*?)(\s*)$/, '$1<span lang="ar" dir="auto">$2</span>$3') : m;
+  });
+}
 function write(rel, content) {
+  if (/\.html$/.test(rel) && !rel.startsWith("admin/") && rel !== "rank.html") content = markArabic(content);
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, content);

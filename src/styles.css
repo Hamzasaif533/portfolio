@@ -94,13 +94,15 @@ html.booting body { overflow: hidden; }
 .w.scr { color: var(--dim); }
 .s-note { display: inline-block; margin-top: 26px; font-size: clamp(14px, 1.5vw, 16px); color: var(--dim); transition: color .2s; }
 @media (hover: hover) { .s-note:hover { color: var(--mute); } }
-.today { position: relative; z-index: 1; padding-bottom: 22px; font-size: clamp(16px, 1.8vw, 19px); }
-.today a { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 28px auto; gap: 14px; align-items: center; padding: 3px 0; transition: opacity .2s; }
+/* the rows share one set of columns (subgrid), so the icons line up whatever the text after them */
+.today { position: relative; z-index: 1; display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 28px auto; column-gap: 14px; padding-bottom: 22px; font-size: clamp(16px, 1.8vw, 19px); }
+.today li { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; }
+.today a { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; padding: 3px 0; transition: opacity .2s; }
 @media (hover: hover) { .today:hover a { opacity: .45; } }
 @media (hover: hover) { .today a:hover { opacity: 1; } }
 .today .v { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .today .i { display: grid; place-items: center; color: var(--fg); }
-.today .r { color: var(--mute); text-align: right; min-width: 3.5em; }
+.today .r { color: var(--mute); }
 .cursor { position: fixed; left: 0; top: 0; z-index: 50; width: 15px; height: 15px; margin: -7px 0 0 -7px; pointer-events: none; opacity: 0; transition: opacity .2s; }
 .cursor::before, .cursor::after { content: ""; position: absolute; background: var(--mute); }
 .cursor::before { left: 7px; top: 0; width: 1px; height: 15px; }
@@ -440,8 +442,7 @@ kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; 
   .bar { border-top: 1px solid #0d0d0d; padding-bottom: var(--safe-b); }
   .home { width: calc(100% - 48px); }
   .today { font-size: 15px; }
-  .today a { grid-template-columns: 6.2em minmax(0, 1fr) 22px auto; gap: 8px; }
-  .today .r { min-width: 2.6em; }
+  .today { grid-template-columns: 6.2em minmax(0, 1fr) 22px auto; column-gap: 8px; }
   .masonry, .duo { columns: 1; }
   .frames { gap: 4px; }
   .tile.frame { border-radius: 8px; }

@@ -78,6 +78,14 @@
   },
   "movies": [
     {
+      "title": "The Hunger Games",
+      "watched": "2026-11-27",
+      "year": 2012,
+      "tmdb": 70160,
+      "rating": 3.5,
+      "by": "Gary Ross"
+    },
+    {
       "title": "You Can See Everything",
       "watched": "2026-11-26",
       "year": 2026,

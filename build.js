@@ -882,7 +882,9 @@ const lbItems = html => [...html.matchAll(/data-item-name="([^"]+)"[^>]*?data-it
 const lbSlug = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const filmKey = (title, year) => `${String(title).toLowerCase()}|${year || ""}`;
 // posters and covers live in assets/posters/<film|game|book>/<title>-<year>.jpg (the editor uses the same names)
-const coverPath = (kind, it) => `assets/posters/${kind}/${[slug(it.title), it.year].filter(Boolean).join("-")}.jpg`;
+// a title with non-Latin letters (e.g. Arabic) keeps them, so it still gets a name of its own (same rule in admin.html)
+const coverSlug = t => !/[^\p{sc=Latin}\P{L}]/u.test(t) && slug(t) || String(t).toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s-]/gu, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-");
+const coverPath = (kind, it) => `assets/posters/${kind}/${[coverSlug(it.title), it.year].filter(Boolean).join("-")}.jpg`;
 // the .webp copy of a picture when there is one (tools/webp.py makes them), else the picture itself
 const webp = p => { if (!p || !/[.](jpe?g|png)$/i.test(p)) return p; const w = p.replace(/[.][a-z]+$/i, ".webp"); return localFile(w) ? w : p; };
 // a film frame's small copy (assets/frames-sm, made by the editor), for grids; the full frame is for the viewer

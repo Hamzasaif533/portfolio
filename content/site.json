@@ -1005,7 +1005,41 @@
       "by": "Naughty Dog"
     }
   ],
-  "books": [],
+  "books": [
+    {
+      "title": "30",
+      "by": "أحمد الشقيري"
+    },
+    {
+      "title": "نظرية الفستق",
+      "by": "فهد عامر الأحمدي"
+    },
+    {
+      "title": "نظرية الفستق 2",
+      "by": "فهد عامر الأحمدي"
+    },
+    {
+      "title": "Why We Sleep",
+      "year": 2017,
+      "by": "Matthew Walker",
+      "now": true
+    },
+    {
+      "title": "فن اللامبالاة",
+      "by": "مارك مانسون"
+    },
+    {
+      "title": "Atomic Habits",
+      "year": 2018,
+      "by": "James Clear"
+    },
+    {
+      "title": "Dune",
+      "year": 1965,
+      "by": "Frank Herbert",
+      "rating": 5
+    }
+  ],
   "projects": [
     {
       "name": "portfolio",

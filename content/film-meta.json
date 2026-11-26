@@ -4150,6 +4150,40 @@
       "rating": 4.22,
       "poster": "https://a.ltrbxd.com/resized/sm/upload/xx/io/jp/45/the-truman-show-0-600-0-900-crop.jpg?v=704ba393f7",
       "fetched": "2026-11-22"
+    },
+    "you-can-see-everything": {
+      "year": 2026,
+      "countries": [
+        "USA"
+      ],
+      "rating": 4.62,
+      "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/2/9/4/4/3/1629443-you-can-see-everything-0-600-0-900-crop.jpg?v=84f6724d74",
+      "runtime": 175,
+      "genres": [
+        "Documentary"
+      ],
+      "themes": [
+        "Humanity and the world around us",
+        "Fascinating, emotional stories and documentaries"
+      ],
+      "language": "English",
+      "cast": [
+        "Elizabeth Holmes",
+        "Nathan Fielder",
+        "Billy Evans",
+        "Amanda Seyfried",
+        "Christopher Abbott",
+        "Lance Oppenheim",
+        "Gary Wilmes",
+        "Phillip Andre Botello"
+      ],
+      "studios": [
+        "Blow Out Productions",
+        "To Be Formed",
+        "A24"
+      ],
+      "v": 2,
+      "fetched": "2026-11-26"
     }
   },
   "titles": {
@@ -4240,6 +4274,7 @@
     "blue velvet|1986": "blue-velvet",
     "12 angry men|1957": "12-angry-men",
     "the dancing pig|1907": "the-dancing-pig",
-    "whiplash|2014": "whiplash-2014"
+    "whiplash|2014": "whiplash-2014",
+    "you can see everything|2026": "you-can-see-everything"
   }
 }

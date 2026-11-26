@@ -1282,7 +1282,8 @@ async function shrinkPoster(blob, w, q = .84, type = "image/jpeg") {
     return await new Promise(r => c.toBlob(b => r(b || blob), type, q));
   } catch (_) { return blob; }
 }
-const coverPath = (kind, m) => `assets/posters/${kind}/${[slugify(m.title), m.year].filter(Boolean).join("-")}.jpg`; // found by the build (Letterboxd, Steam, Wikipedia, Open Library)
+const coverSlug = t => !/[^\p{sc=Latin}\P{L}]/u.test(t) && slugify(t) || String(t).toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s-]/gu, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-"); // Arabic titles keep their letters (same rule in build.js)
+const coverPath = (kind, m) => `assets/posters/${kind}/${[coverSlug(m.title), m.year].filter(Boolean).join("-")}.jpg`; // found by the build (Letterboxd, Steam, Wikipedia, Open Library)
 const filmKeyOf = m => `${m.title}|${m.year || ""}`;
 
 /* One poster chooser: current poster, TMDB posters, upload, back to Letterboxd.

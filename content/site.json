@@ -1037,7 +1037,8 @@
       "title": "Dune",
       "year": 1965,
       "by": "Frank Herbert",
-      "rating": 5
+      "rating": 5,
+      "now": true
     }
   ],
   "projects": [
